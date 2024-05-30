@@ -6,8 +6,8 @@ export default function Layout({ children }) {
   return (
     <div className=''>
      <Head>
-        <title> TutorHive </title>
-        <meta name="description" content="The first learning platform that rewards you for learning and retaining information!" />
+        <title> ApartMatch </title>
+        <meta name="description" content="A platform to find off-campus roommates" />
       </Head>
       <Navbar />
       <main>{children}</main>
