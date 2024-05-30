@@ -18,8 +18,7 @@ export default function Navbar() {
   };
 
   const navLinks = [
-    { title: "About", path: "/about" },
-    { title: "How it Works", path: "" },
+    { title: "How it Works", path: "/about" },
     { title: "FAQ", path: "/faq" },
   ];
 
