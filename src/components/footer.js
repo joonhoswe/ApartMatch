@@ -4,7 +4,7 @@ import Logo from '../assets/logo.png';
 
 export default function Footer() {
     return (
-        <div className="bg-blue-150 text-yellow-150 flex flex-col md:flex-row md:space-x-16 lg:space-x-64 w-full px-8 md:px-16 lg:px-32 py-8 space-y-8 md:space-y-0">
+        <div className="bg-red-500 text-white flex flex-col md:flex-row md:space-x-16 lg:space-x-32 max-w-full px-8 md:px-16 py-8 space-y-8 md:space-y-0">
             <div className="flex justify-center md:justify-start">
                 <div className="relative w-64 h-24">
                     <Image src={Logo} alt="TutorHive Logo" layout="fill" objectFit="contain" />

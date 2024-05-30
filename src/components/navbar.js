@@ -19,9 +19,7 @@ export default function Navbar() {
 
   const navLinks = [
     { title: "About", path: "/about" },
-    { title: "Become a Bee", path: "" },
-    { title: "Lesson Plans", path: "" },
-    { title: "Testimonials", path: "" },
+    { title: "How it Works", path: "" },
     { title: "FAQ", path: "/faq" },
   ];
 
@@ -31,7 +29,7 @@ export default function Navbar() {
   };
 
   return (
-    <div className="flex items-center justify-between w-full h-14 sticky top-0 z-50 text-yellow-150 bg-blue-150 backdrop-filter backdrop-blur-lg">
+    <div className="flex items-center justify-between w-full h-14 sticky top-0 z-50 text-white bg-red-500 backdrop-filter backdrop-blur-lg">
       <div className='items-center justify-between w-full h-14 px-4 hidden md:flex'>
         
         <div className="flex items-center justify-center space-x-6">
@@ -40,7 +38,7 @@ export default function Navbar() {
         </Link>
         
           {navLinks.map((link) => (
-            <Link key={link.title} href = {link.path} className="font-bold transition duration-300 ease-in-out hover:text-white">
+            <Link key={link.title} href = {link.path} className="font-bold transition duration-300 ease-in-out hover:text-gray-400"> 
               {link.title}
             </Link>
           ))}
