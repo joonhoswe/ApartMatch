@@ -15,7 +15,7 @@ function LoginButton() {
       <img src={user.picture} alt={user.name} className="w-6 h-6 rounded-full" />
     </Link>
   ) : (
-    <button onClick={() => loginWithRedirect()} className="font-bold transition duration-300 ease-in-out hover:text-white">
+    <button onClick={() => loginWithRedirect()} className="font-bold transition duration-300 ease-in-out hover:text-gray-400">
       Login / Register
     </button>
   );
