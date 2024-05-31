@@ -29,7 +29,7 @@ export default function Home() {
           backgroundPosition: 'center'
         }}
       >
-        <div className='text-md sm:text-3xl md:text-4xl flex flex-col space-y-3 md:space-y-6 items-center'>
+        <div className='text-md sm:text-3xl md:text-4xl flex flex-col space-y-1 sm:space-y-3 md:space-y-6 items-center'>
           <h1> No more Facebook threads. </h1>
           <h1> Instantly <span className='text-red-500 underline'> match</span> into apartments. </h1>
         </div>
@@ -45,7 +45,7 @@ export default function Home() {
 
       <div className='bg-gray-200 h-4/5 w-full flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-12 items-center justify-center py-10'>
         {infoCards.map((card, index) => (
-          <div key={index} className='bg-white text-black sm:h-2/3 md:h-4/5 w-3/4 md:w-1/4 rounded-2xl flex flex-col items-center space-y-4 p-3 md:p-6 shadow-2xl'>
+          <div key={index} className='bg-white text-black sm:h-2/3 md:h-4/5 w-3/4 md:w-1/4 rounded-2xl flex flex-col items-center space-y-4 p-2 md:p-6 shadow-2xl'>
             <h1 className='text-sm md:text-xl lg:text-2xl'> {card.heading} </h1>
             <p className='text-xs md:text-sm lg:text-base'> {card.description} </p>
           </div>
