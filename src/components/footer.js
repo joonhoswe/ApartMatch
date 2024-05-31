@@ -14,8 +14,7 @@ export default function Footer() {
             {/* contacts */}
             <div className="flex flex-col space-y-2 pt-3 items-center md:items-start">
                 <h1 className="text-2xl"> CONTACT </h1>
-                <p> Email: </p>
-                <p> Phone: </p>
+                <p> apartmatchco@gmail.com </p>
             </div>
 
             {/* about */}
