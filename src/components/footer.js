@@ -15,6 +15,7 @@ export default function Footer() {
             <div className="flex flex-col space-y-2 items-center md:items-start">
                 <h1 className="text-base md:text-2xl"> CONTACT </h1>
                 <p className="text-sm md:text-base"> apartmatchco@gmail.com </p>
+                <p className="text-sm md:text-base"> xxx-xxx-xxxx </p>
             </div>
 
             {/* about */}

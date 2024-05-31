@@ -18,8 +18,8 @@ export default function Navbar() {
   };
 
   const navLinks = [
-    { title: "How it Works", path: "/about" },
-    { title: "FAQ", path: "/faq" },
+    // { title: "How it Works", path: "/about" },
+    // { title: "FAQ", path: "/faq" },
   ];
 
   const sidebarVariants = {
