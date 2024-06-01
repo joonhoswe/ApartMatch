@@ -5,8 +5,8 @@ import { Fade as Hamburger } from 'hamburger-react';
 import Login from '@components/login';
 import Image from 'next/image';
 import Link from 'next/link';
-import Logo from '../assets/logo.png';
-import notLoggedIn from '../assets/notLoggedIn.png';
+import Logo from '@assets/logo.png';
+import notLoggedIn from '@assets/notLoggedIn.png';
 
 export default function Navbar() {
   const [isOpen, setOpen] = useState(false);
@@ -18,8 +18,9 @@ export default function Navbar() {
   };
 
   const navLinks = [
-    // { title: "How it Works", path: "/about" },
-    // { title: "FAQ", path: "/faq" },
+    //{ title: "About", path:"/about"},
+    { title: "Post a Listing", path: "/postListing" },
+    { title: "Advertise", path: "/" },
   ];
 
   const sidebarVariants = {
@@ -32,16 +33,17 @@ export default function Navbar() {
       <div className='items-center justify-between w-full h-14 px-4 hidden md:flex'>
         
         <div className="flex items-center justify-center space-x-6">
-        <Link href = '/home' className='transition duration-300 ease-in-out hover:scale-110 hover:cursor-pointer'>
-            <Image src={Logo} alt="TutorHive Logo" width={128} height={32} />
-        </Link>
-        
-          {navLinks.map((link) => (
-            <Link key={link.title} href = {link.path} className="font-bold transition duration-300 ease-in-out hover:text-gray-400"> 
-              {link.title}
+            <Link href = '/home' className='transition duration-300 ease-in-out hover:scale-110 hover:cursor-pointer'>
+                <Image src={Logo} alt="TutorHive Logo" width={128} height={32} />
             </Link>
-          ))}
+          
+            {navLinks.map((link) => (
+              <Link key={link.title} href = {link.path} className="font-bold transition duration-300 ease-in-out hover:text-gray-400"> 
+                {link.title}
+              </Link>
+            ))}
         </div>
+
         <div className='flex flex-row space-x-2'>
               <Login />
 
