@@ -152,21 +152,21 @@ export default function postListing() {
                         </button>
 
                         <button 
-                        className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${rooms[1] ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                        className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${bathrooms[1] ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
                         onClick={() => setBathrooms([false, true, false, false, ''])}
                         >
                         2
                         </button>
 
                         <button 
-                        className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${rooms[2] ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                        className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${bathrooms[2] ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
                         onClick={() => setBathrooms([false, false, true, false, ''])}
                         >
                         3
                         </button>
 
                         <button 
-                        className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${rooms[3] ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                        className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${bathrooms[3] ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
                         onClick={() => setBathrooms([false, false, false, true, ''])}
                         >
                         4
@@ -174,7 +174,7 @@ export default function postListing() {
                         <input 
                         value = {bathrooms[4]}
                         placeholder='4+'
-                        className={`h-full w-1/4 flex text-center items-center justify-center rounded-r-lg md:rounded-r-2xl p-2 outline-none ring-2 ring-red-500 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${rooms[4] !== '' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                        className={`h-full w-1/4 flex text-center items-center justify-center rounded-r-lg md:rounded-r-2xl p-2 outline-none ring-2 ring-red-500 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${bathrooms[4] !== '' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
                         onChange={(e) => setBathrooms([false, false, false, false, e.target.value])}
                         />
                     </div>
@@ -184,19 +184,19 @@ export default function postListing() {
                     <p className='flex justify-start'> Gender Preferences </p>
                     <div className='flex flex-row h-10 w-full'>
                         <button 
-                        className={`h-full w-1/2 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm lg:text-base ${houseType === 'apartment' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                        className={`h-full w-1/2 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm lg:text-base ${genderType === 'males' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
                         onClick={() => setGenderType('males')}
                         >
                         Only Males
                         </button>
                         <button 
-                        className={`h-full w-1/2 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm lg:text-base ${houseType === 'house' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                        className={`h-full w-1/2 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm lg:text-base ${genderType === 'females' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
                         onClick={() => setGenderType('females')}
                         >
                         Only Females
                         </button>
                         <button 
-                        className={`h-full w-1/2 flex items-center justify-center rounded-r-lg md:rounded-r-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm lg:text-base ${houseType === 'house' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                        className={`h-full w-1/2 flex items-center justify-center rounded-r-lg md:rounded-r-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm lg:text-base ${genderType === 'both' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
                         onClick={() => setGenderType('both')}
                         >
                         No Preference

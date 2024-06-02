@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Router from 'next/router';
-import Apartment from '@assets/apartment.png';
+import Apartment from '@assets/home.png';
 
 export default function Home() {
   const [school, setSchool] = useState('');
@@ -30,7 +30,7 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center w-full h-screen text-white font-bold">
       <div 
-        className='h-screen w-full flex flex-col space-y-4 justify-between items-center py-20' 
+        className='h-screen w-full flex flex-col space-y-4 justify-between items-center py-12' 
         style={{ 
           backgroundImage: `url(${Apartment.src})`, 
           backgroundSize: 'cover',
