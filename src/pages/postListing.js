@@ -26,7 +26,7 @@ export default function postListing() {
             backgroundPosition: 'center'
           }}>
             <div className="bg-white text-xs sm:text-base rounded-2xl p-8 shadow-2xl text-black text-center w-full sm:w-3/5 md:w-3/5 lg:w-1/3 flex flex-col space-y-3 border-y-8 border-red-500">
-                <div className = "text-base sm:text-xl p-4 rounded-2xl font-bold mb-6">
+                <div className = "text-base sm:text-xl p-4 rounded-2xl font-bold mb-4">
                     Thank you for your interest in posting to ApartMatch! 
                 </div>
 
