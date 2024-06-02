@@ -46,8 +46,8 @@ const Contact = () => {
         backgroundPosition: 'center'
       }}>
         <div className="bg-white text-xs sm:text-base rounded-2xl p-8 shadow-2xl text-black text-center w-full sm:w-3/5 md:w-3/5 lg:w-1/3 flex flex-col space-y-5 border-y-8 border-red-500">
-            <p className="text-2xl font-bold mb-6">
-            Contact Us
+            <p className="text-2xl font-bold mb-4">
+            Questions or Concerns?
             </p>
 
             <div className="flex flex-col space-y-1 text-start">
