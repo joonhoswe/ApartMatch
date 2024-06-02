@@ -28,10 +28,10 @@ export default function SchoolMap() {
 
   return (
     <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY} onLoad={() => console.log('Maps API has loaded.')}>
-      <div className='flex flex-row h-full w-full bg-white'>
+      <div className='flex flex-row h-[calc(100vh-54px)] w-full bg-white'>
 
         {/* container with filters */}
-        <div className='h-screen w-1/5 flex flex-col space-y-6 text-black px-2 py-4 border-2 border-gray-500'>
+        <div className='h-full w-1/5 flex flex-col space-y-6 text-black p-4 border-2 border-gray-500'>
             <div className='relative w-full'>
                 {/* search bar */}
                 <input 
@@ -151,7 +151,7 @@ export default function SchoolMap() {
         </div>
 
         {/* embedded google map */}
-        <div style={{ width: '100%', height: '100vh' }}>
+        <div style={{ width: '100%', height: '100%' }}>
           <Map
             mapId='e1a96cb574a64c5a'
             defaultZoom={16}
