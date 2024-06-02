@@ -1,4 +1,6 @@
 import { React, useState } from  'react';
+import { SignedIn, SignedOut } from "@clerk/clerk-react"
+import Login from '@components/login';
 import Background from '@assets/osuAstonPlaceApartments.jpeg'
 
 export default function postListing() {
@@ -19,6 +21,8 @@ export default function postListing() {
     const isFormValid = address !== '' && state !== '' && zipCode !== ''  && city !== '' && houseType !== '' && roomsEntered && bathroomsEntered && genderType !== '';
 
     return(
+        <>
+        <SignedIn>
         <div className="bg-gray-200 flex flex-col justify-center items-center w-full h-screen" 
         style={{ 
             backgroundImage: `url(${Background.src})`, 
@@ -223,5 +227,11 @@ export default function postListing() {
 
             </div>
         </div>
+        </SignedIn>
+        
+        <SignedOut>
+            <Login/>
+        </SignedOut>
+        </>
     );
 }
