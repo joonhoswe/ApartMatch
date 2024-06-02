@@ -1,5 +1,6 @@
 import { React, useRef, useState } from "react";
 import emailjs from '@emailjs/browser';
+import Background from '@assets/interior.jpeg';
 
 const Contact = () => {
 
@@ -38,7 +39,12 @@ const Contact = () => {
   };
   return (
     <div>
-      <form onSubmit={sendMessage} className="bg-gray-200 text-black flex flex-col space-y-2 items-center justify-center h-screen w-full ">
+      <form onSubmit={sendMessage} className="bg-gray-200 text-black flex flex-col space-y-2 items-center justify-center h-screen w-full "
+      style={{ 
+        backgroundImage: `url(${Background.src})`, 
+        backgroundSize: 'cover',
+        backgroundPosition: 'center'
+      }}>
         <div className="bg-white text-xs sm:text-base rounded-2xl p-8 shadow-2xl text-black text-center w-full sm:w-3/5 md:w-3/5 lg:w-1/3 flex flex-col space-y-5 border-y-8 border-red-500">
             <p className="text-2xl font-bold mb-6">
             Contact Us

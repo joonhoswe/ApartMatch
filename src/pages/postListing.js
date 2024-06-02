@@ -1,5 +1,5 @@
 import { React, useState } from  'react';
-
+import Background from '@assets/osuAstonPlaceApartments.jpeg'
 
 export default function postListing() {
 
@@ -19,7 +19,12 @@ export default function postListing() {
     const isFormValid = address !== '' && state !== '' && zipCode !== ''  && city !== '' && houseType !== '' && roomsEntered && bathroomsEntered && genderType !== '';
 
     return(
-        <div className="bg-gray-200 flex flex-col justify-center items-center w-full h-screen" >
+        <div className="bg-gray-200 flex flex-col justify-center items-center w-full h-screen" 
+        style={{ 
+            backgroundImage: `url(${Background.src})`, 
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
+          }}>
             <div className="bg-white text-xs sm:text-base rounded-2xl p-8 shadow-2xl text-black text-center w-full sm:w-3/5 md:w-3/5 lg:w-1/3 flex flex-col space-y-3 border-y-8 border-red-500">
                 <div className = "text-base sm:text-xl p-4 rounded-2xl font-bold mb-6">
                     Thank you for your interest in posting to ApartMatch! 
