@@ -3,6 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { motion, AnimatePresence } from 'framer-motion';
 import { Fade as Hamburger } from 'hamburger-react';
 import Login from '@components/login';
+import Contact from '@pages/contact';
 import Image from 'next/image';
 import Link from 'next/link';
 import Logo from '@assets/logo.png';
@@ -20,6 +21,7 @@ export default function Navbar() {
   const navLinks = [
     //{ title: "About", path:"/about"},
     { title: "Post a Listing", path: "/postListing" },
+    { title: "Contact Us", path: "/contact" },
     { title: "Advertise", path: "/" },
   ];
 
