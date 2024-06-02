@@ -38,8 +38,8 @@ export default function Home() {
         }}
       >
         <div className='text-md sm:text-3xl md:text-4xl flex flex-col space-y-1 sm:space-y-3 md:space-y-6 items-center'>
-          <h1> No more Facebook threads. </h1>
-          <h1> Instantly <span className='text-red-500 underline'> match</span> into apartments. </h1>
+          <h1> 🐌 No more Facebook threads. </h1>
+          <h1> 🔥 Instantly <span className='text-red-500 underline'> match</span> into apartments. </h1>
         </div>
 
         <div className='flex bg-white h-10 md:h-12 w-3/4 md:w-1/2 rounded-lg md:rounded-2xl'>

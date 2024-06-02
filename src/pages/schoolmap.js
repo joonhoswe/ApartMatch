@@ -12,6 +12,7 @@ export default function SchoolMap() {
   const [priceRange, setPriceRange] = useState(['', '']);
   const [rooms, setRooms] = useState([true, false, false, false]);
   const [commute, setCommute] = useState('');
+  const [genderType, setGenderType] = useState('');
 
   const handleFindHomes = () => {
     if (searchInput.trim() !== '') {
@@ -89,6 +90,31 @@ export default function SchoolMap() {
                     onClick={() => setHouseType('house')}
                     >
                     House
+                    </button>
+                </div>
+            </div>
+
+            {/* gender type selection */}
+            <div className='flex flex-col space-y-2'>
+                <p> Gender Preferences </p>
+                <div className='flex flex-row h-10 w-full'>
+                    <button 
+                    className={`h-full w-1/2 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm lg:text-base ${genderType === 'males' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                    onClick={() => setGenderType('males')}
+                    >
+                    M
+                    </button>
+                    <button 
+                    className={`h-full w-1/2 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm lg:text-base ${genderType === 'females' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                    onClick={() => setGenderType('Females')}
+                    >
+                    F
+                    </button>
+                    <button 
+                    className={`h-full w-1/2 flex items-center justify-center rounded-r-lg md:rounded-r-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm lg:text-base ${genderType === 'both' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                    onClick={() => setGenderType('both')}
+                    >
+                    Co-Ed
                     </button>
                 </div>
             </div>
