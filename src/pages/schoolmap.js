@@ -31,7 +31,7 @@ export default function SchoolMap() {
       <div className='flex flex-row h-[calc(100vh-54px)] w-full bg-white'>
 
         {/* container with filters */}
-        <div className='h-full w-1/5 flex flex-col space-y-6 text-black p-4 border-2 border-gray-500'>
+        <div className='h-full w-1/5 hidden md:flex flex-col space-y-6 text-black p-4 border-2 border-gray-500'>
             <div className='relative w-full'>
                 {/* search bar */}
                 <input 
@@ -151,7 +151,7 @@ export default function SchoolMap() {
         </div>
 
         {/* embedded google map */}
-        <div style={{ width: '100%', height: '100%' }}>
+        <div style={{ width: '100%', height: '100%' }} className='hidden md:flex'>
           <Map
             mapId='e1a96cb574a64c5a'
             defaultZoom={16}
