@@ -30,6 +30,10 @@ const Contact = () => {
         function (response) {
           console.log("SUCCESS!", response.status, response.text);
           alert("Message sent successfully!");
+          setEmail('');
+          setSubject('');
+          setName('');
+          setMessage('');
         },
         function (error) {
           alert("Error:", error);
@@ -53,6 +57,7 @@ const Contact = () => {
             <div className="flex flex-col space-y-1 text-start">
                 <p className=""> Name </p>
                 <input
+                value={name}
                 className="outline-none ring-2 ring-gray-200 focus:ring-red-500 rounded-2xl p-2"
                 onChange={(e) => setName(e.target.value)}
                 placeholder="John Doe"
@@ -63,6 +68,7 @@ const Contact = () => {
             <div className="flex flex-col space-y-1 text-start">
                 <p className=""> Email </p>
                 <input
+                value={email}
                 className="outline-none ring-2 ring-gray-200 focus:ring-red-500 rounded-2xl p-2"
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="johndoe@gmail.com"
@@ -73,6 +79,7 @@ const Contact = () => {
             <div className="flex flex-col space-y-1 text-start">
                 <p className=""> Subject </p>
                 <input
+                value={subject}
                 className="outline-none ring-2 ring-gray-200 focus:ring-red-500 rounded-2xl p-2"
                 onChange={(e) => setSubject(e.target.value)}
                 placeholder="Help Posting a Listing"
@@ -83,6 +90,7 @@ const Contact = () => {
             <div className="flex flex-col space-y-1 text-start">
                 <p className=""> Message </p>
                 <textarea
+                value={message}
                 className="outline-none ring-2 ring-gray-200 focus:ring-red-500 rounded-2xl p-2"
                 onChange={(e) => setMessage(e.target.value)}
                 cols="25"
