@@ -23,13 +23,16 @@ export default function postListing() {
 
     const handleSubmit = async(e) => {
         e.preventDefault();
+        //data to send to our backend
         const dataForSql = {
             address, state, zipCode, city, rent, homeType, 
             numRooms: rooms[4] !== '' ? rooms[4] : rooms.findIndex(r => r) + 1, 
             numBaths: bathrooms[4] !== '' ? bathrooms[4] : bathrooms.findIndex(b => b) + 1,
             gender,
         };
+        //error handling
         try{
+            //sends post request to the server
             const response = await axios.post('http://localhost:8000/api/app/', dataForSql);
         }catch(e){
             console.error("Error",e)

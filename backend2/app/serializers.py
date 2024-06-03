@@ -5,5 +5,7 @@ from .models import Listing
 #types from foreign data types into python data types
 class ListingSerializer(serializers.ModelSerializer):
     class Meta:
+        #sets model to the component from models.py
         model = Listing
-        fields = '__all__' #includes all fields of model
+        #includes all fields of model
+        fields = '__all__' 
