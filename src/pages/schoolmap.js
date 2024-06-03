@@ -45,21 +45,21 @@ export default function SchoolMap() {
         });
     };
 
-    // When the search input changes, geocode the address and recenter the map
-    useEffect(() => {
+    // Initialize the map with the search input (school name or address)
+    const initialize = (searchInput) => {
         if (searchInput) {
-        console.log(`Loading map for ${searchInput}`);
-        setDefaults({
-            key: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
-            language: "en", 
-            region: "es", 
-        });
-        handleGeocode(searchInput);
+            console.log(`Loading map for ${searchInput}`);
+            setDefaults({
+                key: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+                language: "en", 
+                region: "es", 
+            });
         }
-    }, [searchInput]);
+        handleGeocode(searchInput);
+    };
 
     return (
-        <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY} onLoad={() => console.log('Maps API has loaded.')}>
+        <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY} onLoad={() => initialize(searchInput)}>
         <div className='flex flex-row h-[calc(100vh-54px)] w-full bg-white'>
             {/* container with filters */}
             <div className='h-full w-1/5 hidden md:flex flex-col space-y-6 text-black p-4 border-2 border-gray-500'>
