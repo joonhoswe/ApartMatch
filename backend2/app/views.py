@@ -21,5 +21,6 @@ def createListing(request):
             #returns HTTP status code 201 (successful)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         #if serializer isn't valid then return unsuccessful HTTP request
+        print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         

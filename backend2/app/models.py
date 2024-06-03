@@ -10,8 +10,8 @@ class Listing(models.Model):
     city = models.CharField(max_length=30)
     rent = models.PositiveIntegerField()
     homeType = models.CharField(max_length=20)
-    numRooms = models.PositiveIntegerField()
-    numBaths = models.PositiveIntegerField()
+    rooms = models.PositiveIntegerField()
+    bathrooms = models.PositiveIntegerField()
     gender = models.CharField(max_length=10)
 
     def __str__(self):
