@@ -150,7 +150,7 @@ export default function postListing() {
                     <p className='flex justify-start'> # of Bathrooms </p>
                     <div className='flex flex-row h-10 w-full'>
                         <button 
-                        className={`h-full w-1/4 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${rooms[0] ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                        className={`h-full w-1/4 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${bathrooms[0] ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
                         onClick={() => setBathrooms([true, false, false, false, ''])}
                         >
                         1
