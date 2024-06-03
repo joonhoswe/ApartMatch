@@ -1,31 +1,53 @@
 import { React, useState } from  'react';
-import Background from '@assets/osuAstonPlaceApartments.jpeg'
+import Background from '@assets/osuAstonPlaceApartments.jpeg';
+
+import axios from 'axios';
 
 export default function postListing() {
 
+    //changed some names to be aligned with sql names
     const [address, setAddress] = useState('');
     const [zipCode, setZipCode] = useState('');
     const [state, setState] = useState('');
     const [city, setCity] = useState('');
-    const [houseType, setHouseType] = useState('');
-    const [price, setPrice] = useState('');
+    const [homeType, setHomeType] = useState('');//changed from houseType to homeType
+    const [rent, setRent] = useState('');//changed from price to rent
     const [rooms, setRooms] = useState([false, false, false, false, '']);
     const [bathrooms, setBathrooms] = useState([false, false, false, false, '']);
-    const [genderType, setGenderType] = useState('');
+    const [gender, setGender] = useState('');//changed from genderType to gender
 
     const roomsEntered = rooms[0] || rooms[1] || rooms[2] || rooms[3] || rooms[4] !== '';
     const bathroomsEntered = bathrooms[0] || bathrooms[1] || bathrooms[2] || bathrooms[3] || bathrooms[4] !== '';
 
-    const isFormValid = address !== '' && state !== '' && zipCode !== ''  && city !== '' && houseType !== '' && roomsEntered && bathroomsEntered && genderType !== '';
+    const isFormValid = address !== '' && state !== '' && zipCode !== ''  && city !== '' && homeType !== '' && roomsEntered && bathroomsEntered && gender !== '';
+
+    const handleSubmit = async(e) => {
+        e.preventDefault();
+        //data to send to our backend
+        const dataForSql = {
+            address, state, zipCode, city, rent, homeType, 
+            numRooms: rooms[4] !== '' ? rooms[4] : rooms.findIndex(r => r) + 1, 
+            numBaths: bathrooms[4] !== '' ? bathrooms[4] : bathrooms.findIndex(b => b) + 1,
+            gender,
+        };
+        //error handling
+        try{
+            //sends post request to the server
+            const response = await axios.post('http://localhost:8000/api/app/', dataForSql);
+        }catch(e){
+            console.error("Error",e)
+        }
+    }
+    
 
     return(
         <div className="bg-gray-200 flex flex-col justify-center items-center w-full h-screen" 
-        style={{ 
-            backgroundImage: `url(${Background.src})`, 
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
-          }}>
-            <div className="bg-white text-xs sm:text-base rounded-2xl p-8 shadow-2xl text-black text-center w-full sm:w-3/5 md:w-3/5 lg:w-1/3 flex flex-col space-y-3 border-y-8 border-red-500">
+            style={{ 
+                backgroundImage: `url(${Background.src})`, 
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+            }}>
+            <form onSubmit={handleSubmit} className="bg-white text-xs sm:text-base rounded-2xl p-8 shadow-2xl text-black text-center w-full sm:w-3/5 md:w-3/5 lg:w-1/3 flex flex-col space-y-3 border-y-8 border-red-500">
                 <div className = "text-base sm:text-xl p-4 rounded-2xl font-bold mb-4">
                     Thank you for your interest in posting to ApartMatch! 
                 </div>
@@ -84,8 +106,8 @@ export default function postListing() {
                 className='ring-2 ring-gray-300 outline-none focus:ring-2 focus:ring-red-600 bg-white rounded-2xl p-4 h-10 w-full'/>
 
                 <input 
-                value = {price}
-                onChange={(e) => setPrice(e.target.value)}
+                value = {rent}
+                onChange={(e) => setRent(e.target.value)}
                 placeholder="Monthly Rent: ex: 1200"
                 className='ring-2 ring-gray-300 outline-none focus:ring-2 focus:ring-red-600 bg-white rounded-2xl p-4 h-10 w-full'/>
 
@@ -93,14 +115,14 @@ export default function postListing() {
                     <p className='flex justify-start'> Home Type </p>
                     <div className='flex flex-row h-10 w-full'>
                         <button 
-                        className={`h-full w-1/2 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm lg:text-base ${houseType === 'apartment' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                        onClick={() => setHouseType('apartment')}
+                        className={`h-full w-1/2 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm lg:text-base ${homeType === 'apartment' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                        onClick={() => setHomeType('apartment')}
                         >
                         Apartment
                         </button>
                         <button 
-                        className={`h-full w-1/2 flex items-center justify-center rounded-r-lg md:rounded-r-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm lg:text-base ${houseType === 'house' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                        onClick={() => setHouseType('house')}
+                        className={`h-full w-1/2 flex items-center justify-center rounded-r-lg md:rounded-r-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm lg:text-base ${homeType === 'house' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                        onClick={() => setHomeType('house')}
                         >
                         House
                         </button>
@@ -189,20 +211,20 @@ export default function postListing() {
                     <p className='flex justify-start'> Gender Preferences </p>
                     <div className='flex flex-row h-10 w-full'>
                         <button 
-                        className={`h-full w-1/2 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm lg:text-base ${genderType === 'males' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                        onClick={() => setGenderType('males')}
+                        className={`h-full w-1/2 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm lg:text-base ${gender === 'males' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                        onClick={() => setGender('males')}
                         >
                         Only Males
                         </button>
                         <button 
-                        className={`h-full w-1/2 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm lg:text-base ${genderType === 'females' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                        onClick={() => setGenderType('females')}
+                        className={`h-full w-1/2 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm lg:text-base ${gender === 'females' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                        onClick={() => setGender('females')}
                         >
                         Only Females
                         </button>
                         <button 
-                        className={`h-full w-1/2 flex items-center justify-center rounded-r-lg md:rounded-r-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm lg:text-base ${genderType === 'both' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                        onClick={() => setGenderType('both')}
+                        className={`h-full w-1/2 flex items-center justify-center rounded-r-lg md:rounded-r-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm lg:text-base ${gender === 'both' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                        onClick={() => setGender('both')}
                         >
                         No Preference
                         </button>
@@ -220,8 +242,7 @@ export default function postListing() {
                         disabled={!isFormValid}
                     />
                 </div>    
-
-            </div>
+            </form>
         </div>
     );
 }
