@@ -263,9 +263,9 @@ export default function postListing() {
     // If user is not authenticated, display this message and button to login
     (
         <div className='h-[calc(100vh-54px)] w-full bg-gray-200 flex items-center justify-center'>
-            <div className='h-4/5 rounded-2xl w-2/5 flex flex-col space-y-8 bg-white items-center justify-center border-y-8 border-red-500'>
-                <p className='text-xl text-black font-bold'> 
-                    You must be logged in to post a listing! 
+            <div className='h-4/5 rounded-2xl w-4/5 md:w-3/5 lg:w-2/5 flex flex-col space-y-8 bg-white items-center justify-center border-y-8 border-red-500'>
+                <p className='text-sm sm:text-base md:text-xl text-black font-bold'> 
+                    Log in to post a listing! 
                 </p>
             
                 <button onClick={() => loginWithRedirect()} className="bg-red-500 w-24 h-10 rounded-md text-white px-4 py-1 transition duration-500 hover:bg-white hover:text-red-500 hover:outline hover:outline-2 hover:red-500">
