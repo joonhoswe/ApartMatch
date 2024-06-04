@@ -23,4 +23,14 @@ def createListing(request):
         #if serializer isn't valid then return unsuccessful HTTP request
         print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+def getListing(request):
+    if request.method == 'GET':
+        #get all the listings from the database
+        listings = Listing.objects.all()
+        #serialize the listings
+        serializer = ListingSerializer(listings, many=True)
+        #return the serialized listings
+        return Response(serializer.data)
         

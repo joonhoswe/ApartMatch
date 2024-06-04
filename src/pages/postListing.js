@@ -1,6 +1,8 @@
-import { React, useState } from  'react';
+import { React, useState, useEffect } from  'react';
 import Background from '@assets/osuAstonPlaceApartments.jpeg';
 import { useAuth0 } from "@auth0/auth0-react";
+import ConfettiExplosion from 'react-confetti-explosion';
+
 
 import axios from 'axios';
 
@@ -8,6 +10,7 @@ export default function postListing() {
 
     const { user, isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
 
+    const [owner, setOwner] = useState('');
     const [address, setAddress] = useState('');
     const [zipCode, setZipCode] = useState('');
     const [state, setState] = useState('');
@@ -18,18 +21,37 @@ export default function postListing() {
     const [bathrooms, setBathrooms] = useState(0);
     const [gender, setGender] = useState('');
 
+    const [posted, setPosted] = useState(false);
     const [submitClicked, setSubmitClicked] = useState(false);
 
-    const isFormValid = address !== '' && state !== '' && zipCode !== ''  && city !== '' && homeType !== '' && rooms !== '' && bathrooms !== '' && gender !== '';
+    const isFormValid = owner !== '' && address !== '' && state !== '' && zipCode !== ''  && city !== '' && homeType !== '' && rooms !== '' && bathrooms !== '' && gender !== '';
+
+    useEffect(() => {
+        if (user) {
+          setOwner(user.nickname);
+        }
+      }, [user]);
+
+    const clearForm = () => {
+        setAddress('');
+        setZipCode('');
+        setState('');
+        setCity('');
+        setHomeType('');
+        setRent('');
+        setRooms(0);
+        setBathrooms(0);
+        setGender('');
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
-        if (!submitClicked) return; // Prevent multiple submissions
-        if (!isFormValid) return; // Prevent invalid submissions (client-side validation)
+        
+        if (!isFormValid || !submitClicked) return; // Prevent invalid submissions (client-side validation)
     
         // Data to send to backend
         const dataForSql = {
+            owner,
             address,
             state,
             zipCode,
@@ -44,7 +66,9 @@ export default function postListing() {
         console.log("Submitting form: ", dataForSql);
 
         try {
-            const response = await axios.post('http://localhost:8000/api/app/', dataForSql);
+            const response = await axios.post('http://localhost:8000/api/post/', dataForSql);
+            setPosted(true);
+            clearForm();
             console.log('Response:', response.data);
         } catch (error) {
             console.error('Error:', error.response ? error.response.data : error.message);
@@ -54,7 +78,7 @@ export default function postListing() {
     };
     
 
-    return isAuthenticated ? (
+    return (isAuthenticated && !posted) ? (
         <div className="bg-gray-200 flex flex-col justify-center items-center w-full h-screen" 
             style={{ 
                 backgroundImage: `url(${Background.src})`, 
@@ -65,29 +89,6 @@ export default function postListing() {
                 <div className = "text-base sm:text-xl p-4 rounded-2xl font-bold mb-4">
                     Thank you for your interest in posting to ApartMatch! 
                 </div>
-
-                {/* ideally, this is all pulled from their Auth0 account */}
-                {/* <div className='bg-white font-bold rounded-2xl p-4 border-y-8 border-red-500'>
-                    Personal information:
-                </div>
-
-                <input 
-                placeholder="Full name: "
-                className=' outline-none focus:ring-2 focus:ring-red-600 bg-white rounded-2xl p-4 h-12 w-full'/>
-
-                <input 
-                placeholder=".edu Email Address: "
-                className=' outline-none focus:ring-2 focus:ring-red-600 bg-white rounded-2xl p-4 h-12 w-full'/>
-                <div className='flex flex-row space-x-1'>
-                    <input 
-                    placeholder="Phone Number: "
-                    className=' outline-none focus:ring-2 focus:ring-red-600 bg-white rounded-l-2xl p-4 h-12 w-1/2'/>
-                    <input 
-                    placeholder="Gender: "
-                    className=' outline-none focus:ring-2 focus:ring-red-600 bg-white rounded-r-2xl p-4 h-12 w-1/2'/>
-                </div> */}
-
-
                 
                 <p className='text-black font-bold flex justify-start'> 
                     Property Information: 
@@ -258,7 +259,24 @@ export default function postListing() {
                 </div>    
             </form>
         </div>
-    ) : 
+    ) 
+    : (isAuthenticated && posted) ? (
+        <div className='h-[calc(100vh-54px)] w-full bg-gray-200 flex items-center justify-center'>
+            <div className='h-3/5 rounded-2xl w-4/5 md:w-3/5 lg:w-2/5 flex flex-col space-y-8 bg-white items-center justify-center border-y-8 border-red-500'>
+                <ConfettiExplosion 
+                particleCount={200}
+                duration={3000}
+                />
+                <p className='text-sm sm:text-base md:text-xl text-black font-bold text-center'> 
+                    Congratulations! <br/> Your listing has been posted! 
+                </p>
+            
+                <button onClick={() => setPosted(false)} className="bg-red-500 text-xs md:text-base w-32 h-10 rounded-md text-white px-2 py-1 transition duration-500 hover:bg-white hover:text-red-500 hover:outline hover:outline-2 hover:red-500">
+                    Post Another
+                </button>
+            </div>  
+        </div>
+    ) :
 
     // If user is not authenticated, display this message and button to login
     (
@@ -268,7 +286,7 @@ export default function postListing() {
                     Log in to post a listing! 
                 </p>
             
-                <button onClick={() => loginWithRedirect()} className="bg-red-500 w-24 h-10 rounded-md text-white px-4 py-1 transition duration-500 hover:bg-white hover:text-red-500 hover:outline hover:outline-2 hover:red-500">
+                <button onClick={() => loginWithRedirect()} className="bg-red-500 text-xs md:text-base w-24 h-10 rounded-md text-white px-2 py-1 transition duration-500 hover:bg-white hover:text-red-500 hover:outline hover:outline-2 hover:red-500">
                     Login
                 </button>
             </div>  
