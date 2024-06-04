@@ -10,9 +10,9 @@ function LoginButton() {
   }
 
   return isAuthenticated ? (
-    <Link href='/profile' className="flex items-center flex-row space-x-1 font-bold transition duration-300 ease-in-out hover:text-white">
-      <p> {user.name} </p>
+    <Link href='/profile' className="flex items-center flex-row space-x-2 font-bold transition duration-300 ease-in-out hover:text-white">
       <img src={user.picture} alt={user.name} className="w-6 h-6 rounded-full" />
+      <p className="font-bold transition duration-300 ease-in-out hover:text-gray-400"> {user.nickname} </p>
     </Link>
   ) : (
     <button onClick={() => loginWithRedirect()} className="font-bold transition duration-300 ease-in-out hover:text-gray-400">

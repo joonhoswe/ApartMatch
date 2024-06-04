@@ -18,7 +18,7 @@ export default function Profile() {
         <div className='flex items-center justify-between'>
           <div className='flex flex-row space-x-3 w-full items-center'>
             <img src={user.picture} alt={user.name} className="w-16 h-16 rounded-full" />
-            <p> Welcome, {user.name} </p>
+            <p> Welcome, {user.nickname} </p>
           </div>
           <Logout />
         </div>
