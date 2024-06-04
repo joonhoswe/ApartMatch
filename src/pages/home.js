@@ -44,7 +44,7 @@ export default function Home() {
 
         <div className='flex bg-white h-10 md:h-12 w-3/4 md:w-1/2 rounded-lg md:rounded-2xl'>
           <input 
-            className={`h-full w-5/6 rounded-l-lg md:rounded-l-2xl px-4 text-black outline-none text-xs sm:text-sm lg:text-base ${school === '' ? 'text-gray-400' : ''}`} 
+            className={`h-full w-5/6 rounded-l-lg md:rounded-l-2xl px-4 text-black outline-none text-xs sm:text-sm lg:text-base`} 
             placeholder="Ex: Carnegie Mellon University"
             value={school}
             onChange={(e) => setSchool(e.target.value)}

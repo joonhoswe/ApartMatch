@@ -1,9 +1,12 @@
 import { React, useState } from  'react';
 import Background from '@assets/osuAstonPlaceApartments.jpeg';
+import { useAuth0 } from "@auth0/auth0-react";
 
 import axios from 'axios';
 
 export default function postListing() {
+
+    const { user, isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
 
     const [address, setAddress] = useState('');
     const [zipCode, setZipCode] = useState('');
@@ -38,7 +41,7 @@ export default function postListing() {
             gender,
         };
 
-        console.log("Submitting form:", dataForSql);
+        console.log("Submitting form: ", dataForSql);
 
         try {
             const response = await axios.post('http://localhost:8000/api/app/', dataForSql);
@@ -51,7 +54,7 @@ export default function postListing() {
     };
     
 
-    return(
+    return isAuthenticated ? (
         <div className="bg-gray-200 flex flex-col justify-center items-center w-full h-screen" 
             style={{ 
                 backgroundImage: `url(${Background.src})`, 
@@ -255,5 +258,18 @@ export default function postListing() {
                 </div>    
             </form>
         </div>
+    ) : 
+
+    // If user is not authenticated, display this message and button to login
+    (
+        <div className='h-[calc(100vh-54px)] w-full bg-white flex flex-col'>
+            <p className='text-2xl text-black'> 
+                You must be logged in to post a listing! 
+            </p>
+        
+        <button onClick={() => loginWithRedirect()} className="text-black font-bold transition duration-300 ease-in-out hover:text-gray-400">
+            Login / Register
+        </button>
+      </div>
     );
 }
