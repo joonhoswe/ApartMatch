@@ -21,7 +21,7 @@ export default function postListing() {
     const [bathrooms, setBathrooms] = useState(0);
     const [gender, setGender] = useState('');
 
-    const [posted, setPosted] = useState(true);
+    const [posted, setPosted] = useState(false);
     const [submitClicked, setSubmitClicked] = useState(false);
 
     const isFormValid = owner !== '' && address !== '' && state !== '' && zipCode !== ''  && city !== '' && homeType !== '' && rooms !== '' && bathrooms !== '' && gender !== '';
