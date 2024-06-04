@@ -41,7 +41,7 @@ export default function postListing() {
             gender,
         };
 
-        console.log("Submitting form:", dataForSql);
+        console.log("Submitting form: ", dataForSql);
 
         try {
             const response = await axios.post('http://localhost:8000/api/app/', dataForSql);
@@ -259,6 +259,8 @@ export default function postListing() {
             </form>
         </div>
     ) : 
+
+    // If user is not authenticated, display this message and button to login
     (
         <div className='h-[calc(100vh-54px)] w-full bg-white flex flex-col'>
             <p className='text-2xl text-black'> 

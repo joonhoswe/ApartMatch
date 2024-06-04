@@ -39,5 +39,7 @@ export default function Profile() {
 
     </div>
 
-  ) : (<div> error </div>);
+  ) : 
+  // this shouldn't be accessed in the first place
+  (<div> error </div>);
 }
