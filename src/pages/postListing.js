@@ -66,7 +66,7 @@ export default function postListing() {
         console.log("Submitting form: ", dataForSql);
 
         try {
-            const response = await axios.post('http://localhost:8000/api/app/', dataForSql);
+            const response = await axios.post('http://localhost:8000/api/post/', dataForSql);
             setPosted(true);
             clearForm();
             console.log('Response:', response.data);
