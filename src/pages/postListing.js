@@ -1,6 +1,8 @@
 import { React, useState, useEffect } from  'react';
 import Background from '@assets/osuAstonPlaceApartments.jpeg';
 import { useAuth0 } from "@auth0/auth0-react";
+import ConfettiExplosion from 'react-confetti-explosion';
+
 
 import axios from 'axios';
 
@@ -19,7 +21,7 @@ export default function postListing() {
     const [bathrooms, setBathrooms] = useState(0);
     const [gender, setGender] = useState('');
 
-    const [posted, setPosted] = useState(false);
+    const [posted, setPosted] = useState(true);
     const [submitClicked, setSubmitClicked] = useState(false);
 
     const isFormValid = owner !== '' && address !== '' && state !== '' && zipCode !== ''  && city !== '' && homeType !== '' && rooms !== '' && bathrooms !== '' && gender !== '';
@@ -248,6 +250,10 @@ export default function postListing() {
     : (isAuthenticated && posted) ? (
         <div className='h-[calc(100vh-54px)] w-full bg-gray-200 flex items-center justify-center'>
             <div className='h-3/5 rounded-2xl w-4/5 md:w-3/5 lg:w-2/5 flex flex-col space-y-8 bg-white items-center justify-center border-y-8 border-red-500'>
+                <ConfettiExplosion 
+                particleCount={200}
+                duration={3000}
+                />
                 <p className='text-sm sm:text-base md:text-xl text-black font-bold text-center'> 
                     Congratulations! <br/> Your listing has been posted! 
                 </p>
