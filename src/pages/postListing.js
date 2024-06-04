@@ -32,6 +32,18 @@ export default function postListing() {
         }
       }, [user]);
 
+    const clearForm = () => {
+        setAddress('');
+        setZipCode('');
+        setState('');
+        setCity('');
+        setHomeType('');
+        setRent('');
+        setRooms(0);
+        setBathrooms(0);
+        setGender('');
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         
@@ -56,6 +68,7 @@ export default function postListing() {
         try {
             const response = await axios.post('http://localhost:8000/api/app/', dataForSql);
             setPosted(true);
+            clearForm();
             console.log('Response:', response.data);
         } catch (error) {
             console.error('Error:', error.response ? error.response.data : error.message);
