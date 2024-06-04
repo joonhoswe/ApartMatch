@@ -4,6 +4,7 @@ class Listing(models.Model):
     #columns of the sqlite(soon to be postgresql database are defined here)
     #CharField(): used for string
     #PositiveIntegerField(): used for int
+    owner = models.CharField(max_length=10, default='admin')
     address = models.CharField(max_length=100)
     state = models.CharField(max_length=10)
     zipCode = models.PositiveIntegerField()
