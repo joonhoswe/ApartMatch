@@ -41,7 +41,7 @@ export default function Profile() {
     }, [user]);
 
     const handleDelete = async(id) => {
-      const response = await axios.delete(`http://localhost:8000/api/delete/${id}`);
+      await axios.delete(`http://localhost:8000/api/delete/${id}`);
       //remove from listings array
       const updatedListings = listings.filter(listing => listing.id !== id);
       setListings(updatedListings);
