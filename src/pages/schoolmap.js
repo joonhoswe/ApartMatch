@@ -201,8 +201,8 @@ export default function SchoolMap() {
             <div style={{ width: '100%', height: '100%' }} className='hidden md:flex'>
             <Map
                 mapContainerStyle={{ width: '100%', height: '100%' }}
-                center={mapCenter}
-                zoom={16}
+                defaultCenter={mapCenter}
+                defaultZoom={16}
             />
             </div>
 
