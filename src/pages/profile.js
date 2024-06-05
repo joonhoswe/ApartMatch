@@ -13,16 +13,39 @@ export default function Profile() {
 
     useEffect(() => {
       const fetchData = async () => {
-        const response = await axios.get('http://localhost:8000/api/get');
-        setDatabase(response.data);
-        if (user) {
-          const userOwnedListings = response.data.filter(listing => listing.owner === user.nickname);
-          setListings(userOwnedListings);
+        try{
+          const response = await axios.get('http://localhost:8000/api/get');
+          setDatabase(response.data);
+          if (user) {
+            const userOwnedListings = response.data.filter(listing => listing.owner === user.nickname);
+            setListings(userOwnedListings);
+          }
+          setLoading(false); // Set loading to false after the data has been fetched
+        } catch(error){
+          console.error('Error fetching Data:', error);
+          if (error.response) {
+            //http status code isn't desired
+            console.error('Response data:', error.response.data);
+            console.error('Response status:', error.response.status);
+            console.error('Response headers:', error.response.headers);
+          } else if (error.request) {
+            // no response was received from request
+            console.error('Request data:', error.request);
+          } else {
+            // Something happened in setting up the request that triggered an error
+            console.error('Error message:', error.message);
+          }
         }
-        setLoading(false); // Set loading to false after the data has been fetched
       };
       fetchData();
     }, [user]);
+
+    const handleDelete = async(id) => {
+      await axios.delete(`http://localhost:8000/api/delete/${id}`);
+      //remove from listings array
+      const updatedListings = listings.filter(listing => listing.id !== id);
+      setListings(updatedListings);
+    }
 
     if (loading) {
       return <div> Loading... </div>;
@@ -53,8 +76,8 @@ export default function Profile() {
                   <div className='flex flex-col space-y-2 text-start items-center'>
                     <h1 className='text-lg'> ${listing.rent}/mo </h1>
                     <h1 className='text-lg'> {listing.address} </h1>
-                    <h1 className='text-lg'> {listing.city}, {listing.state} </h1>
-                    
+                    <h1 className='text-lg'> {listing.city}, {listing.state} {listing.zipCode}</h1>
+                    <button onClick={() => handleDelete(listing.id)} className='text-red-500 text-lg font-bold'>Delete</button>
                   </div>
                 </div>
               ))}

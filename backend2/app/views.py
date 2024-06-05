@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 
 from rest_framework import status
 from rest_framework.response import Response
@@ -33,4 +33,10 @@ def getListing(request):
         serializer = ListingSerializer(listings, many=True)
         #return the serialized listings
         return Response(serializer.data)
-        
+    
+@api_view(['DELETE'])
+def deleteListing(request, id):
+    listing = get_object_or_404(Listing, id=id)
+    if request.method == 'DELETE':
+        listing.delete()
+        return Response({'message': 'Listing deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
