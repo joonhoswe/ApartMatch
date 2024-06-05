@@ -8,8 +8,8 @@ export default function Home() {
 
   const infoCards = [
     { 
-      heading: '❌ Facebook housing groups are inefficient', 
-      description: 'Say goodbye to sifting through outdated, irrelevant, and scam-filled Facebook posts. ApartMatch shows only listings by other students with extra rooms looking to be filled, enabling students to swiftly match into rooms.' 
+      heading: '❌ Online housing groups are inefficient', 
+      description: 'Say goodbye to sifting through outdated, irrelevant, and scam-filled posts. ApartMatch shows only listings by other students with extra rooms looking to be filled, enabling students to swiftly match into rooms.' 
     },
     { 
       heading: '✅ See openings for apartments in real time', 
@@ -38,7 +38,7 @@ export default function Home() {
         }}
       >
         <div className='text-md sm:text-3xl md:text-4xl flex flex-col space-y-1 sm:space-y-3 md:space-y-6 items-center'>
-          <h1> 🐌 No more Facebook threads. </h1>
+          <h1> 🐌 No more inefficient housing blogs. </h1>
           <h1> 🔥 Instantly <span className='text-red-500 underline'> match</span> into apartments. </h1>
         </div>
 
