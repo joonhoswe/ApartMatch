@@ -20,7 +20,7 @@ export default function SchoolMap() {
 
     const [houseType, setHouseType] = useState('');
     const [priceRange, setPriceRange] = useState(['', '']);
-    const [rooms, setRooms] = useState([true, false, false, false]);
+    const [rooms, setRooms] = useState(0);
     const [commute, setCommute] = useState('');
     const [genderType, setGenderType] = useState('');
     const [mapCenter, setMapCenter] = useState({ lat: 40.443341479249675, lng: -79.94283917418957 });
@@ -63,7 +63,7 @@ export default function SchoolMap() {
         <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY} onLoad={() => initialize(searchInput)}>
         <div className='flex flex-row h-[calc(100vh-54px)] w-full bg-white'>
             {/* container with filters */}
-            <div className='h-full w-1/5 hidden md:flex flex-col space-y-6 text-black p-4 border-2 border-gray-500'>
+            <div className='h-full w-1/3 hidden md:flex flex-col space-y-6 text-black p-4 border-2 border-gray-500'>
                 <div className='relative w-full'>
                     {/* search bar */}
                     <input
@@ -108,13 +108,13 @@ export default function SchoolMap() {
                     <p> Home Type </p>
                     <div className='flex flex-row h-10 w-full'>
                     <button
-                        className={`h-full w-1/2 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm lg:text-base ${houseType === 'apartment' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                        className={`h-full w-1/2 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm ${houseType === 'apartment' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
                         onClick={() => setHouseType('apartment')}
                     >
                         Apartment
                     </button>
                     <button
-                        className={`h-full w-1/2 flex items-center justify-center rounded-r-lg md:rounded-r-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm lg:text-base ${houseType === 'house' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                        className={`h-full w-1/2 flex items-center justify-center rounded-r-lg md:rounded-r-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm ${houseType === 'house' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
                         onClick={() => setHouseType('house')}
                     >
                         House
@@ -151,30 +151,31 @@ export default function SchoolMap() {
                 <div className='flex flex-col space-y-2'>
                     <p> # of Rooms Left </p>
                     <div className='flex flex-row h-10 w-full'>
-                    <button
-                        className={`h-full w-1/4 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${rooms[0] ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                        onClick={() => setRooms([!rooms[0], rooms[1], rooms[2], rooms[3]])}
-                    >
+                        <button 
+                        className={`h-full w-1/4 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${rooms === 1 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                        onClick={() => setRooms(1)}
+                        >
                         1
-                    </button>
-                    <button
-                        className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${rooms[1] ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                        onClick={() => setRooms([rooms[0], !rooms[1], rooms[2], rooms[3]])}
-                    >
+                        </button>
+
+                        <button 
+                        className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${rooms === 2 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                        onClick={() => setRooms(2)}
+                        >
                         2
-                    </button>
-                    <button
-                        className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${rooms[2] ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                        onClick={() => setRooms([rooms[0], rooms[1], !rooms[2], rooms[3]])}
-                    >
+                        </button>
+
+                        <button 
+                        className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${rooms === 3 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                        onClick={() => setRooms(3)}
+                        >
                         3
-                    </button>
-                    <button
-                        className={`h-full w-1/4 flex items-center justify-center rounded-r-lg md:rounded-r-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${rooms[3] ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                        onClick={() => setRooms([rooms[0], rooms[1], rooms[2], !rooms[3]])}
-                    >
-                        4+
-                    </button>
+                        </button>
+                        <input 
+                        placeholder='3+'
+                        className={`h-full w-1/4 flex text-center items-center justify-center rounded-r-lg md:rounded-r-2xl p-2 outline-none ring-2 ring-red-500 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${rooms > 4 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                        onChange={(e) => setRooms(e.target.value)}
+                        />
                     </div>
                 </div>
 
@@ -206,7 +207,9 @@ export default function SchoolMap() {
                 defaultZoom={16}
             />
             </div>
+
             <ViewListings/>
+
         </div>
         </APIProvider>
     );

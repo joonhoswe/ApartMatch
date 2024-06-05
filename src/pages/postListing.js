@@ -175,7 +175,6 @@ export default function postListing() {
                         4
                         </button>
                         <input 
-                        value = {rooms[4]}
                         placeholder='4+'
                         className={`h-full w-1/4 flex text-center items-center justify-center rounded-r-lg md:rounded-r-2xl p-2 outline-none ring-2 ring-red-500 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${rooms > 4 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
                         onChange={(e) => setRooms(e.target.value)}
@@ -214,7 +213,6 @@ export default function postListing() {
                         4
                         </button>
                         <input 
-                        value = {bathrooms[4]}
                         placeholder='4+'
                         className={`h-full w-1/4 flex text-center items-center justify-center rounded-r-lg md:rounded-r-2xl p-2 outline-none ring-2 ring-red-500 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${bathrooms > 4 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
                         onChange={(e) => setBathrooms(e.target.value)}

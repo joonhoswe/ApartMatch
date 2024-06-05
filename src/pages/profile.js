@@ -69,18 +69,20 @@ export default function Profile() {
             </div>
 
             <div className='flex items-center justify-center flex-wrap'>
-              {listings.map((listing, index) => (
-                <div key={index} className='flex items-center flex-col space-y-4 h-72 w-72 sm:h-96 sm:w-72 rounded-2xl ring-2 ring-red-500 p-4 m-6 md:m-12'>
-                  <img src = {placeholder.src} alt = 'placeholder' className='h-32 w-42'/>
-
-                  <div className='flex flex-col space-y-2 text-start items-center'>
-                    <h1 className='text-lg'> ${listing.rent}/mo </h1>
-                    <h1 className='text-lg'> {listing.address} </h1>
-                    <h1 className='text-lg'> {listing.city}, {listing.state} {listing.zipCode}</h1>
-                    <button onClick={() => handleDelete(listing.id)} className='text-red-500 text-lg font-bold'>Delete</button>
-                  </div>
-                </div>
-              ))}
+            {listings.map((listing, index) => (
+                        <div key={index} className='flex items-center flex-col h-48 w-56 rounded-2xl shadow-2xl hover:cursor-pointer hover:scale-110 transition ease-in-out duration-300'>
+                            <img src = {placeholder.src} alt = 'placeholder' className='h-16 w-24'/>
+                            <div className='flex flex-col space-y-1 justify-center items-start'>
+                                <div className='flex flex-row space-x-1 items-center justify-center'>
+                                  <h1 className='text-sm font-bold'> ${listing.rent}/mo </h1>
+                                  <p className='text-xs'> {listing.rooms} bed, {listing.bathrooms} bath </p>
+                                </div>
+                                <p className='text-xs'> {listing.address} </p>
+                                <p className='text-xs'> {listing.city}, {listing.state} {listing.zipCode}</p>
+                                <button onClick={() => handleDelete(listing.id)} className='text-red-500 text-xs font-bold'>Delete</button>
+                            </div>
+                        </div>
+                    ))}
             </div>
             
   

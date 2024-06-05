@@ -36,7 +36,7 @@ export default function Navbar() {
         
         <div className="flex items-center justify-center space-x-6">
             <Link href = '/home' className='transition duration-300 ease-in-out hover:scale-110 hover:cursor-pointer'>
-                <Image src={Logo} alt="TutorHive Logo" width={128} height={32} />
+                <Image src={Logo} alt="ApartMatch Logo" width={128} height={32} />
             </Link>
           
             {navLinks.map((link) => (
@@ -47,24 +47,24 @@ export default function Navbar() {
         </div>
 
         <div className='flex flex-row space-x-2'>
-              <Login />
+          <Login />
 
-              {/* profile pic or default for not signed in */}
-              {
-                isAuthenticated ? (
-                  <></>
-                ) : (
-                  <Image src={notLoggedIn} alt='Not Logged In' className='w-6 h-6' />
-                )
-              }
-              
-            </div>
+          {/* profile pic or default for not signed in */}
+          {
+            isAuthenticated ? (
+              <></>
+            ) : (
+              <Image src={notLoggedIn} alt='Not Logged In' className='w-6 h-6' />
+            )
+          }
+        </div>
+
       </div>
 
       <div className='flex items-center justify-between w-full h-14 md:hidden'>
 
         <Link href = '/home' className='pl-2'>
-            <Image src={Logo} alt="TutorHive Logo" width={128} height={32} />
+            <Image src={Logo} alt="ApartMatch Logo" width={128} height={32} />
         </Link>
         {/* Mobile NavBar Icon */}
         <Hamburger rounded size={24} duration={0.4} distance='lg' hideOutline={false} onToggle={toggleMenu} />
@@ -76,10 +76,13 @@ export default function Navbar() {
               exit="closed"
               variants={sidebarVariants}
               transition={{ duration: 0.4 }}
-              className="z-20 pt-12 pb-28 absolute top-full right-0 h-screen w-screen bg-blue-150  bg-opacity-100 flex flex-col justify-between"
+              className="z-20 pt-12 pb-28 absolute top-full right-0 h-screen w-screen bg-white text-black bg-opacity-100 flex flex-col justify-between"
             >
               {/* Website Section Links */}
               <div className='flex flex-col space-y-6 items-center justify-center'>
+                <div className='flex flex-row space-x-2 items-center justify-center'>
+                  <Login />
+                </div>
                 {navLinks.map((link) => (
                   <a href={link.path} className="">
                     <button key={link.title} className="">

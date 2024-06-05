@@ -6,7 +6,7 @@ import axios from 'axios';
 
 
 export default function ViewListings(){
-    const { user, isAuthenticated, isLoading } = useAuth0();
+    const { user, isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
     const [database, setDatabase] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
@@ -32,26 +32,28 @@ export default function ViewListings(){
         fetchData();
     }, [user]);
     return (
-        <div className='h-full w-1/2 md:flex flex-col items-center space-y-6 text-black p-4 border-2 border-gray-500'>
+        <div className='h-full w-full md:w-3/4 md:flex flex-col items-center space-y-6 text-black p-2 border-2 border-gray-500'>
             {isAuthenticated ? ( 
-                <p>Click on a listing for more information.</p> 
+              <></>
             ) : ( 
-                <span><Login/> to join a listing!</span>
+            <div className='w-full h-10 bg-white flex items-center justify-center'>
+                <p className='font-bold text-red-500'> Please <span onClick={loginWithRedirect} className='underline hover:cursor-pointer hover:text-red-400 transition ease-in-out duration-300'>sign in </span> to join a listing. </p>
+            </div>   
             )}
-            <div className='overflow-y-scroll'>
-                <div className='grid grid-cols-1 lg:grid-cols-2 gap-14'>
+            <div className='h-full w-full overflow-y-scroll grid grid-cols-1 lg:grid-cols-2 gap-12 p-4 items-center justify-items-center'>
                     {database.map((listing, index) => (
-                        <div key={index} className='flex items-center flex-col space-y-4 h-60 w-40 sm:h-96 sm:w-72 rounded-2xl ring-2 ring-red-500 p-4 m-6 md:m-12'>
-                            <img src = {placeholder.src} alt = 'placeholder' className='h-24 w-36'/>
-                            <div className='flex flex-col space-y-2 text-start items-center'>
-                                <h1 className='text-lg'> ${listing.rent}/mo </h1>
-                                <h1 className='text-lg'> {listing.address} </h1>
-                                <h1 className='text-lg'> {listing.city}, {listing.state} {listing.zipCode}</h1>
-                                <h1 className='text-lg'> {listing.rooms} bed, {listing.bathrooms} bath </h1>
+                        <div key={index} className='flex items-center flex-col h-36 w-48 rounded-2xl shadow-2xl hover:cursor-pointer hover:scale-105 transition ease-in-out duration-300'>
+                            <img src = {placeholder.src} alt = 'placeholder' className='h-16 w-24'/>
+                            <div className='flex flex-col space-y-1 justify-center items-start'>
+                                <div className='flex flex-row space-x-1 items-center justify-center'>
+                                <h1 className='text-sm font-bold'> ${listing.rent}/mo </h1>
+                                <p className='text-xs'> {listing.rooms} bed {listing.bathrooms} bath </p>
+                                </div>
+                                <p className='text-xs'> {listing.address} </p>
+                                <p className='text-xs'> {listing.city}, {listing.state} {listing.zipCode}</p>
                             </div>
                         </div>
                     ))}
-                </div>
             </div>
         </div>
     );
