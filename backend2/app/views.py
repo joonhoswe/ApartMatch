@@ -40,3 +40,14 @@ def deleteListing(request, id):
     if request.method == 'DELETE':
         listing.delete()
         return Response({'message': 'Listing deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+    
+@api_view(['PUT'])
+def updateListing(request, id):
+    listing = get_object_or_404(Listing, id=id)
+    if request.method == 'PUT':
+        data = {'rent': request.data.get('rent')}
+        serializer = ListingSerializer(listing, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
