@@ -259,7 +259,12 @@ export default function postListing() {
         </div>
     ) 
     : (isAuthenticated && posted) ? (
-        <div className='h-[calc(100vh-54px)] w-full bg-gray-200 flex items-center justify-center'>
+        <div className='h-[calc(100vh-54px)] w-full bg-gray-200 flex items-center justify-center'
+        style={{ 
+            backgroundImage: `url(${Background.src})`, 
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
+          }}>
             <div className='h-3/5 rounded-2xl w-4/5 md:w-3/5 lg:w-2/5 flex flex-col space-y-8 bg-white items-center justify-center border-y-8 border-red-500'>
                 <ConfettiExplosion 
                 particleCount={200}
