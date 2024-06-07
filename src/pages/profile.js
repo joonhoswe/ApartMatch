@@ -68,10 +68,10 @@ export default function Profile() {
               <div className='w-full h-0.5 bg-red-500'/>
             </div>
 
-            <div className='flex items-center flex-wrap'>
+            <div className='flex flex-col space-y-6 space-x-0 sm:flex-row sm:space-x-8 sm:space-y-0 items-center flex-wrap'>
             {listings.map((listing, index) => (
                 <div key={index} className='flex flex-col h-48 w-56 rounded-2xl shadow-2xl hover:cursor-pointer hover:scale-110 transition ease-in-out duration-300'>
-                    <img src = {placeholder.src} alt = 'placeholder' className='h-24 w-full'/>
+                    <img src = {placeholder.src} alt = 'placeholder' className='h-24 w-full rounded-t-2xl'/>
                     <div className='flex flex-col space-y-1 justify-start text-start px-4'>
                         <div className='flex flex-row space-x-1 items-center'>
                           <h1 className='text-sm font-bold'> ${listing.rent}/mo </h1>
