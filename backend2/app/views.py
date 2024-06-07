@@ -40,3 +40,6 @@ def deleteListing(request, id):
     if request.method == 'DELETE':
         listing.delete()
         return Response({'message': 'Listing deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+    
+
+
