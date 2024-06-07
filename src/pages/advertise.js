@@ -78,7 +78,7 @@ const Advertise = () => {
             </div>
 
             <div className="flex flex-col space-y-1 text-start">
-                <p className=""> Message </p>
+                <p className=""> Describe your advertisement </p>
                 <textarea
                 value={message}
                 className="outline-none ring-2 ring-gray-200 focus:ring-red-500 rounded-2xl p-2"
