@@ -8,5 +8,4 @@ urlpatterns=[
     path('post/', createListing, name='createListing'),
     path('get/', getListing, name='getListing'),
     path('delete/<int:id>', deleteListing, name='deleteListing'),
-    path('update/<int:id>', updateListing, name='updateListing')
 ]
