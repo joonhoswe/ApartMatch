@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { APIProvider, Map } from '@vis.gl/react-google-maps';
 import ViewListings from '@components/viewListings';
@@ -23,12 +23,15 @@ export default function SchoolMap() {
     const [rooms, setRooms] = useState(0);
     const [commute, setCommute] = useState('');
     const [genderType, setGenderType] = useState('');
-    const [mapCenter, setMapCenter] = useState({ lat: 40.443341479249675, lng: -79.94283917418957 });
+
+    const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
+    const [mapSet, setMapSet] = useState(false);
 
     // When new school is searched, update the map center
     const handleFindHomes = () => {
         if (searchInput.trim() !== '') {
         router.push(`/schoolmap?school=${encodeURIComponent(searchInput)}`);
+        setMapSet(false);
         handleGeocode(searchInput);
         }
     };
@@ -39,7 +42,9 @@ export default function SchoolMap() {
         .then((response) => {
             const { lat, lng } = response.results[0].geometry.location;
             setMapCenter({ lat, lng });
+            setMapSet(true);
             console.log(lat, lng);
+            
         })
         .catch((error) => {
             console.error(error);
@@ -201,11 +206,14 @@ export default function SchoolMap() {
 
             {/* embedded google map */}
             <div style={{ width: '100%', height: '100%' }} className='hidden md:flex'>
+            {mapSet && (
             <Map
                 mapContainerStyle={{ width: '100%', height: '100%' }}
                 defaultCenter={mapCenter}
                 defaultZoom={16}
             />
+            )}
+
             </div>
 
             <ViewListings/>
