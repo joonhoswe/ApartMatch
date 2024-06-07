@@ -43,7 +43,7 @@ const Contact = () => {
   };
   return (
     <div>
-      <form onSubmit={sendMessage} className="bg-gray-200 text-black flex flex-col space-y-2 items-center justify-center h-screen w-full "
+      <form onSubmit={sendMessage} className="bg-gray-200 text-black flex flex-col space-y-2 items-center justify-center h-[calc(100vh-54px)] w-full "
       style={{ 
         backgroundImage: `url(${Background.src})`, 
         backgroundSize: 'cover',

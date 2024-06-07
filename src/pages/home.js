@@ -28,9 +28,9 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col items-center w-full h-screen text-white font-bold">
+    <div className="flex flex-col items-center w-full h-[calc(100vh-54px)] text-white font-bold">
       <div 
-        className='h-screen w-full flex flex-col space-y-4 justify-between items-center py-12' 
+        className='h-full w-full flex flex-col space-y-4 justify-between items-center py-12' 
         style={{ 
           backgroundImage: `url(${Apartment.src})`, 
           backgroundSize: 'cover',

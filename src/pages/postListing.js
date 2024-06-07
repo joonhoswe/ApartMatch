@@ -79,14 +79,14 @@ export default function postListing() {
     
 
     return (isAuthenticated && !posted) ? (
-        <div className="bg-gray-200 flex flex-col justify-center items-center w-full h-screen" 
+        <div className="bg-gray-200 flex flex-col justify-center items-center w-full h-[calc(100vh-54px)]" 
             style={{ 
                 backgroundImage: `url(${Background.src})`, 
                 backgroundSize: 'cover',
                 backgroundPosition: 'center'
             }}>
-            <form onSubmit={handleSubmit} className="bg-white text-xs sm:text-base rounded-2xl p-8 shadow-2xl text-black text-center w-full sm:w-3/5 md:w-3/5 lg:w-1/3 flex flex-col space-y-3 border-y-8 border-red-500">
-                <div className = "text-base sm:text-xl p-4 rounded-2xl font-bold mb-4">
+            <form onSubmit={handleSubmit} className="bg-white text-xs sm:text-base rounded-2xl px-8 py-2 shadow-2xl text-black text-center w-full sm:w-3/5 md:w-3/5 lg:w-1/3 flex flex-col space-y-3 border-y-8 border-red-500">
+                <div className = "text-base sm:text-xl p-4 rounded-2xl font-bold mb-2">
                     Thank you for your interest in posting to ApartMatch! 
                 </div>
                 
@@ -126,7 +126,7 @@ export default function postListing() {
                 placeholder="Monthly Rent: ex: 1200"
                 className='ring-2 ring-gray-300 outline-none focus:ring-2 focus:ring-red-600 bg-white rounded-2xl p-4 h-10 w-full'/>
 
-                <div className='w-full bg-white flex flex-col space-y-2'>
+                <div className='w-full bg-white flex flex-col space-y-1'>
                     <p className='flex justify-start'> Home Type </p>
                     <div className='flex flex-row h-10 w-full'>
                         <button 
@@ -144,7 +144,7 @@ export default function postListing() {
                     </div>
                 </div>
 
-                <div className='w-full bg-white flex flex-col space-y-2'>
+                <div className='w-full bg-white flex flex-col space-y-1'>
                     <p className='flex justify-start'> # of Rooms </p>
                     <div className='flex flex-row h-10 w-full'>
                         <button 
@@ -182,7 +182,7 @@ export default function postListing() {
                     </div>
                 </div> 
 
-                <div className='w-full bg-white flex flex-col space-y-2'>
+                <div className='w-full bg-white flex flex-col space-y-1'>
                     <p className='flex justify-start'> # of Bathrooms </p>
                     <div className='flex flex-row h-10 w-full'>
                         <button 
@@ -220,7 +220,7 @@ export default function postListing() {
                     </div>
                 </div> 
 
-                <div className='w-full bg-white flex flex-col space-y-2'>
+                <div className='w-full bg-white flex flex-col space-y-1'>
                     <p className='flex justify-start'> Gender Preferences </p>
                     <div className='flex flex-row h-10 w-full'>
                         <button 
@@ -244,7 +244,7 @@ export default function postListing() {
                     </div>
                 </div>  
 
-                <div className='flex justify-center pt-6'>
+                <div className='flex justify-center py-6'>
                     <input 
                         type='submit'
                         onClick={() => setSubmitClicked(true)}

@@ -51,14 +51,14 @@ export default function Profile() {
       return <div> Loading... </div>;
     } else {
       return isAuthenticated ? (
-        <div className='h-full w-full bg-gray-200 flex items-center justify-center text-black p-8'>
+        <div className='h-[calc(100vh-54px)] w-full bg-gray-200 flex items-center justify-center text-black p-4 sm:p-8'>
   
-          <div className='h-full w-[95vw] bg-white rounded-lg p-6 flex flex-col space-y-8'>
+          <div className='h-full w-[95vw] bg-white rounded-lg p-3 sm:p-6 flex flex-col space-y-8'>
   
             <div className='flex items-center justify-between'>
               <div className='flex flex-row space-x-3 w-full items-center'>
-                <img src={user.picture} alt={user.name} className="w-10 h-10 rounded-full" />
-                <p> Welcome, {user.nickname} </p>
+                <img src={user.picture} alt={user.name} className="w-8 h-8 sm:w-10 sm:h-10 rounded-full" />
+                <p className='text-xs sm:text-base'> Welcome, {user.nickname} </p>
               </div>
               <Logout />
             </div>
@@ -68,21 +68,21 @@ export default function Profile() {
               <div className='w-full h-0.5 bg-red-500'/>
             </div>
 
-            <div className='flex items-center justify-center flex-wrap'>
+            <div className='flex items-center flex-wrap'>
             {listings.map((listing, index) => (
-                        <div key={index} className='flex items-center flex-col h-48 w-56 rounded-2xl shadow-2xl hover:cursor-pointer hover:scale-110 transition ease-in-out duration-300'>
-                            <img src = {placeholder.src} alt = 'placeholder' className='h-16 w-24'/>
-                            <div className='flex flex-col space-y-1 justify-center items-start'>
-                                <div className='flex flex-row space-x-1 items-center justify-center'>
-                                  <h1 className='text-sm font-bold'> ${listing.rent}/mo </h1>
-                                  <p className='text-xs'> {listing.rooms} bed, {listing.bathrooms} bath </p>
-                                </div>
-                                <p className='text-xs'> {listing.address} </p>
-                                <p className='text-xs'> {listing.city}, {listing.state} {listing.zipCode}</p>
-                                <button onClick={() => handleDelete(listing.id)} className='text-red-500 text-xs font-bold'>Delete</button>
-                            </div>
+                <div key={index} className='flex flex-col h-48 w-56 rounded-2xl shadow-2xl hover:cursor-pointer hover:scale-110 transition ease-in-out duration-300'>
+                    <img src = {placeholder.src} alt = 'placeholder' className='h-24 w-full'/>
+                    <div className='flex flex-col space-y-1 justify-start text-start px-4'>
+                        <div className='flex flex-row space-x-1 items-center'>
+                          <h1 className='text-sm font-bold'> ${listing.rent}/mo </h1>
+                          <p className='text-xs'> {listing.rooms} bed, {listing.bathrooms} bath </p>
                         </div>
-                    ))}
+                        <p className='text-xs'> {listing.address} </p>
+                        <p className='text-xs'> {listing.city}, {listing.state}, {listing.zipCode}</p>
+                        <button onClick={() => handleDelete(listing.id)} className='text-red-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'> Delete </button>
+                    </div>
+                </div>
+            ))}
             </div>
             
   

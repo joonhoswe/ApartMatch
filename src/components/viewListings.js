@@ -32,7 +32,7 @@ export default function ViewListings(){
         fetchData();
     }, [user]);
     return (
-        <div className='h-full w-full md:w-3/4 md:flex flex-col items-center space-y-6 text-black p-2 border-2 border-gray-500'>
+        <div className='h-[calc(100vh-54px)] w-full md:w-3/4 md:flex flex-col items-center space-y-6 text-black p-2 border-2 border-gray-500'>
             {isAuthenticated ? ( 
               <></>
             ) : ( 
