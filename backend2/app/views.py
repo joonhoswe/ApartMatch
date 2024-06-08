@@ -56,11 +56,11 @@ def joinListing(request):
         listing = get_object_or_404(Listing, id=id)
         
         # Check if the user is already in the list
-        if user in listing.joined:
+        if user in listing.joinedListing:
             return Response({'message': 'User already joined the listing'}, status=status.HTTP_200_OK)
         
         # Append the new user to the joined list
-        listing.joined.append(user)
+        listing.joinedListing.append(user)
         listing.save()
 
         return Response({'message': 'Successfully joined the listing'}, status=status.HTTP_200_OK)

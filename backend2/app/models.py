@@ -15,7 +15,7 @@ class Listing(models.Model):
     rooms = models.PositiveIntegerField()
     bathrooms = models.PositiveIntegerField()
     gender = models.CharField(max_length=10)
-    joined = ArrayField(models.CharField(max_length=20, blank=True), blank=True, default=list)
+    joinedListing = ArrayField(models.CharField(max_length=20), blank=True, default = list)
 
     def __str__(self):
         return self.address
