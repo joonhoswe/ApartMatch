@@ -33,7 +33,8 @@ export default function ViewListings(){
     }, [user]);
 
     const handleJoin = async(id, user) => {
-      axios.post(`http://localhost:8000/api/join/`,{id, user})
+      const response = await axios.post(`http://localhost:8000/api/join/`,{id, user});
+      console.log('Response:', response.data);
     }
 
     return (
