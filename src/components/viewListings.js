@@ -32,6 +32,10 @@ export default function ViewListings(){
         fetchData();
     }, [user]);
 
+    const handleJoin = async(id, user) => {
+      axios.post(`http://localhost:8000/api/join/`,{id, user})
+    }
+
     return (
         <div className='h-[calc(100vh-54px)] w-full md:w-3/4 md:flex flex-col items-center space-y-6 text-black p-2 border-2 border-gray-500'>
             {isAuthenticated ? (
@@ -52,7 +56,7 @@ export default function ViewListings(){
                                 </div>
                                 <p className='text-xs'> {listing.address} </p>
                                 <p className='text-xs'> {listing.city}, {listing.state}, {listing.zipCode}</p>
-                                <button className='text-red-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'> Join </button>
+                                <button onClick={()=> handleJoin(listing.id,user.name)}className='text-red-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'> Join </button>
                             </div>
                         </div>
                     ))}

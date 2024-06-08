@@ -1,6 +1,8 @@
 from django.shortcuts import get_object_or_404
-
+from django.db.models.functions import Concat
 from rest_framework import status
+from django.db.models import Value
+
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 #imported from models.py
@@ -41,5 +43,12 @@ def deleteListing(request, id):
         listing.delete()
         return Response({'message': 'Listing deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
     
+@api_view(['POST'])
+def joinListing(request):
+    if request.method == 'POST':
+        id = request.data.get('id')
+        user = request.data.get('user')
 
-
+        listing = get_object_or_404(Listing, id=id)
+        listing.joined = Concat(listing.joined, Value([user]))
+        return Response({'message': 'Successfully joined the listing'}, status=status.HTTP_200_OK)
