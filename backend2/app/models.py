@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 
 class Listing(models.Model):
     #columns of the sqlite(soon to be postgresql database are defined here)
@@ -14,6 +15,8 @@ class Listing(models.Model):
     rooms = models.PositiveIntegerField()
     bathrooms = models.PositiveIntegerField()
     gender = models.CharField(max_length=10)
+    joinedListing = ArrayField(models.CharField(max_length=20, blank=True), blank=True, default = list)
+    
 
     def __str__(self):
         return self.address

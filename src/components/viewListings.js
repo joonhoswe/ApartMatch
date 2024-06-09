@@ -32,6 +32,24 @@ export default function ViewListings(){
         fetchData();
     }, [user]);
 
+    const handleJoin = async(id, user) => {
+      try {
+        const response = await axios.patch('http://localhost:8000/api/join/', { id, user });
+        console.log('Response:', response.data);
+      } catch (error) {
+        if (error.response) {
+          console.error('Error response data:', error.response.data);
+          console.error('Error response status:', error.response.status);
+          console.error('Error response headers:', error.response.headers);
+        } else if (error.request) {
+          console.error('Error request data:', error.request);
+        } else {
+          console.error('Error message:', error.message);
+        }
+        console.error('Error config:', error.config);
+      }
+    }
+
     return (
         <div className='h-[calc(100vh-54px)] w-full md:w-3/4 md:flex flex-col items-center space-y-6 text-black p-2 border-2 border-gray-500'>
             {isAuthenticated ? (
@@ -43,16 +61,17 @@ export default function ViewListings(){
             )}
             <div className='h-full w-full overflow-y-scroll grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-12 p-4 items-center justify-items-center'>
                     {database.map((listing, index) => (
-                        <div key={index} className='flex items-center flex-col h-48 w-48 rounded-2xl shadow-2xl hover:cursor-pointer hover:scale-105 transition ease-in-out duration-300'>
+                        <div key={index} className='flex items-center flex-col h-52 w-48 rounded-2xl shadow-2xl hover:cursor-pointer hover:scale-105 transition ease-in-out duration-300'>
                             <img src = {placeholder.src} alt = 'placeholder' className='h-24 w-full'/>
                             <div className='flex flex-col space-y-1 justify-start text-start px-4'>
                                 <div className='flex flex-row space-x-1 items-center'>
                                   <h1 className='text-sm font-bold'> ${listing.rent}/mo </h1>
                                   <p className='text-xs'> {listing.rooms} bed, {listing.bathrooms} bath </p>
                                 </div>
+                                <p className='text-xs'> {listing.joinedListing.length} </p>
                                 <p className='text-xs'> {listing.address} </p>
                                 <p className='text-xs'> {listing.city}, {listing.state}, {listing.zipCode}</p>
-                                <button className='text-red-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'> Join </button>
+                                <button onClick={()=> handleJoin(listing.id, user.nickname)}className='text-red-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'> Join </button>
                             </div>
                         </div>
                     ))}
