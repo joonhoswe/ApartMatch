@@ -32,11 +32,11 @@ export default function postListing() {
         }
       }, [user]);
 
-    const [joined, setJoined] = useState([]);
+    const [joinedListing, setJoinedListing] = useState([]);
 
     const updateRoomsAndJoined = (numRooms) => {
         setRooms(numRooms);
-        setJoined(["owner", ...Array.from({ length: numRooms - 1 }, () => "")]); // Ensure the first person joined is owner
+        setJoinedListing([owner, ...Array.from({ length: numRooms - 1 }, () => "")]); // Ensure the first person joined is owner
     };    
 
     const clearForm = () => {
@@ -49,7 +49,7 @@ export default function postListing() {
         setRooms(0);
         setBathrooms(0);
         setGender('');
-        setJoined([]);
+        setJoinedListing([]);
     };
 
     const handleSubmit = async (e) => {
@@ -69,7 +69,7 @@ export default function postListing() {
             rooms,
             bathrooms,
             gender,
-            joined
+            joinedListing,
         };
 
         console.log("Submitting form: ", dataForSql);
