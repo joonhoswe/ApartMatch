@@ -36,7 +36,7 @@ export default function postListing() {
 
     const updateRoomsAndJoined = (numRooms) => {
         setRooms(numRooms);
-        setJoinedListing([owner, ...Array.from({ length: numRooms - 1 }, () => "")]); // Ensure the first person joined is owner
+        setJoinedListing([owner]); // Ensure the first person joined is owner
     };    
 
     const clearForm = () => {
