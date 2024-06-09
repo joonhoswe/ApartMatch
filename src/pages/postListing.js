@@ -32,6 +32,13 @@ export default function postListing() {
         }
       }, [user]);
 
+    const [joinedListing, setJoinedListing] = useState([]);
+
+    const updateRoomsAndJoined = (numRooms) => {
+        setRooms(numRooms);
+        setJoinedListing([owner, ...Array.from({ length: numRooms - 1 }, () => "")]); // Ensure the first person joined is owner
+    };    
+
     const clearForm = () => {
         setAddress('');
         setZipCode('');
@@ -42,6 +49,7 @@ export default function postListing() {
         setRooms(0);
         setBathrooms(0);
         setGender('');
+        setJoinedListing([]);
     };
 
     const handleSubmit = async (e) => {
@@ -61,6 +69,7 @@ export default function postListing() {
             rooms,
             bathrooms,
             gender,
+            joinedListing,
         };
 
         console.log("Submitting form: ", dataForSql);
@@ -149,35 +158,35 @@ export default function postListing() {
                     <div className='flex flex-row h-10 w-full'>
                         <button 
                         className={`h-full w-1/4 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${rooms === 1 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                        onClick={() => setRooms(1)}
+                        onClick={() => updateRoomsAndJoined(1)}
                         >
                         1
                         </button>
 
                         <button 
                         className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${rooms === 2 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                        onClick={() => setRooms(2)}
+                        onClick={() => updateRoomsAndJoined(2)}
                         >
                         2
                         </button>
 
                         <button 
                         className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${rooms === 3 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                        onClick={() => setRooms(3)}
+                        onClick={() => updateRoomsAndJoined(3)}
                         >
                         3
                         </button>
 
                         <button 
                         className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${rooms === 4 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                        onClick={() => setRooms(4)}
+                        onClick={() => updateRoomsAndJoined(4)}
                         >
                         4
                         </button>
                         <input 
                         placeholder='4+'
                         className={`h-full w-1/4 flex text-center items-center justify-center rounded-r-lg md:rounded-r-2xl p-2 outline-none ring-2 ring-red-500 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${rooms > 4 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                        onChange={(e) => setRooms(e.target.value)}
+                        onChange={(e) => updateRoomsAndJoined(e.target.value)}
                         />
                     </div>
                 </div> 
