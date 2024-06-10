@@ -59,7 +59,7 @@ export default function ViewListings(){
                 <p className='font-bold text-red-500'> Please <span onClick={loginWithRedirect} className='underline hover:cursor-pointer hover:text-red-400 transition ease-in-out duration-300'>sign in </span> to join a listing. </p>
             </div>
             )}
-            <div className='h-full w-full overflow-y-scroll grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-12 p-4 items-center justify-items-center'>
+            <div className='h-full w-full overflow-y-scroll grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-12 p-4 justify-items-center'>
                     {database.map((listing, index) => (
                         <div key={index} className='flex items-center flex-col h-52 w-48 rounded-2xl shadow-2xl hover:cursor-pointer hover:scale-105 transition ease-in-out duration-300'>
                             <img src = {placeholder.src} alt = 'placeholder' className='h-24 w-full'/>
