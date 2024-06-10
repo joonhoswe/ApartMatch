@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { APIProvider, Map } from '@vis.gl/react-google-maps';
+import { APIProvider, Map, AdvancedMarker, Pin } from '@vis.gl/react-google-maps';
 import ViewListings from '@components/viewListings';
 import { IoIosSearch } from "react-icons/io";
 import {
@@ -12,6 +12,8 @@ import {
     geocode,
     RequestType,
   } from "react-geocode";
+import axios from 'axios';
+import Popup from '@components/listingPopup';
 
 export default function SchoolMap() {
     const router = useRouter();
@@ -26,6 +28,13 @@ export default function SchoolMap() {
 
     const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
     const [mapSet, setMapSet] = useState(false);
+    const [markers, setMarkers] = useState([]);
+
+    const [popupActive, setPopupActive] = useState(false);
+
+    const handlePopup = () => {
+        setPopupActive(true);
+    }
 
     // When new school is searched, update the map center
     const handleFindHomes = () => {
@@ -63,6 +72,36 @@ export default function SchoolMap() {
         }
         handleGeocode(searchInput);
     };
+
+    // Fetch listings from the backend
+    useEffect(() => {
+        const fetchListings = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/api/get');
+                const listings = response.data;
+
+                const markerPromises = listings.map((listing) =>
+                    fromAddress(listing.address)
+                        .then((response) => {
+                            const { lat, lng } = response.results[0].geometry.location;
+                            return { ...listing, position: { lat, lng } };  // Include all original listing data
+                        })
+                        .catch((error) => {
+                            console.error(`Error geocoding address ${listing.address}:`, error);
+                            return null;
+                        })
+                );
+
+                const resolvedMarkers = await Promise.all(markerPromises);
+                setMarkers(resolvedMarkers.filter(marker => marker !== null));
+                console.log(resolvedMarkers);  // Log the resolved markers with full data
+            } catch (error) {
+                console.error('Error fetching listings:', error);
+            }
+        };
+
+        fetchListings();
+    }, []);
 
     return (
         <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY} onLoad={() => initialize(searchInput)}>
@@ -207,11 +246,31 @@ export default function SchoolMap() {
             {/* embedded google map */}
             <div style={{ width: '100%', height: '100%' }} className='hidden md:flex'>
             {mapSet && (
-            <Map
-                mapContainerStyle={{ width: '100%', height: '100%' }}
-                defaultCenter={mapCenter}
-                defaultZoom={16}
-            />
+                <Map
+                    mapId='e1a96cb574a64c5a'
+                    mapContainerStyle={{ width: '100%', height: '100%' }}
+                    defaultCenter={mapCenter}
+                    defaultZoom={16}>
+                    {markers.map((marker, index) => (
+                        <AdvancedMarker
+                        key={index}
+                        position={marker.position}
+                        title={marker.address}
+                        onClick={() => alert(`Clicked on ${marker.address}`)}
+                        >
+                            
+                            <Pin 
+                            background={'#ef4444'}
+                            borderColor={'#ef4444'}
+                            glyphColor={'#ffffff'}
+                            title={marker.address}
+                            style={{ width: '128px', height: '128px' }}
+                            >
+                            ${marker.rent}
+                            </Pin>
+                        </AdvancedMarker>
+                    ))}
+                </Map>
             )}
 
             </div>

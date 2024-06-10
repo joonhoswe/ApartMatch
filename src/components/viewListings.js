@@ -59,7 +59,7 @@ export default function ViewListings(){
                 <p className='font-bold text-red-500'> Please <span onClick={loginWithRedirect} className='underline hover:cursor-pointer hover:text-red-400 transition ease-in-out duration-300'>sign in </span> to join a listing. </p>
             </div>
             )}
-            <div className='h-full w-full overflow-y-scroll grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-12 p-4 items-center justify-items-center'>
+            <div className='h-full w-full overflow-y-scroll grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-12 p-4 justify-items-center'>
                     {database.map((listing, index) => (
                         <div key={index} className='flex items-center flex-col h-52 w-48 rounded-2xl shadow-2xl hover:cursor-pointer hover:scale-105 transition ease-in-out duration-300'>
                             <img src = {placeholder.src} alt = 'placeholder' className='h-24 w-full'/>
@@ -68,10 +68,13 @@ export default function ViewListings(){
                                   <h1 className='text-sm font-bold'> ${listing.rent}/mo </h1>
                                   <p className='text-xs'> {listing.rooms} bed, {listing.bathrooms} bath </p>
                                 </div>
-                                <p className='text-xs'> {listing.joinedListing.length} </p>
+                                <p className='text-xs font-bold text-green-500'> {listing.rooms - listing.joinedListing.length} / {listing.rooms} Rooms Open </p>
                                 <p className='text-xs'> {listing.address} </p>
                                 <p className='text-xs'> {listing.city}, {listing.state}, {listing.zipCode}</p>
-                                <button onClick={()=> handleJoin(listing.id, user.nickname)}className='text-red-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'> Join </button>
+                                { listing.joinedListing.includes(user.nickname)
+                                ? <p className='text-gray-400 text-xs font-bold text-center'> Already Joined </p>
+                                : <button onClick={()=> handleJoin(listing.id, user.nickname)} className='text-red-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'> Join </button>
+                                }
                             </div>
                         </div>
                     ))}
