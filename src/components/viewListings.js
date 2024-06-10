@@ -71,10 +71,9 @@ export default function ViewListings(){
                                 <p className='text-xs font-bold text-green-500'> {listing.rooms - listing.joinedListing.length} / {listing.rooms} Rooms Open </p>
                                 <p className='text-xs'> {listing.address} </p>
                                 <p className='text-xs'> {listing.city}, {listing.state}, {listing.zipCode}</p>
-                                { listing.owner == user.nickname
+                                { listing.joinedListing.includes(user.nickname)
                                 ? <p className='text-gray-400 text-xs font-bold text-center'> Already Joined </p>
                                 : <button onClick={()=> handleJoin(listing.id, user.nickname)} className='text-red-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'> Join </button>
-
                                 }
                             </div>
                         </div>
