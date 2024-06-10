@@ -17,6 +17,9 @@ module.exports = {
         'yellow-150': '#FCDB7C',
         'gray-950': '#1E1E1E',
       },
+      width: {
+        '18': '4.5rem',
+      }
     },
   },
   plugins: [],
