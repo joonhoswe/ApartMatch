@@ -31,9 +31,11 @@ export default function SchoolMap() {
     const [markers, setMarkers] = useState([]);
 
     const [popupActive, setPopupActive] = useState(false);
+    const [selectedMarker, setSelectedMarker] = useState(null);
 
-    const handlePopup = () => {
+    const handleMarkerClick = (marker) => {
         setPopupActive(true);
+        setSelectedMarker(marker);
     }
 
     // When new school is searched, update the map center
@@ -256,7 +258,7 @@ export default function SchoolMap() {
                         key={index}
                         position={marker.position}
                         title={marker.address}
-                        onClick={() => alert(`Clicked on ${marker.address}`)}
+                        onClick={() => handleMarkerClick(marker)}
                         >
                             
                             <Pin 
@@ -268,6 +270,12 @@ export default function SchoolMap() {
                             >
                             ${marker.rent}
                             </Pin>
+                            {popupActive && selectedMarker && (
+                            <div className='z-50 flex items-center justify-center w-full h-1/2'>
+                                <Popup listing={selectedMarker} />
+                            </div>
+                    )}
+
                         </AdvancedMarker>
                     ))}
                 </Map>
