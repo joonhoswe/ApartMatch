@@ -68,10 +68,14 @@ export default function ViewListings(){
                                   <h1 className='text-sm font-bold'> ${listing.rent}/mo </h1>
                                   <p className='text-xs'> {listing.rooms} bed, {listing.bathrooms} bath </p>
                                 </div>
-                                <p className='text-xs'> {listing.joinedListing.length} </p>
+                                <p className='text-xs font-bold text-green-500'> {listing.rooms - listing.joinedListing.length} / {listing.rooms} Rooms Open </p>
                                 <p className='text-xs'> {listing.address} </p>
                                 <p className='text-xs'> {listing.city}, {listing.state}, {listing.zipCode}</p>
-                                <button onClick={()=> handleJoin(listing.id, user.nickname)}className='text-red-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'> Join </button>
+                                { listing.owner == user.nickname
+                                ? <p className='text-gray-400 text-xs font-bold text-center'> Already Joined </p>
+                                : <button onClick={()=> handleJoin(listing.id, user.nickname)} className='text-red-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'> Join </button>
+
+                                }
                             </div>
                         </div>
                     ))}
