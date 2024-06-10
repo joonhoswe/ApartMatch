@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { APIProvider, Map } from '@vis.gl/react-google-maps';
+import { APIProvider, Map, Marker } from '@vis.gl/react-google-maps';
 import ViewListings from '@components/viewListings';
 import { IoIosSearch } from "react-icons/io";
 import {
@@ -63,6 +63,12 @@ export default function SchoolMap() {
         }
         handleGeocode(searchInput);
     };
+
+    //const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+    const marker = new AdvancedMarkerElement({
+        Map,
+        position: { lat: 37.4239163, lng: -122.0947209 },
+    });
 
     return (
         <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY} onLoad={() => initialize(searchInput)}>
