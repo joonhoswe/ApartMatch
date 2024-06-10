@@ -13,6 +13,7 @@ import {
     RequestType,
   } from "react-geocode";
 import axios from 'axios';
+import Popup from '@components/listingPopup';
 
 export default function SchoolMap() {
     const router = useRouter();
@@ -28,6 +29,12 @@ export default function SchoolMap() {
     const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
     const [mapSet, setMapSet] = useState(false);
     const [markers, setMarkers] = useState([]);
+
+    const [popupActive, setPopupActive] = useState(false);
+
+    const handlePopup = () => {
+        setPopupActive(true);
+    }
 
     // When new school is searched, update the map center
     const handleFindHomes = () => {
@@ -258,7 +265,6 @@ export default function SchoolMap() {
                             glyphColor={'#ffffff'}
                             title={marker.address}
                             style={{ width: '128px', height: '128px' }}
-                            
                             >
                             ${marker.rent}
                             </Pin>
