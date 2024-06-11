@@ -8,28 +8,28 @@ import axios from 'axios';
 export default function ViewListings(){
     const { user, isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
     const [database, setDatabase] = useState([]);
+    const fetchData = async () => {
+      try{
+        const response = await axios.get('http://localhost:8000/api/get');
+        setDatabase(response.data);
+      } catch(error){
+        console.error('Error fetching Data:', error);
+        if (error.response) {
+          //http status code isn't desired
+          console.error('Response data:', error.response.data);
+          console.error('Response status:', error.response.status);
+          console.error('Response headers:', error.response.headers);
+        } else if (error.request) {
+          // no response was received from request
+          console.error('Request data:', error.request);
+        } else {
+          // Something happened in setting up the request that triggered an error
+          console.error('Error message:', error.message);
+        }
+      }
+    };
     useEffect(() => {
-        const fetchData = async () => {
-          try{
-            const response = await axios.get('http://localhost:8000/api/get');
-            setDatabase(response.data);
-          } catch(error){
-            console.error('Error fetching Data:', error);
-            if (error.response) {
-              //http status code isn't desired
-              console.error('Response data:', error.response.data);
-              console.error('Response status:', error.response.status);
-              console.error('Response headers:', error.response.headers);
-            } else if (error.request) {
-              // no response was received from request
-              console.error('Request data:', error.request);
-            } else {
-              // Something happened in setting up the request that triggered an error
-              console.error('Error message:', error.message);
-            }
-          }
-        };
-        fetchData();
+      fetchData();
     }, [user]);
 
     const handleJoin = async(id, user) => {
@@ -95,9 +95,9 @@ export default function ViewListings(){
                                 { listing.joinedListing.includes(user.nickname) ?
                                     <>
                                       <p className='text-gray-400 text-xs font-bold text-center'> Already Joined</p>
-                                      <button onClick={()=> handleLeave(listing.id, user.nickname)} className='text-red-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'> Leave </button>
+                                      <button onClick={async () => { await handleLeave(listing.id, user.nickname); fetchData(); }} className='text-red-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'> Leave </button>
                                     </> 
-                                  : <button onClick={()=> handleJoin(listing.id, user.nickname)} className='text-green-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'> Join </button>
+                                  : <button onClick={async () => { await handleJoin(listing.id, user.nickname); fetchData(); }} className='text-green-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'> Join </button>
                                 }
                             </div>
                         </div> : <></>
