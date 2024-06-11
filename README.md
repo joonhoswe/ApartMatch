@@ -11,4 +11,8 @@
 
   <h2> Core Features </h2>
   1. Search for a school and see all nearby active listings with rooms available 
+  2. Select a desired apartment and join with a click of a button
+  3. Filled up listings are automatically deleted from the map
+  4. Post a listing for a desired apartment and wait for users to join it
+  5. Oncr a listing is full, be entered in a groupchat with future roommates
 </div>
