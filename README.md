@@ -15,4 +15,12 @@
   3. Filled up listings are automatically deleted from the map <br/>
   4. Post a listing for a desired apartment and wait for users to join it <br/>
   5. Once a listing is full, be entered in a groupchat with future roommates <br/>
+
+  <h2> Application Architecture </h2>
+  <p> Frontend: Next.js, React, JavaScript, and TailwindCSS </p> 
+  <p> Backend: Django with Python </p> 
+  <p> Database: PostgreSQL </p> 
+  <p> APIs: Google Maps for dynamic maps with listing markers and Auth0 for user authentication </p>
+  <p> Deployments: Vercel[frontend] | Fly.io[backend] | Railway[database] </p>
+  
 </div>
