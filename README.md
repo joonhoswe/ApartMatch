@@ -14,5 +14,5 @@
   2. Select a desired apartment and join with a click of a button <br/>
   3. Filled up listings are automatically deleted from the map <br/>
   4. Post a listing for a desired apartment and wait for users to join it <br/>
-  5. Oncr a listing is full, be entered in a groupchat with future roommates <br/>
+  5. Once a listing is full, be entered in a groupchat with future roommates <br/>
 </div>
