@@ -86,7 +86,9 @@ export default function ViewListings(){
                                   <h1 className='text-sm font-bold'> ${listing.rent}/mo </h1>
                                   <p className='text-xs'> {listing.rooms} bed, {listing.bathrooms} bath </p>
                                 </div>
-                                <p className='text-xs font-bold text-green-500'> {listing.rooms - listing.joinedListing.length} / {listing.rooms} Rooms Open </p>
+                                <p className={`text-xs font-bold ${listing.rooms-listing.joinedListing.length ===0 ? 'text-red-500' : 'text-green-500'}`}>
+                                  {listing.rooms - listing.joinedListing.length} / {listing.rooms} Rooms Open 
+                                </p>
                                 <p className='text-xs'> {listing.address} </p>
                                 <p className='text-xs'> {listing.city}, {listing.state}, {listing.zipCode}</p>
                                 { listing.joinedListing.includes(user.nickname) || listing.rooms - listing.joinedListing.length <= 0 ? 
