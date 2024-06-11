@@ -86,7 +86,7 @@ export default function ViewListings(){
                                   <h1 className='text-sm font-bold'> ${listing.rent}/mo </h1>
                                   <p className='text-xs'> {listing.rooms} bed, {listing.bathrooms} bath </p>
                                 </div>
-                                <p className={`text-xs font-bold ${listing.rooms-listing.joinedListing.length ===0 ? 'text-red-500' : 'text-green-500'}`}>
+                                <p className={`text-xs font-bold ${listing.rooms-listing.joinedListing.length === 0 ? 'text-red-500' : 'text-green-500'}`}>
                                   {listing.rooms - listing.joinedListing.length} / {listing.rooms} Rooms Open 
                                 </p>
                                 <p className='text-xs'> {listing.address} </p>
@@ -98,7 +98,7 @@ export default function ViewListings(){
                                       <button onClick={()=> handleLeave(listing.id, user.nickname)} className='text-red-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'> Leave </button>
                                     </> : 
                                       <p className='text-gray-400 text-xs font-bold text-center'>Listing Full</p>
-                                  : <button onClick={()=> handleJoin(listing.id, user.nickname)} className='text-red-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'> Join </button>
+                                  : <button onClick={()=> handleJoin(listing.id, user.nickname)} className='text-green-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'> Join </button>
                                 }
                             </div>
                         </div>
