@@ -10,4 +10,5 @@
   <p> apartmatchco.com </p>
 
   <h2> Core Features </h2>
+  1. Search for a school and see all nearby active listings with rooms available 
 </div>
