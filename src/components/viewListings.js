@@ -50,6 +50,24 @@ export default function ViewListings(){
       }
     }
 
+    const handleLeave = async(id, user) => {
+      try {
+        const response = await axios.patch('http://localhost:8000/api/leave/',{id,user});
+        console.log('Response:',response.data);
+      } catch (error){
+        if (error.response) {
+          console.error('Error response data:', error.response.data);
+          console.error('Error response status:', error.response.status);
+          console.error('Error response headers:', error.response.headers);
+        } else if (error.request) {
+          console.error('Error request data:', error.request);
+        } else {
+          console.error('Error message:', error.message);
+        }
+        console.error('Error config:', error.config);
+      }
+    }
+
     return (
         <div className='h-[calc(100vh-54px)] w-full md:w-3/4 md:flex flex-col items-center space-y-6 text-black p-2 border-2 border-gray-500'>
             {isAuthenticated ? (

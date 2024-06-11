@@ -17,8 +17,7 @@ export default function Profile() {
           const response = await axios.get('http://localhost:8000/api/get');
           setDatabase(response.data);
           if (user) {
-            const userOwnedListings = response.data.filter(listing => listing.owner === user.nickname);
-            setListings(userOwnedListings);
+            setListings(response.data);
           }
           setLoading(false); // Set loading to false after the data has been fetched
         } catch(error){
