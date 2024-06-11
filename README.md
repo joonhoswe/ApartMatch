@@ -10,11 +10,11 @@
   <p> https://apartmatchco.com </p>
 
   <h2> Core Features </h2>
-  1. Search for a school and see all nearby active listings with rooms available <br/>
-  2. Select a desired apartment and join with a click of a button <br/>
-  3. Filled up listings are automatically deleted from the map <br/>
-  4. Post a listing for a desired apartment and wait for users to join it <br/>
-  5. Once a listing is full, be entered in a groupchat with future roommates <br/>
+  <p> 1. Search for a school and see all nearby active listings with rooms available </p>
+  <p> 2. Select a desired apartment and join with a click of a button </p>
+  <p> 3. Filled up listings are automatically deleted from the map </p>
+  <p> 4. Post a listing for a desired apartment and wait for users to join it </p>
+  <p> 5. Once a listing is full, be entered in a groupchat with future roommates </p>
 
   <h2> Application Architecture </h2>
   <p> Frontend: Next.js, React, JavaScript, and TailwindCSS </p> 
