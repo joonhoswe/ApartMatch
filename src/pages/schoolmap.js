@@ -14,12 +14,12 @@ import {
   } from "react-geocode";
 import axios from 'axios';
 import Popup from '@components/listingPopup';
+import PulseLoader from 'react-spinners/PulseLoader';
 
 export default function SchoolMap() {
     const router = useRouter();
     const { school } = router.query;
     const [searchInput, setSearchInput] = useState(school || '');
-
     const [houseType, setHouseType] = useState('');
     const [priceRange, setPriceRange] = useState(['', '']);
     const [rooms, setRooms] = useState(0);
@@ -247,7 +247,7 @@ export default function SchoolMap() {
 
             {/* embedded google map */}
             <div style={{ width: '100%', height: '100%' }} className='hidden md:flex'>
-            {mapSet && (
+            {mapSet ? (
                 <Map
                     mapId='e1a96cb574a64c5a'
                     mapContainerStyle={{ width: '100%', height: '100%' }}
@@ -270,16 +270,21 @@ export default function SchoolMap() {
                             >
                             ${marker.rent}
                             </Pin>
+
                             {popupActive && selectedMarker && (
                             <div className='z-50 flex items-center justify-center w-full h-1/2'>
                                 <Popup listing={selectedMarker} />
                             </div>
-                    )}
+                            )}
 
                         </AdvancedMarker>
                     ))}
-                </Map>
-            )}
+                </Map>) 
+                : 
+                <div className='h-full w-full flex items-center justify-center'>
+                <PulseLoader color="#ef4444" />
+                </div>
+            }
 
             </div>
 
