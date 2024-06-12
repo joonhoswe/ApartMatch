@@ -246,7 +246,7 @@ export default function SchoolMap() {
             </div>
 
             {/* embedded google map */}
-            <div style={{ width: '100%', height: '100%' }} className='hidden md:flex'>
+            <div style={{ width: '100%', height: '100%' }} className='hidden md:flex relative'>
             {mapSet ? (
                 <Map
                     mapId='e1a96cb574a64c5a'
@@ -271,23 +271,32 @@ export default function SchoolMap() {
                             ${marker.rent}
                             </Pin>
 
-                            {popupActive && selectedMarker && (
-                            <div className='z-50 flex items-center justify-center w-full h-1/2'>
-                                <Popup listing={selectedMarker} />
-                            </div>
-                            )}
-
                         </AdvancedMarker>
                     ))}
-                </Map>) 
-                : 
-                <div className='h-full w-full flex items-center justify-center'>
+                    
+                    {popupActive && selectedMarker && (
+                        <div className='absolute top-0 left-0 w-full h-full flex items-center z-50 px-4'>
+                            <div className='relative bg-white w-full h-1/2 p-4 rounded-lg shadow-lg'>
+                                <button onClick={() => setPopupActive(false)} className='absolute top-2 right-2 h-6 w-6 rounded-lg outline-none ring-2 ring-red-500 bg-red-500 text-white hover:bg-white hover:text-red-500 transition duration-300 ease-in-out font-bold'>
+                                    x
+                                </button>
+                                <Popup listing={selectedMarker} />
+                            </div>
+                        </div>
+                    )}
+  
+                </Map>
+                
+            ) 
+            : 
+            <div className='h-full w-full flex items-center justify-center'>
                 <PulseLoader color="#ef4444" />
-                </div>
+            </div>
             }
 
             </div>
 
+            
             <ViewListings/>
 
         </div>
