@@ -9,4 +9,5 @@ urlpatterns=[
     path('get/', getListing, name='getListing'),
     path('delete/<int:id>', deleteListing, name='deleteListing'),
     path('join/', joinListing, name='joinListing'),
+    path('leave/', leaveListing, name='leaveListing'),
 ]

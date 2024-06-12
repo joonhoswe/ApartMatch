@@ -18,37 +18,58 @@ export default function ViewListings(){
     //     setPopupActive(true);
     //     setSelectedListing(listing);
     // }
-
+  
+    const fetchData = async () => {
+      try{
+        const response = await axios.get('http://localhost:8000/api/get');
+        setDatabase(response.data);
+        setListingsLoading(false);
+      } catch(error){
+        console.error('Error fetching Data:', error);
+        if (error.response) {
+          //http status code isn't desired
+          console.error('Response data:', error.response.data);
+          console.error('Response status:', error.response.status);
+          console.error('Response headers:', error.response.headers);
+        } else if (error.request) {
+          // no response was received from request
+          console.error('Request data:', error.request);
+        } else {
+          // Something happened in setting up the request that triggered an error
+          console.error('Error message:', error.message);
+        }
+      }
+    };
+  
     useEffect(() => {
-        const fetchData = async () => {
-          try{
-            const response = await axios.get('http://localhost:8000/api/get');
-            setDatabase(response.data);
-            setListingsLoading(false);
-          } catch(error){
-            console.error('Error fetching Data:', error);
-            if (error.response) {
-              //http status code isn't desired
-              console.error('Response data:', error.response.data);
-              console.error('Response status:', error.response.status);
-              console.error('Response headers:', error.response.headers);
-            } else if (error.request) {
-              // no response was received from request
-              console.error('Request data:', error.request);
-            } else {
-              // Something happened in setting up the request that triggered an error
-              console.error('Error message:', error.message);
-            }
-          }
-        };
-        fetchData();
+      fetchData();
     }, [user]);
 
     const handleJoin = async(id, user) => {
       try {
         const response = await axios.patch('http://localhost:8000/api/join/', { id, user });
         console.log('Response:', response.data);
+        fetchData();
       } catch (error) {
+        if (error.response) {
+          console.error('Error response data:', error.response.data);
+          console.error('Error response status:', error.response.status);
+          console.error('Error response headers:', error.response.headers);
+        } else if (error.request) {
+          console.error('Error request data:', error.request);
+        } else {
+          console.error('Error message:', error.message);
+        }
+        console.error('Error config:', error.config);
+      }
+    }
+
+    const handleLeave = async(id, user) => {
+      try {
+        const response = await axios.patch('http://localhost:8000/api/leave/',{id,user});
+        console.log('Response:',response.data);
+        fetchData();
+      } catch (error){
         if (error.response) {
           console.error('Error response data:', error.response.data);
           console.error('Error response status:', error.response.status);
@@ -94,7 +115,10 @@ export default function ViewListings(){
                             
                             {/* if the user is not logged in, hide Join button */}
                             { isAuthenticated && listing.joinedListing.includes(user.nickname)
-                            ? <p className='text-gray-400 text-xs font-bold text-center'> Already Joined </p>
+                            ? (
+                              <p className='text-gray-400 text-xs font-bold text-center'> Already Joined </p>
+                              <button onClick={() => {handleLeave(listing.id, user.nickname)}} className='text-red-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'> Leave </button>
+                             )
                             : isAuthenticated && !listing.joinedListing.includes(user.nickname) ? <button onClick={()=> handleJoin(listing.id, user.nickname)} className='text-red-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'> Join </button>
                             : <></>}
                         </div>
