@@ -36,6 +36,7 @@ export default function ViewListings(){
       try {
         const response = await axios.patch('http://localhost:8000/api/join/', { id, user });
         console.log('Response:', response.data);
+        fetchData();
       } catch (error) {
         if (error.response) {
           console.error('Error response data:', error.response.data);
@@ -54,6 +55,7 @@ export default function ViewListings(){
       try {
         const response = await axios.patch('http://localhost:8000/api/leave/',{id,user});
         console.log('Response:',response.data);
+        fetchData();
       } catch (error){
         if (error.response) {
           console.error('Error response data:', error.response.data);
@@ -95,9 +97,9 @@ export default function ViewListings(){
                                 { listing.joinedListing.includes(user.nickname) ?
                                     <>
                                       <p className='text-gray-400 text-xs font-bold text-center'> Already Joined</p>
-                                      <button onClick={async () => { await handleLeave(listing.id, user.nickname); fetchData(); }} className='text-red-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'> Leave </button>
+                                      <button onClick={() => {handleLeave(listing.id, user.nickname)}} className='text-red-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'> Leave </button>
                                     </> 
-                                  : <button onClick={async () => { await handleJoin(listing.id, user.nickname); fetchData(); }} className='text-green-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'> Join </button>
+                                  : <button onClick={() => {handleJoin(listing.id, user.nickname)}} className='text-green-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'> Join </button>
                                 }
                             </div>
                         </div> : <></>

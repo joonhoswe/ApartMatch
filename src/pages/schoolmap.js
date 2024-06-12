@@ -20,16 +20,16 @@ export default function SchoolMap() {
     const { school } = router.query;
     const [searchInput, setSearchInput] = useState(school || '');
 
-    const [houseType, setHouseType] = useState('');
     const [priceRange, setPriceRange] = useState([,]);
-    const [rooms, setRooms] = useState();
-    const [commute, setCommute] = useState([,]);
+    const [houseType, setHouseType] = useState('');
     const [genderType, setGenderType] = useState('');
-    console.log(houseType)
+    const [rooms, setRooms] = useState(0);
+    const [commute, setCommute] = useState([,]);
     console.log(priceRange)
+    console.log(houseType)
+    console.log(genderType)
     console.log(rooms)
     console.log(commute)
-    console.log(genderType)
 
     const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
     const [mapSet, setMapSet] = useState(false);
