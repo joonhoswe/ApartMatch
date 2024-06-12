@@ -109,3 +109,17 @@ def joinListing(request):
         return Response({'message': 'Successfully joined the listing'}, status=status.HTTP_200_OK)
 
 
+@api_view(['PATCH'])
+def leaveListing(request):
+    if request.method == 'PATCH':
+        id = request.data.get('id')
+        user = request.data.get('user')
+        if not id or not user:
+            return Response({'error': 'ID and user are required'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        listing = get_object_or_404(Listing, id=id)
+
+        listing.joinedListing.remove(user)
+        listing.save()
+
+        return Response({'message': 'Successfully left the listing'}, status=status.HTTP_200_OK)
