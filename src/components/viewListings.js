@@ -101,7 +101,7 @@ export default function ViewListings(){
                   </div> 
                 : (
                 database.map((listing, index) => (
-                    <div key={index} className='flex items-center flex-col h-52 w-48 rounded-2xl shadow-2xl hover:cursor-pointer hover:scale-105 transition ease-in-out duration-300'>
+                    <div key={index} className={`${listing.rooms - listing.joinedListing.length === 0 ? 'hidden' : 'flex'} items-center flex-col h-52 w-48 rounded-2xl shadow-2xl hover:cursor-pointer hover:scale-105 transition ease-in-out duration-300`}>
                         <img src = {placeholder.src} alt = 'placeholder' className='h-24 w-full'/>
                         {/* adjusted inner padding here */}
                         <div className='flex flex-col space-y-1 justify-start text-start px-2'> 
@@ -115,13 +115,13 @@ export default function ViewListings(){
                             
                             {/* if the user is not logged in, hide Join button */}
                             { isAuthenticated && listing.joinedListing.includes(user.nickname)
-                            ? (
-                              <>
-                              <p className='text-gray-400 text-xs font-bold text-center'> Already Joined </p>
-                              <button onClick={() => {handleLeave(listing.id, user.nickname)}} className='text-red-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'> Leave </button>
-                              </>
-                             )
-                            : isAuthenticated && !listing.joinedListing.includes(user.nickname) ? <button onClick={()=> handleJoin(listing.id, user.nickname)} className='text-red-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'> Join </button>
+                            ? <button onClick={() => {handleLeave(listing.id, user.nickname)}} className='text-red-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'> 
+                              Leave 
+                              </button>
+                            : isAuthenticated && !listing.joinedListing.includes(user.nickname) ? 
+                              <button onClick={()=> handleJoin(listing.id, user.nickname)} className='text-green-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'> 
+                              Join 
+                              </button>
                             : <></>}
                         </div>
                     </div>
