@@ -10,6 +10,15 @@ export default function ViewListings(){
     const { user, isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
     const [database, setDatabase] = useState([]);
     const[listingsLoading, setListingsLoading] = useState(true);
+
+    // const [popupActive, setPopupActive] = useState(false);
+    // const [selectedListing, setSelectedListing] = useState(null);
+
+    // const handleListingClick = (listing) => {
+    //     setPopupActive(true);
+    //     setSelectedListing(listing);
+    // }
+
     useEffect(() => {
         const fetchData = async () => {
           try{
