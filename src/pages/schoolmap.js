@@ -25,11 +25,6 @@ export default function SchoolMap() {
     const [genderType, setGenderType] = useState('');
     const [rooms, setRooms] = useState(0);
     const [commute, setCommute] = useState([,]);
-    console.log(priceRange)
-    console.log(houseType)
-    console.log(genderType)
-    console.log(rooms)
-    console.log(commute)
 
     const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
     const [mapSet, setMapSet] = useState(false);
@@ -59,7 +54,6 @@ export default function SchoolMap() {
             const { lat, lng } = response.results[0].geometry.location;
             setMapCenter({ lat, lng });
             setMapSet(true);
-            console.log(lat, lng);
             
         })
         .catch((error) => {
@@ -86,27 +80,30 @@ export default function SchoolMap() {
             try {
                 const response = await axios.get('http://localhost:8000/api/get');
                 const listings = response.data;
-
-                const markerPromises = listings.map((listing) =>
-                    fromAddress(listing.address)
-                        .then((response) => {
-                            const { lat, lng } = response.results[0].geometry.location;
-                            return { ...listing, position: { lat, lng } };  // Include all original listing data
-                        })
-                        .catch((error) => {
-                            console.error(`Error geocoding address ${listing.address}:`, error);
-                            return null;
-                        })
-                );
-
+    
+                const markerPromises = listings.map((listing) => {
+                    if (listing.rooms - listing.joinedListing.length !== 0) {
+                        return fromAddress(listing.address)
+                            .then((response) => {
+                                const { lat, lng } = response.results[0].geometry.location;
+                                return { ...listing, position: { lat, lng } };  // Include all original listing data
+                            })
+                            .catch((error) => {
+                                console.error(`Error geocoding address ${listing.address}:`, error);
+                                return null;
+                            });
+                    } else {
+                        return Promise.resolve(null);
+                    }
+                });
+    
                 const resolvedMarkers = await Promise.all(markerPromises);
                 setMarkers(resolvedMarkers.filter(marker => marker !== null));
-                console.log(resolvedMarkers);  // Log the resolved markers with full data
             } catch (error) {
                 console.error('Error fetching listings:', error);
             }
         };
-
+    
         fetchListings();
     }, []);
 
