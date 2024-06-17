@@ -28,16 +28,15 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col items-center w-full h-[calc(100vh-54px)] text-white font-bold">
+    <div className="flex flex-col items-center w-full min-h-screen text-white font-bold">
       <div 
-        className='h-full w-full flex flex-col space-y-12 md:space-y-4 justify-between items-center py-12' 
+        className='flex-grow w-full flex flex-col space-y-12 md:space-y-4 justify-between items-center py-12' 
         style={{ 
           backgroundImage: `url(${Apartment.src})`, 
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}
       >
-
         {/* titles */}
         <div className='text-md sm:text-3xl md:text-4xl flex flex-col space-y-1 sm:space-y-3 md:space-y-6 text-center items-center'>
           <h1> 🐌 No more old housing forums. </h1>
