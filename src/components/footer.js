@@ -24,7 +24,7 @@ export default function Footer() {
                     </div>
 
                     <div className="flex flex-row space-x-2">
-                        <a className="h-4 w-4 md:h-8 md:w-8 rounded-full bg-white p-1 md:p-2 hover:cursor-pointer" href="" target="_blank" rel="noopener noreferrer">
+                        <a className="h-4 w-4 md:h-8 md:w-8 rounded-full bg-white p-1 md:p-2 hover:cursor-pointer" href="https://www.linkedin.com/company/apartmatch-co/" target="_blank" rel="noopener noreferrer">
                             <Image src={LinkedIn} alt="LinkedIn" className="w-full h-full" />
                         </a>
                         <a className="h-4 w-4 md:h-8 md:w-8 rounded-full bg-white p-1 md:p-2 hover:cursor-pointer" href="https://github.com/joonhoswe/ApartMatch" target="_blank" rel="noopener noreferrer">
