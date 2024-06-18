@@ -6,18 +6,10 @@ import axios from 'axios';
 import PacmanLoader from 'react-spinners/PacmanLoader';
 
 
-export default function ViewListings(){
+export default function ViewListings({ onListingClick }){
     const { user, isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
     const [database, setDatabase] = useState([]);
-    const[listingsLoading, setListingsLoading] = useState(true);
-
-    // const [popupActive, setPopupActive] = useState(false);
-    // const [selectedListing, setSelectedListing] = useState(null);
-
-    // const handleListingClick = (listing) => {
-    //     setPopupActive(true);
-    //     setSelectedListing(listing);
-    // }
+    const [listingsLoading, setListingsLoading] = useState(true);
   
     const fetchData = async () => {
       try{
@@ -101,7 +93,7 @@ export default function ViewListings(){
                   </div> 
                 : (
                 database.map((listing, index) => (
-                    <div key={index} className={`${listing.rooms - listing.joinedListing.length === 0 ? 'hidden' : 'flex'} items-center flex-col h-52 w-48 rounded-2xl shadow-2xl hover:cursor-pointer hover:scale-105 transition ease-in-out duration-300`}>
+                    <div key={index} onClick={() => onListingClick(listing)} className={`${listing.rooms - listing.joinedListing.length === 0 ? 'hidden' : 'flex'} items-center flex-col h-52 w-48 rounded-2xl shadow-2xl hover:cursor-pointer hover:scale-105 transition ease-in-out duration-300`}>
                         <img src = {placeholder.src} alt = 'placeholder' className='h-24 w-full'/>
                         {/* adjusted inner padding here */}
                         <div className='flex flex-col space-y-1 justify-start text-start px-2'> 

@@ -38,6 +38,11 @@ export default function SchoolMap() {
         setSelectedMarker(marker);
     }
 
+    const handleListingClick = (listing) => {
+        setPopupActive(true);
+        setSelectedMarker(listing);
+    }
+
     // When new school is searched, update the map center
     const handleFindHomes = () => {
         if (searchInput.trim() !== '') {
@@ -298,8 +303,8 @@ export default function SchoolMap() {
 
             </div>
 
-            
-            <ViewListings/>
+            {/* pass function to set popup */}
+            <ViewListings onListingClick={handleListingClick}/>
 
         </div>
         </APIProvider>
