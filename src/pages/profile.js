@@ -17,7 +17,8 @@ export default function Profile() {
           const response = await axios.get('http://localhost:8000/api/get');
           setDatabase(response.data);
           if (user) {
-            setListings(response.data);
+            const userOwnedListings = response.data.filter(listing => listing.owner == user.nickname);
+            setListings(userOwnedListings);
           }
           setLoading(false); // Set loading to false after the data has been fetched
         } catch(error){
@@ -50,9 +51,9 @@ export default function Profile() {
       return <div> Loading... </div>;
     } else {
       return isAuthenticated ? (
-        <div className='h-[calc(100vh-54px)] w-full bg-gray-200 flex items-center justify-center text-black p-4 sm:p-8'>
+        <div className='min-h-[calc(100vh-54px)] h-auto w-full bg-gray-200 flex items-center justify-center text-black p-4 sm:p-8'>
   
-          <div className='h-full w-[95vw] bg-white rounded-lg p-3 sm:p-6 flex flex-col space-y-8'>
+          <div className='h-auto w-[95vw] bg-white rounded-lg p-3 sm:p-6 flex flex-col space-y-8'>
   
             <div className='flex items-center justify-between'>
               <div className='flex flex-row space-x-3 w-full items-center'>
@@ -67,10 +68,10 @@ export default function Profile() {
               <div className='w-full h-0.5 bg-red-500'/>
             </div>
 
-            <div className='flex flex-col space-y-6 space-x-0 sm:flex-row sm:space-x-8 sm:space-y-0 items-center flex-wrap'>
+            <div className='flex gap-8 items-center flex-wrap'>
             {listings.map((listing, index) => (
                 <div key={index} className='relative flex flex-col h-48 w-56 rounded-2xl shadow-2xl hover:cursor-pointer hover:scale-110 transition ease-in-out duration-300'>
-                    <div className={`${listing.owner == user.nickname ? 'block' : 'hidden'} absolute top-2 left-2 bg-yellow-400 text-white font-bold text-xs w-18 h-4 p-1 rounded-md flex items-center justify-center`}> 
+                    <div className='absolute top-2 left-2 bg-yellow-400 text-white font-bold text-xs w-18 h-4 p-1 rounded-md flex items-center justify-center'> 
                       <p className=''>☆OWNER </p>
                     </div>
                     <img src = {placeholder.src} alt = 'placeholder' className='h-24 w-full rounded-t-2xl'/>
