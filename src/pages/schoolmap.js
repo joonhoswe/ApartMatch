@@ -120,7 +120,7 @@ export default function SchoolMap() {
                 <div className='relative w-full'>
                     {/* search bar */}
                     <input
-                    className={`h-10 md:h-12 w-full rounded-lg md:rounded-2xl px-4 pr-10 text-black outline-none ring-2 ring-red-500 text-xs sm:text-sm lg:text-base ${searchInput === '' ? 'text-gray-400' : ''}`}
+                    className={`h-10 md:h-12 w-full rounded-lg md:rounded-2xl px-4 pr-10 text-black outline-none ring-2 ring-red-500 text-xs lg:text-base ${searchInput === '' ? 'text-gray-400' : ''}`}
                     placeholder="Ex: Carnegie Mellon University"
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
@@ -138,17 +138,17 @@ export default function SchoolMap() {
                 </div>
 
                 {/* price range selection */}
-                <div className='flex flex-col space-y-2'>
-                    <p> Price Range </p>
+                <div className='flex flex-col space-y-1'>
+                    <p className='text-sm font-bold'> Price Range </p>
                     <div className='flex flex-row h-10 w-full'>
                     <input
-                        className={`h-full w-1/2 rounded-l-lg md:rounded-l-2xl px-4 text-black outline-none ring-2 ring-red-500 text-xs sm:text-sm lg:text-base ${priceRange[0] === 0 ? 'text-gray-400' : ''}`}
+                        className={`h-full w-1/2 rounded-l-lg md:rounded-l-2xl px-4 text-black outline-none ring-2 ring-red-500 text-xs md:text-sm ${priceRange[0] === 0 ? 'text-gray-400' : ''}`}
                         placeholder="Min"
                         value={priceRange[0]}
                         onChange={(e) => setPriceRange([parseInt(e.target.value), priceRange[1]])}
                     />
                     <input
-                        className={`h-full w-1/2 rounded-r-lg md:rounded-r-2xl px-4 text-black outline-none ring-2 ring-red-500 text-xs sm:text-sm lg:text-base ${priceRange[1] === 1000000 ? 'text-gray-400' : ''}`}
+                        className={`h-full w-1/2 rounded-r-lg md:rounded-r-2xl px-4 text-black outline-none ring-2 ring-red-500 text-xs md:text-sm ${priceRange[1] === 1000000 ? 'text-gray-400' : ''}`}
                         placeholder="Max"
                         value={priceRange[1]}
                         onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
@@ -157,8 +157,8 @@ export default function SchoolMap() {
                 </div>
 
                 {/* home type selection */}
-                <div className='flex flex-col space-y-2'>
-                    <p> Home Type </p>
+                <div className='flex flex-col space-y-1'>
+                    <p className='text-sm font-bold'> Home Type </p>
                     <div className='flex flex-row h-10 w-full'>
                     <button
                         className={`h-full w-1/2 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm ${houseType === 'apartment' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
@@ -176,23 +176,23 @@ export default function SchoolMap() {
                 </div>
 
                 {/* gender type selection */}
-                <div className='flex flex-col space-y-2'>
-                    <p> Gender Preferences </p>
+                <div className='flex flex-col space-y-1'>
+                    <p className='text-sm font-bold'> Gender Preferences </p>
                     <div className='flex flex-row h-10 w-full'>
                     <button
-                        className={`h-full w-1/2 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm lg:text-base ${genderType === 'males' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                        className={`h-full w-1/2 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs md:text-sm ${genderType === 'males' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
                         onClick={() => setGenderType('males')}
                     >
                         M
                     </button>
                     <button
-                        className={`h-full w-1/2 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm lg:text-base ${genderType === 'females' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                        className={`h-full w-1/2 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs md:text-sm ${genderType === 'females' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
                         onClick={() => setGenderType('females')}
                     >
                         F
                     </button>
                     <button
-                        className={`h-full w-1/2 flex items-center justify-center rounded-r-lg md:rounded-r-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm lg:text-base ${genderType === 'both' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                        className={`h-full w-1/2 flex items-center justify-center rounded-r-lg md:rounded-r-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs md:text-sm ${genderType === 'both' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
                         onClick={() => setGenderType('both')}
                     >
                         Co-Ed
@@ -201,49 +201,49 @@ export default function SchoolMap() {
                 </div>
 
                 {/* rooms available selection */}
-                <div className='flex flex-col space-y-2'>
-                    <p> # of Rooms Left </p>
+                <div className='flex flex-col space-y-1'>
+                    <p className='text-sm font-bold'> # of Rooms Left </p>
                     <div className='flex flex-row h-10 w-full'>
                         <button 
-                        className={`h-full w-1/4 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${rooms === 1 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                        className={`h-full w-1/4 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs md:text-sm ${rooms === 1 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
                         onClick={() => setRooms(1)}
                         >
                         1
                         </button>
 
                         <button 
-                        className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${rooms === 2 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                        className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs md:text-sm ${rooms === 2 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
                         onClick={() => setRooms(2)}
                         >
                         2
                         </button>
 
                         <button 
-                        className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${rooms === 3 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                        className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs md:text-sm ${rooms === 3 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
                         onClick={() => setRooms(3)}
                         >
                         3
                         </button>
                         <input 
                         placeholder='3+'
-                        className={`h-full w-1/4 flex text-center items-center justify-center rounded-r-lg md:rounded-r-2xl p-2 outline-none ring-2 ring-red-500 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${rooms > 4 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                        className={`h-full w-1/4 flex text-center items-center justify-center rounded-r-lg md:rounded-r-2xl p-2 outline-none ring-2 ring-red-500 transition ease-in-out duration-200 text-xs md:text-sm ${rooms > 4 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
                         onChange={(e) => setRooms(e.target.value)}
                         />
                     </div>
                 </div>
 
                 {/* commute time range selection */}
-                <div className='flex flex-col space-y-2'>
-                    <p> Commute Time </p>
+                <div className='flex flex-col space-y-1'>
+                    <p className='text-sm font-bold'> Commute Time </p>
                     <div className='flex flex-row h-10 w-full'>
                     <input
-                        className={`h-full w-1/2 rounded-l-lg md:rounded-l-2xl px-4 text-black outline-none ring-2 ring-red-500 text-xs sm:text-sm lg:text-base ${commute[0] === 0 ? 'text-gray-400' : ''}`}
+                        className={`h-full w-1/2 rounded-l-lg md:rounded-l-2xl px-4 text-black outline-none ring-2 ring-red-500 text-xs md:text-sm ${commute[0] === 0 ? 'text-gray-400' : ''}`}
                         placeholder="Min"
                         value={commute[0]}
                         onChange={(e) => setCommute([parseInt(e.target.value), commute[1]])}
                     />
                     <input
-                        className={`h-full w-1/2 rounded-r-lg md:rounded-r-2xl px-4 text-black outline-none ring-2 ring-red-500 text-xs sm:text-sm lg:text-base ${commute[1] === 1000000 ? 'text-gray-400' : ''}`}
+                        className={`h-full w-1/2 rounded-r-lg md:rounded-r-2xl px-4 text-black outline-none ring-2 ring-red-500 text-xs md:text-sm ${commute[1] === 1000000 ? 'text-gray-400' : ''}`}
                         placeholder="Max"
                         value={commute[1]}
                         onChange={(e) => setCommute([commute[0], parseInt(e.target.value)])}
