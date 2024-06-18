@@ -278,7 +278,7 @@ export default function SchoolMap() {
                     
                     {popupActive && selectedMarker && (
                         <div className='absolute top-0 left-0 w-full h-full flex items-center z-50 px-4'>
-                            <div className='relative bg-white w-full h-1/2 p-4 rounded-lg shadow-lg'>
+                            <div className='relative bg-white p-4 rounded-lg shadow-lg'>
                                 <button onClick={() => setPopupActive(false)} className='absolute top-2 right-2 h-6 w-6 rounded-lg outline-none ring-2 ring-red-500 bg-red-500 text-white hover:bg-white hover:text-red-500 transition duration-300 ease-in-out font-bold'>
                                     x
                                 </button>
