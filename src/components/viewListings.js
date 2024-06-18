@@ -76,7 +76,7 @@ export default function ViewListings({ onListingClick }){
     }
 
     return (
-        <div className='h-[calc(100vh-54px)] w-full md:w-3/4 md:flex flex-col items-center space-y-6 text-black p-2 border-2 border-gray-500'>
+        <div className='h-[calc(100vh-54px)] w-full md:w-2/5 md:flex flex-col items-center space-y-6 text-black p-2 border-2 border-gray-500'>
             {isAuthenticated ? (
               <></>
             ) 
@@ -86,7 +86,7 @@ export default function ViewListings({ onListingClick }){
                 <p className='font-bold text-red-500'> Please <span onClick={loginWithRedirect} className='underline hover:cursor-pointer hover:text-red-400 transition ease-in-out duration-300'>sign in </span> to join a listing. </p>
             </div>
             )}
-            <div className='h-full w-full flex flex-wrap gap-2 p-4 justify-center'>
+            <div className='h-full overflow-scroll w-full flex flex-wrap gap-4 justify-center'>
                 {listingsLoading ? 
                   <div className='h-full w-full flex items-center justify-center'>
                     <PacmanLoader color="#ef4444" />
@@ -101,7 +101,7 @@ export default function ViewListings({ onListingClick }){
                           <p className=''>☆OWNER </p>
                         </div>
                         
-                        <img src = {placeholder.src} alt = 'placeholder' className='h-24 w-full'/>
+                        <img src = {placeholder.src} alt = 'placeholder' className='h-24 w-full rounded-t-2xl'/>
                         {/* adjusted inner padding here */}
                         <div className='flex flex-col space-y-1 justify-start text-start px-2'> 
                             <div className='flex flex-row space-x-1 items-center'>
