@@ -86,7 +86,7 @@ export default function ViewListings({ onListingClick }){
                 <p className='font-bold text-red-500'> Please <span onClick={loginWithRedirect} className='underline hover:cursor-pointer hover:text-red-400 transition ease-in-out duration-300'>sign in </span> to join a listing. </p>
             </div>
             )}
-            <div className='h-full w-full overflow-y-scroll grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-12 p-4 justify-center'>
+            <div className='h-full w-full flex flex-wrap gap-2 p-4 justify-center'>
                 {listingsLoading ? 
                   <div className='h-full w-full flex items-center justify-center'>
                     <PacmanLoader color="#ef4444" />
@@ -96,6 +96,9 @@ export default function ViewListings({ onListingClick }){
                     <div key={index} onClick={() => onListingClick(listing)} className={`${listing.rooms - listing.joinedListing.length === 0 ? 'hidden' : 'flex'} relative items-center flex-col h-52 w-48 rounded-2xl shadow-2xl hover:cursor-pointer hover:scale-105 transition ease-in-out duration-300`}>
                         <div className={`${listing.gender == 'males' ? 'bg-blue-500' : listing.gender ==='females' ? 'bg-pink-500' : 'bg-gray-500'} absolute top-2 right-2 text-white font-bold text-xs w-16 h-4 p-1 rounded-md flex items-center justify-center`}> 
                           <p className=''> {listing.gender} </p>
+                        </div>
+                        <div className={`${listing.owner == user.nickname ? 'block' : 'hidden'} absolute top-2 left-2 bg-yellow-400 text-white font-bold text-xs w-18 h-4 p-1 rounded-md flex items-center justify-center`}> 
+                          <p className=''>☆OWNER </p>
                         </div>
                         
                         <img src = {placeholder.src} alt = 'placeholder' className='h-24 w-full'/>
