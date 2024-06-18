@@ -245,8 +245,8 @@ export default function postListing() {
                         Only Females
                         </button>
                         <button 
-                        className={`h-full w-1/2 flex items-center justify-center rounded-r-lg md:rounded-r-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm lg:text-base ${gender === 'both' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                        onClick={() => setGender('both')}
+                        className={`h-full w-1/2 flex items-center justify-center rounded-r-lg md:rounded-r-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm lg:text-base ${gender === 'co-ed' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                        onClick={() => setGender('co-ed')}
                         >
                         No Preference
                         </button>
