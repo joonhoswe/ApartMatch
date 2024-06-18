@@ -94,7 +94,7 @@ export default function ViewListings({ onListingClick }){
                 : (
                 database.map((listing, index) => (
                     <div key={index} onClick={() => onListingClick(listing)} className={`${listing.rooms - listing.joinedListing.length === 0 ? 'hidden' : 'flex'} relative items-center flex-col h-52 w-48 rounded-2xl shadow-2xl hover:cursor-pointer hover:scale-105 transition ease-in-out duration-300`}>
-                        <div className={`${listing.gender == 'males' ? 'bg-blue-500' : listing.gender ==='females' ? 'bg-pink-500' : 'bg-green-500'} absolute top-2 right-2 text-white font-bold text-xs w-16 h-4 p-1 rounded-md flex items-center justify-center`}> 
+                        <div className={`${listing.gender == 'males' ? 'bg-blue-500' : listing.gender ==='females' ? 'bg-pink-500' : 'bg-gray-500'} absolute top-2 right-2 text-white font-bold text-xs w-16 h-4 p-1 rounded-md flex items-center justify-center`}> 
                           <p className=''> {listing.gender} </p>
                         </div>
                         
