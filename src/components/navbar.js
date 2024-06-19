@@ -31,6 +31,7 @@ export default function Navbar() {
 
   return (
     <div className="flex items-center justify-between w-full h-14 sticky top-0 z-50 text-white bg-red-500 backdrop-filter backdrop-blur-lg">
+      {/* dekstop navbar */}
       <div className='items-center justify-between w-full h-14 px-4 hidden md:flex'>
         
         <div className="flex items-center justify-center space-x-6">
@@ -60,13 +61,18 @@ export default function Navbar() {
 
       </div>
 
+      {/* mobile navbar */}
       <div className='flex items-center justify-between w-full h-14 md:hidden'>
 
         <Link href = '/home' className='pl-2'>
             <Image src={Logo} alt="ApartMatch Logo" width={128} height={32} />
         </Link>
         {/* Mobile NavBar Icon */}
-        <Hamburger rounded size={24} duration={0.4} distance='lg' hideOutline={false} onToggle={toggleMenu} />
+        <div className='flex flex-row space-x-2 items-center justify-center'>
+          <Login />
+          <Hamburger rounded size={24} duration={0.4} distance='lg' hideOutline={false} onToggle={toggleMenu} />
+        </div>
+        
         <AnimatePresence>
           {isOpen && (
             <motion.div
@@ -75,24 +81,17 @@ export default function Navbar() {
               exit="closed"
               variants={sidebarVariants}
               transition={{ duration: 0.4 }}
-              className="z-20 pt-12 pb-28 absolute top-full right-0 h-screen w-screen bg-white text-black bg-opacity-100 flex flex-col justify-between"
+              className="z-20 absolute top-full right-0 h-40 w-2/5 sm:w-1/3 rounded-b-lg text-sm sm:text-base text-white bg-red-500 bg-opacity-100 flex flex-col justify-center items-center"
             >
               {/* Website Section Links */}
-              <div className='flex flex-col space-y-6 items-center justify-center'>
-                <div className='flex flex-row space-x-2 items-center justify-center'>
-                  <Login />
-                </div>
+              <div className='flex flex-col space-y-6 items-center justify-center '>
                 {navLinks.map((link) => (
-                  <a href={link.path} className="">
-                    <button key={link.title} className="">
+                  <a href={link.path}>
+                    <button key={link.title} className="font-bold">
                       {link.title}
                     </button>
                   </a>
                 ))}
-              </div>
-
-              <div className='flex flex-col space-y-6'>
-                  <button> </button>
               </div>
             </motion.div>
           )}
