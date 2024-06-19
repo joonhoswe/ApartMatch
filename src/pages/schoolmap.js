@@ -77,7 +77,7 @@ export default function SchoolMap() {
                 .then((response) => {
                     const { lat, lng } = response.results[0].geometry.location;
                     setMapCenter({ lat, lng });
-                    setMapSet(true);
+                    
                 })
                 .catch((error) => {
                     console.error(error);
@@ -123,6 +123,7 @@ export default function SchoolMap() {
             const resolvedMarkers = await Promise.all(markerPromises);
             setMarkers(resolvedMarkers.filter(marker => marker !== null));
             setFilteredListings(listings); // Initial full list
+            setMapSet(true);
         } catch (error) {
             console.error('Error fetching listings:', error);
         }
@@ -140,6 +141,7 @@ export default function SchoolMap() {
 
     // whenever a filter parameter changes, update the listings and markers
     useEffect(() => {
+        setMapSet(false);
         const fetchFilteredListings = async () => {
             try {
                 const response = await axios.get('http://localhost:8000/api/get');
@@ -174,6 +176,7 @@ export default function SchoolMap() {
                 const resolvedMarkers = await Promise.all(markerPromises);
                 setMarkers(resolvedMarkers.filter(marker => marker !== null));
                 setFilteredListings(filteredListings); // Update filtered listings
+                setMapSet(true);
             } catch (error) {
                 console.error('Error fetching filtered listings:', error);
             }
@@ -383,7 +386,7 @@ export default function SchoolMap() {
                     )}
                 </div>
 
-                <ViewListings listings={filteredListings} onListingClick={handleListingClick} />
+                <ViewListings loading={mapSet} listings={filteredListings} onListingClick={handleListingClick} />
             </div>
         </APIProvider>
     );

@@ -5,13 +5,8 @@ import placeholder from '@assets/placeholder.jpeg';
 import axios from 'axios';
 import PacmanLoader from 'react-spinners/PacmanLoader';
 
-export default function ViewListings({ listings, onListingClick }) {
+export default function ViewListings({ mapSet, listings, onListingClick }) {
     const { user, isAuthenticated, loginWithRedirect } = useAuth0();
-    const [listingsLoading, setListingsLoading] = useState(true);
-
-    useEffect(() => {
-        setListingsLoading(false);
-    }, [listings]);
 
     const handleJoin = async (id, user) => {
         try {
@@ -39,7 +34,7 @@ export default function ViewListings({ listings, onListingClick }) {
                 </div>
             ) : null}
             <div className='h-full overflow-scroll w-full sm:flex sm:flex-wrap gap-4 grid grid-cols-1 justify-items-center justify-center'>
-                {listingsLoading ? (
+                {!mapSet ? (
                     <div className='h-full w-full flex items-center justify-center'>
                         <PacmanLoader color="#ef4444" />
                     </div>
