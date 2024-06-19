@@ -76,7 +76,7 @@ export default function ViewListings({ onListingClick }){
     }
 
     return (
-        <div className='h-[calc(100vh-54px)] w-full md:w-2/5 md:flex flex-col items-center space-y-6 text-black p-2 border-2 border-gray-500'>
+        <div className='h-[calc(100vh-54px)] w-full sm:w-2/5 sm:flex flex-col items-center space-y-6 text-black p-2 border-2 border-gray-500'>
             {isAuthenticated ? (
               <></>
             ) 

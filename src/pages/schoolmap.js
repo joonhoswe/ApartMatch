@@ -137,7 +137,7 @@ export default function SchoolMap() {
     return (
         <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY} onLoad={() => initialize(searchInput)}>
             <div className='flex flex-row h-[calc(100vh-54px)] w-full bg-white'>
-                <div className='h-full w-1/3 hidden md:flex flex-col space-y-6 text-black p-4 border-2 border-gray-500'>
+                <div className='h-full w-1/3 hidden sm:flex flex-col space-y-6 text-black p-4 border-2 border-gray-500'>
                     <div className='relative w-full'>
                         <input
                             className={`h-10 md:h-12 w-full rounded-lg md:rounded-2xl px-4 pr-10 text-black outline-none ring-2 ring-red-500 text-xs lg:text-base ${searchInput === '' ? 'text-gray-400' : ''}`}
@@ -266,7 +266,7 @@ export default function SchoolMap() {
                     </div>
                 </div>
 
-                <div style={{ width: '100%', height: '100%' }} className='hidden md:flex relative'>
+                <div style={{ width: '100%', height: '100%' }} className='hidden sm:flex relative'>
                     {mapSet ? (
                         <Map
                             mapId='e1a96cb574a64c5a'
