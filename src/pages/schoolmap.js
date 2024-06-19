@@ -97,45 +97,45 @@ export default function SchoolMap() {
         }
     };
 
+    const fetchListings = async () => {
+        try {
+            const response = await axios.get('http://localhost:8000/api/get');
+            const listings = response.data;
+
+            const markerPromises = listings.map((listing) => {
+                if (listing.rooms - listing.joinedListing.length !== 0) {
+                    return fromAddress(listing.address)
+                        .then((response) => {
+                            const { lat, lng } = response.results[0].geometry.location;
+                            return { ...listing, position: { lat, lng } };  // Include all original listing data
+                        })
+                        .catch((error) => {
+                            console.error(`Error geocoding address ${listing.address}:`, error);
+                            return null;
+                        });
+                } else {
+                    return Promise.resolve(null);
+                }
+            });
+
+            const resolvedMarkers = await Promise.all(markerPromises);
+            setMarkers(resolvedMarkers.filter(marker => marker !== null));
+        } catch (error) {
+            console.error('Error fetching listings:', error);
+        }
+    };
+
     useEffect(() => {
         if (school) {
             setSearchInput(school);
             initialize(school);
         }
 
-        const fetchListings = async () => {
-            try {
-                const response = await axios.get('http://localhost:8000/api/get');
-                const listings = response.data;
-
-                const markerPromises = listings.map((listing) => {
-                    if (listing.rooms - listing.joinedListing.length !== 0) {
-                        return fromAddress(listing.address)
-                            .then((response) => {
-                                const { lat, lng } = response.results[0].geometry.location;
-                                return { ...listing, position: { lat, lng } };  // Include all original listing data
-                            })
-                            .catch((error) => {
-                                console.error(`Error geocoding address ${listing.address}:`, error);
-                                return null;
-                            });
-                    } else {
-                        return Promise.resolve(null);
-                    }
-                });
-
-                const resolvedMarkers = await Promise.all(markerPromises);
-                setMarkers(resolvedMarkers.filter(marker => marker !== null));
-            } catch (error) {
-                console.error('Error fetching listings:', error);
-            }
-        };
-
         fetchListings();
     }, [school]);
 
     return (
-        <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY} onLoad={() => initialize(searchInput)}>
+        <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
             <div className='flex flex-row h-[calc(100vh-54px)] w-full bg-white'>
                 <div className='h-full w-1/3 hidden sm:flex flex-col space-y-6 text-black p-4 border-2 border-gray-500'>
                     <div className='relative w-full'>
