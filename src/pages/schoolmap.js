@@ -38,12 +38,12 @@ export default function SchoolMap() {
     const router = useRouter();
     const { school } = router.query;
     const [searchInput, setSearchInput] = useState(school || '');
-    const [priceRange, setPriceRange] = useState([0, 1000000]);
+    const [priceRange, setPriceRange] = useState([, ]);
     const [homeType, setHomeType] = useState('');
     const [gender, setGender] = useState('');
     const [rooms, setRooms] = useState(0);
     const [bathrooms, setBathrooms] = useState(0);
-    const [commute, setCommute] = useState([0, 100]);
+    const [commute, setCommute] = useState([, ]);
 
     const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
     const [mapSet, setMapSet] = useState(false);
@@ -139,51 +139,54 @@ export default function SchoolMap() {
         fetchListings();
     }, [school]);
 
-    // whenever a filter parameter changes, update the listings and markers
-    useEffect(() => {
-        setMapSet(false);
-        const fetchFilteredListings = async () => {
-            try {
-                const response = await axios.get('http://localhost:8000/api/get');
-                const listings = response.data;
+      // whenever a filter parameter changes, update the listings and markers
+      useEffect(() => {
+        const timer = setTimeout(() => {
+            setMapSet(false);
+            const fetchFilteredListings = async () => {
+                try {
+                    const response = await axios.get('http://localhost:8000/api/get');
+                    const listings = response.data;
 
-                // left out commute time filtering for now
-                const filteredListings = listings.filter(listing => 
-                    (!priceRange[0] || listing.rent >= priceRange[0]) &&
-                    (!priceRange[1] || listing.rent <= priceRange[1]) &&
-                    (!homeType || listing.homeType === homeType) &&
-                    (!gender || listing.gender === gender) &&
-                    (!rooms || listing.rooms - listing.joinedListing.length === rooms) &&
-                    (!bathrooms || listing.bathrooms === bathrooms)
-                );
+                    // left out commute time filtering for now
+                    const filteredListings = listings.filter(listing => 
+                        (!priceRange[0] || listing.rent >= priceRange[0]) &&
+                        (!priceRange[1] || listing.rent <= priceRange[1]) &&
+                        (!homeType || listing.homeType === homeType) &&
+                        (!gender || listing.gender === gender) &&
+                        (!rooms || listing.rooms - listing.joinedListing.length === rooms) &&
+                        (!bathrooms || listing.bathrooms === bathrooms)
+                    );
 
-                const markerPromises = filteredListings.map((listing) => {
-                    if (listing.rooms - listing.joinedListing.length !== 0) {
-                        return fromAddress(listing.address)
-                            .then((response) => {
-                                const { lat, lng } = response.results[0].geometry.location;
-                                return { ...listing, position: { lat, lng } };  // Include all original listing data
-                            })
-                            .catch((error) => {
-                                console.error(`Error geocoding address ${listing.address}:`, error);
-                                return null;
-                            });
-                    } else {
-                        return Promise.resolve(null);
-                    }
-                });
-    
-                const resolvedMarkers = await Promise.all(markerPromises);
-                setMarkers(resolvedMarkers.filter(marker => marker !== null));
-                setFilteredListings(filteredListings); // Update filtered listings
-                setMapSet(true);
-            } catch (error) {
-                console.error('Error fetching filtered listings:', error);
-            }
-        };
+                    const markerPromises = filteredListings.map((listing) => {
+                        if (listing.rooms - listing.joinedListing.length !== 0) {
+                            return fromAddress(listing.address)
+                                .then((response) => {
+                                    const { lat, lng } = response.results[0].geometry.location;
+                                    return { ...listing, position: { lat, lng } };  // Include all original listing data
+                                })
+                                .catch((error) => {
+                                    console.error(`Error geocoding address ${listing.address}:`, error);
+                                    return null;
+                                });
+                        } else {
+                            return Promise.resolve(null);
+                        }
+                    });
+        
+                    const resolvedMarkers = await Promise.all(markerPromises);
+                    setMarkers(resolvedMarkers.filter(marker => marker !== null));
+                    setFilteredListings(filteredListings); // Update filtered listings
+                    setMapSet(true);
+                } catch (error) {
+                    console.error('Error fetching filtered listings:', error);
+                }
+            };
 
-        fetchFilteredListings();
+            fetchFilteredListings();
+        }, 200); // Delay in milliseconds
 
+        return () => clearTimeout(timer); // Cleanup the timer on unmount or dependency change
     }, [priceRange, homeType, gender, rooms, bathrooms]);
 
     return (
