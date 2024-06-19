@@ -129,7 +129,7 @@ export default function SchoolMap() {
         }
     };
 
-    // whenever school chnages, update search input and fetch listings
+    // whenever school changes, update search input and fetch listings
     useEffect(() => {
         if (school) {
             setSearchInput(school);
@@ -352,7 +352,11 @@ export default function SchoolMap() {
                 </div>
 
                 <div style={{ width: '100%', height: '100%' }} className='hidden sm:flex relative'>
-                    {mapSet ? (
+                    {!mapSet ? (
+                        <div className='h-full w-full flex items-center justify-center'>
+                            <PulseLoader color='#ef4444' />
+                        </div>
+                    ) : (
                         <Map
                             mapId='e1a96cb574a64c5a'
                             mapContainerStyle={{ width: '100%', height: '100%' }}
@@ -379,14 +383,10 @@ export default function SchoolMap() {
                                 </div>
                             )}
                         </Map>
-                    ) : (
-                        <div className='h-full w-full flex items-center justify-center'>
-                            <PulseLoader color='#ef4444' />
-                        </div>
                     )}
                 </div>
 
-                <ViewListings loading={mapSet} listings={filteredListings} onListingClick={handleListingClick} />
+                <ViewListings loading={!mapSet} listings={filteredListings} onListingClick={handleListingClick} />
             </div>
         </APIProvider>
     );

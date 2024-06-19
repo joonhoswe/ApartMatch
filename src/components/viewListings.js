@@ -1,11 +1,10 @@
-import { React, useEffect, useState } from 'react';
-import Login from '@components/login';
+import React from 'react';
 import { useAuth0 } from "@auth0/auth0-react";
 import placeholder from '@assets/placeholder.jpeg';
 import axios from 'axios';
 import PacmanLoader from 'react-spinners/PacmanLoader';
 
-export default function ViewListings({ mapSet, listings, onListingClick }) {
+export default function ViewListings({ loading, listings, onListingClick }) {
     const { user, isAuthenticated, loginWithRedirect } = useAuth0();
 
     const handleJoin = async (id, user) => {
@@ -34,7 +33,7 @@ export default function ViewListings({ mapSet, listings, onListingClick }) {
                 </div>
             ) : null}
             <div className='h-full overflow-scroll w-full sm:flex sm:flex-wrap gap-4 grid grid-cols-1 justify-items-center justify-center'>
-                {!mapSet ? (
+                {loading ? (
                     <div className='h-full w-full flex items-center justify-center'>
                         <PacmanLoader color="#ef4444" />
                     </div>
