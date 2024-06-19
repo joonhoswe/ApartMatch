@@ -23,7 +23,7 @@ export default function Home() {
 
   const handleFindHomes = () => {
     if (school.trim() !== '') {
-      router.push(`/schoolmap?school=${encodeURIComponent(school)}`);
+      router.push(`/schoolmap?school=${school}`);
     }
   };
 

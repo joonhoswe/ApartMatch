@@ -3,15 +3,7 @@ import { useRouter } from 'next/router';
 import { APIProvider, Map, AdvancedMarker, Pin } from '@vis.gl/react-google-maps';
 import ViewListings from '@components/viewListings';
 import { IoIosSearch } from "react-icons/io";
-import {
-    setDefaults,
-    fromAddress,
-    fromLatLng,
-    fromPlaceId,
-    setLocationType,
-    geocode,
-    RequestType,
-  } from "react-geocode";
+import { setDefaults, fromAddress } from "react-geocode";
 import axios from 'axios';
 import Popup from '@components/listingPopup';
 import PulseLoader from 'react-spinners/PulseLoader';
@@ -43,49 +35,53 @@ export default function SchoolMap() {
         setSelectedMarker(listing);
     }
 
-    // When new school is searched, update the map center
     const handleFindHomes = () => {
         if (searchInput.trim() !== '') {
-        router.push(`/schoolmap?school=${encodeURIComponent(searchInput)}`);
-        setMapSet(false);
-        handleGeocode(searchInput);
+            router.push(`/schoolmap?school=${searchInput}`);
+            setMapSet(false);
+            handleGeocode(searchInput);
         }
     };
 
-    // Geocode the address to get the latitude and longitude
     const handleGeocode = (address) => {
-        fromAddress(address)
-        .then((response) => {
-            const { lat, lng } = response.results[0].geometry.location;
-            setMapCenter({ lat, lng });
-            setMapSet(true);
-            
-        })
-        .catch((error) => {
-            console.error(error);
-        });
+        if (address) {
+            fromAddress(address)
+                .then((response) => {
+                    const { lat, lng } = response.results[0].geometry.location;
+                    setMapCenter({ lat, lng });
+                    setMapSet(true);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        } else {
+            console.error("Address is missing or invalid.");
+        }
     };
 
-    // Initialize the map with the search input (school name or address)
     const initialize = (searchInput) => {
         if (searchInput) {
             console.log(`Loading map for ${searchInput}`);
             setDefaults({
                 key: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
-                language: "en", 
-                region: "es", 
+                language: "en",
+                region: "es",
             });
+            handleGeocode(searchInput);
         }
-        handleGeocode(searchInput);
     };
 
-    // Fetch listings from the backend
     useEffect(() => {
+        if (school) {
+            setSearchInput(school);
+            initialize(school);
+        }
+
         const fetchListings = async () => {
             try {
                 const response = await axios.get('http://localhost:8000/api/get');
                 const listings = response.data;
-    
+
                 const markerPromises = listings.map((listing) => {
                     if (listing.rooms - listing.joinedListing.length !== 0) {
                         return fromAddress(listing.address)
@@ -101,212 +97,188 @@ export default function SchoolMap() {
                         return Promise.resolve(null);
                     }
                 });
-    
+
                 const resolvedMarkers = await Promise.all(markerPromises);
                 setMarkers(resolvedMarkers.filter(marker => marker !== null));
             } catch (error) {
                 console.error('Error fetching listings:', error);
             }
         };
-    
+
         fetchListings();
-    }, []);
+    }, [school]);
 
     return (
-        <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY} onLoad={() => initialize(searchInput)}>
-        <div className='flex flex-row h-[calc(100vh-54px)] w-full bg-white'>
-            {/* container with filters */}
-            <div className='h-full w-1/3 hidden md:flex flex-col space-y-6 text-black p-4 border-2 border-gray-500'>
-                <div className='relative w-full'>
-                    {/* search bar */}
-                    <input
-                    className={`h-10 md:h-12 w-full rounded-lg md:rounded-2xl px-4 pr-10 text-black outline-none ring-2 ring-red-500 text-xs lg:text-base ${searchInput === '' ? 'text-gray-400' : ''}`}
-                    placeholder="Ex: Carnegie Mellon University"
-                    value={searchInput}
-                    onChange={(e) => setSearchInput(e.target.value)}
-                    onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === 'Return') {
-                        handleFindHomes();
-                        }
-                    }}
-                    />
-                    {/* search icon */}
-                    <IoIosSearch
-                    onClick={handleFindHomes}
-                    className='absolute right-3 top-1/2 transform -translate-y-1/2 h-6 w-6 text-red-500 hover:cursor-pointer'
-                    />
-                </div>
-
-                {/* price range selection */}
-                <div className='flex flex-col space-y-1'>
-                    <p className='text-sm font-bold'> Price Range </p>
-                    <div className='flex flex-row h-10 w-full'>
-                    <input
-                        className={`h-full w-1/2 rounded-l-lg md:rounded-l-2xl px-4 text-black outline-none ring-2 ring-red-500 text-xs md:text-sm ${priceRange[0] === 0 ? 'text-gray-400' : ''}`}
-                        placeholder="Min"
-                        value={priceRange[0]}
-                        onChange={(e) => setPriceRange([parseInt(e.target.value), priceRange[1]])}
-                    />
-                    <input
-                        className={`h-full w-1/2 rounded-r-lg md:rounded-r-2xl px-4 text-black outline-none ring-2 ring-red-500 text-xs md:text-sm ${priceRange[1] === 1000000 ? 'text-gray-400' : ''}`}
-                        placeholder="Max"
-                        value={priceRange[1]}
-                        onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
-                    />
-                    </div>
-                </div>
-
-                {/* home type selection */}
-                <div className='flex flex-col space-y-1'>
-                    <p className='text-sm font-bold'> Home Type </p>
-                    <div className='flex flex-row h-10 w-full'>
-                    <button
-                        className={`h-full w-1/2 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm ${houseType === 'apartment' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                        onClick={() => setHouseType('apartment')}
-                    >
-                        Apartment
-                    </button>
-                    <button
-                        className={`h-full w-1/2 flex items-center justify-center rounded-r-lg md:rounded-r-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm ${houseType === 'house' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                        onClick={() => setHouseType('house')}
-                    >
-                        House
-                    </button>
-                    </div>
-                </div>
-
-                {/* gender type selection */}
-                <div className='flex flex-col space-y-1'>
-                    <p className='text-sm font-bold'> Gender Preferences </p>
-                    <div className='flex flex-row h-10 w-full'>
-                    <button
-                        className={`h-full w-1/2 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs md:text-sm ${genderType === 'males' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                        onClick={() => setGenderType('males')}
-                    >
-                        M
-                    </button>
-                    <button
-                        className={`h-full w-1/2 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs md:text-sm ${genderType === 'females' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                        onClick={() => setGenderType('females')}
-                    >
-                        F
-                    </button>
-                    <button
-                        className={`h-full w-1/2 flex items-center justify-center rounded-r-lg md:rounded-r-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs md:text-sm ${genderType === 'both' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                        onClick={() => setGenderType('both')}
-                    >
-                        Co-Ed
-                    </button>
-                    </div>
-                </div>
-
-                {/* rooms available selection */}
-                <div className='flex flex-col space-y-1'>
-                    <p className='text-sm font-bold'> # of Rooms Left </p>
-                    <div className='flex flex-row h-10 w-full'>
-                        <button 
-                        className={`h-full w-1/4 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs md:text-sm ${rooms === 1 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                        onClick={() => setRooms(1)}
-                        >
-                        1
-                        </button>
-
-                        <button 
-                        className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs md:text-sm ${rooms === 2 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                        onClick={() => setRooms(2)}
-                        >
-                        2
-                        </button>
-
-                        <button 
-                        className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs md:text-sm ${rooms === 3 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                        onClick={() => setRooms(3)}
-                        >
-                        3
-                        </button>
-                        <input 
-                        placeholder='3+'
-                        className={`h-full w-1/4 flex text-center items-center justify-center rounded-r-lg md:rounded-r-2xl p-2 outline-none ring-2 ring-red-500 transition ease-in-out duration-200 text-xs md:text-sm ${rooms > 4 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                        onChange={(e) => setRooms(e.target.value)}
+        <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
+            <div className='flex flex-row h-[calc(100vh-54px)] w-full bg-white'>
+                <div className='h-full w-1/3 hidden md:flex flex-col space-y-6 text-black p-4 border-2 border-gray-500'>
+                    <div className='relative w-full'>
+                        <input
+                            className={`h-10 md:h-12 w-full rounded-lg md:rounded-2xl px-4 pr-10 text-black outline-none ring-2 ring-red-500 text-xs lg:text-base ${searchInput === '' ? 'text-gray-400' : ''}`}
+                            placeholder="Ex: Carnegie Mellon University"
+                            value={searchInput}
+                            onChange={(e) => setSearchInput(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === 'Return') {
+                                    handleFindHomes();
+                                }
+                            }}
+                        />
+                        <IoIosSearch
+                            onClick={handleFindHomes}
+                            className='absolute right-3 top-1/2 transform -translate-y-1/2 h-6 w-6 text-red-500 hover:cursor-pointer'
                         />
                     </div>
-                </div>
 
-                {/* commute time range selection */}
-                <div className='flex flex-col space-y-1'>
-                    <p className='text-sm font-bold'> Commute Time </p>
-                    <div className='flex flex-row h-10 w-full'>
-                    <input
-                        className={`h-full w-1/2 rounded-l-lg md:rounded-l-2xl px-4 text-black outline-none ring-2 ring-red-500 text-xs md:text-sm ${commute[0] === 0 ? 'text-gray-400' : ''}`}
-                        placeholder="Min"
-                        value={commute[0]}
-                        onChange={(e) => setCommute([parseInt(e.target.value), commute[1]])}
-                    />
-                    <input
-                        className={`h-full w-1/2 rounded-r-lg md:rounded-r-2xl px-4 text-black outline-none ring-2 ring-red-500 text-xs md:text-sm ${commute[1] === 1000000 ? 'text-gray-400' : ''}`}
-                        placeholder="Max"
-                        value={commute[1]}
-                        onChange={(e) => setCommute([commute[0], parseInt(e.target.value)])}
-                    />
+                    <div className='flex flex-col space-y-1'>
+                        <p className='text-sm font-bold'> Price Range </p>
+                        <div className='flex flex-row h-10 w-full'>
+                            <input
+                                className={`h-full w-1/2 rounded-l-lg md:rounded-l-2xl px-4 text-black outline-none ring-2 ring-red-500 text-xs md:text-sm ${priceRange[0] === 0 ? 'text-gray-400' : ''}`}
+                                placeholder="Min"
+                                value={priceRange[0]}
+                                onChange={(e) => setPriceRange([parseInt(e.target.value), priceRange[1]])}
+                            />
+                            <input
+                                className={`h-full w-1/2 rounded-r-lg md:rounded-r-2xl px-4 text-black outline-none ring-2 ring-red-500 text-xs md:text-sm ${priceRange[1] === 1000000 ? 'text-gray-400' : ''}`}
+                                placeholder="Max"
+                                value={priceRange[1]}
+                                onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
+                            />
+                        </div>
+                    </div>
+
+                    <div className='flex flex-col space-y-1'>
+                        <p className='text-sm font-bold'> Home Type </p>
+                        <div className='flex flex-row h-10 w-full'>
+                            <button
+                                className={`h-full w-1/2 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm ${houseType === 'apartment' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                                onClick={() => setHouseType('apartment')}
+                            >
+                                Apartment
+                            </button>
+                            <button
+                                className={`h-full w-1/2 flex items-center justify-center rounded-r-lg md:rounded-r-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm ${houseType === 'house' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                                onClick={() => setHouseType('house')}
+                            >
+                                House
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className='flex flex-col space-y-1'>
+                        <p className='text-sm font-bold'> Gender Preferences </p>
+                        <div className='flex flex-row h-10 w-full'>
+                            <button
+                                className={`h-full w-1/2 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs md:text-sm ${genderType === 'males' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                                onClick={() => setGenderType('males')}
+                            >
+                                M
+                            </button>
+                            <button
+                                className={`h-full w-1/2 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs md:text-sm ${genderType === 'females' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                                onClick={() => setGenderType('females')}
+                            >
+                                F
+                            </button>
+                            <button
+                                className={`h-full w-1/2 flex items-center justify-center rounded-r-lg md:rounded-r-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs md:text-sm ${genderType === 'both' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                                onClick={() => setGenderType('both')}
+                            >
+                                Co-Ed
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className='flex flex-col space-y-1'>
+                        <p className='text-sm font-bold'> # of Rooms Left </p>
+                        <div className='flex flex-row h-10 w-full'>
+                            <button
+                                className={`h-full w-1/4 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs md:text-sm ${rooms === 1 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                                onClick={() => setRooms(1)}
+                            >
+                                1
+                            </button>
+
+                            <button
+                                className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs md:text-sm ${rooms === 2 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                                onClick={() => setRooms(2)}
+                            >
+                                2
+                            </button>
+
+                            <button
+                                className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs md:text-sm ${rooms === 3 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                                onClick={() => setRooms(3)}
+                            >
+                                3
+                            </button>
+                            <input
+                                placeholder='3+'
+                                className={`h-full w-1/4 flex text-center items-center justify-center rounded-r-lg md:rounded-r-2xl p-2 outline-none ring-2 ring-red-500 transition ease-in-out duration-200 text-xs md:text-sm ${rooms > 4 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                                onChange={(e) => setRooms(e.target.value)}
+                            />
+                        </div>
+                    </div>
+
+                    <div className='flex flex-col space-y-1'>
+                        <p className='text-sm font-bold'> Commute Time </p>
+                        <div className='flex flex-row h-10 w-full'>
+                            <input
+                                className={`h-full w-1/2 rounded-l-lg md:rounded-l-2xl px-4 text-black outline-none ring-2 ring-red-500 text-xs md:text-sm ${commute[0] === 0 ? 'text-gray-400' : ''}`}
+                                placeholder="Min"
+                                value={commute[0]}
+                                onChange={(e) => setCommute([parseInt(e.target.value), commute[1]])}
+                            />
+                            <input
+                                className={`h-full w-1/2 rounded-r-lg md:rounded-r-2xl px-4 text-black outline-none ring-2 ring-red-500 text-xs md:text-sm ${commute[1] === 1000000 ? 'text-gray-400' : ''}`}
+                                placeholder="Max"
+                                value={commute[1]}
+                                onChange={(e) => setCommute([commute[0], parseInt(e.target.value)])}
+                            />
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            {/* embedded google map */}
-            <div style={{ width: '100%', height: '100%' }} className='hidden md:flex relative'>
-            {mapSet ? (
-                <Map
-                    mapId='e1a96cb574a64c5a'
-                    mapContainerStyle={{ width: '100%', height: '100%' }}
-                    defaultCenter={mapCenter}
-                    defaultZoom={16}>
-                    {markers.map((marker, index) => (
-                        <AdvancedMarker
-                        key={index}
-                        position={marker.position}
-                        title={marker.address}
-                        onClick={() => handleMarkerClick(marker)}
+                <div style={{ width: '100%', height: '100%' }} className='hidden md:flex relative'>
+                    {mapSet ? (
+                        <Map
+                            mapId='e1a96cb574a64c5a'
+                            mapContainerStyle={{ width: '100%', height: '100%' }}
+                            defaultCenter={mapCenter}
+                            defaultZoom={16}
                         >
-                            
-                            <Pin 
-                            background={'#ef4444'}
-                            borderColor={'#ef4444'}
-                            glyphColor={'#ffffff'}
-                            title={marker.address}
-                            style={{ width: '128px', height: '128px' }}
-                            >
-                            ${marker.rent}
-                            </Pin>
+                            {markers.map((marker, index) => (
+                                <AdvancedMarker key={index} position={marker.position} onClick={() => handleMarkerClick(marker)}>
+                                    <Pin background={'#ef4444'} borderColor={'#ef4444'} glyphColor={'#ffffff'} style={{ width: '200px', height: '200px' }}>
+                                        <p>${marker.rent}</p>
+                                    </Pin>
+                                </AdvancedMarker>
+                            ))}
 
-                        </AdvancedMarker>
-                    ))}
-                    
-                    {popupActive && selectedMarker && (
-                        <div className='absolute top-0 left-0 w-full h-full flex items-center z-50 px-4'>
-                            <div className='relative bg-white p-4 rounded-lg shadow-lg'>
-                                <button onClick={() => setPopupActive(false)} className='absolute top-2 right-2 h-6 w-6 rounded-lg outline-none ring-2 ring-red-500 bg-red-500 text-white hover:bg-white hover:text-red-500 transition duration-300 ease-in-out font-bold'>
-                                    x
-                                </button>
-                                <Popup listing={selectedMarker} />
-                            </div>
+                            {popupActive && selectedMarker && (
+                                <div className='absolute top-0 left-0 w-full h-full flex items-center z-50 px-4'>
+                                    <div className='relative bg-white p-4 rounded-lg shadow-lg'>
+                                        <button
+                                            onClick={() => setPopupActive(false)}
+                                            className='absolute top-2 right-2 h-6 w-6 rounded-lg outline-none ring-2 ring-red-500 bg-red-500 text-white hover:bg-white hover:text-red-500 transition duration-300 ease-in-out font-bold'
+                                        >
+                                            x
+                                        </button>
+                                        <Popup listing={selectedMarker} />
+                                    </div>
+                                </div>
+                            )}
+                        </Map>
+                    ) : (
+                        <div className='h-full w-full flex items-center justify-center'>
+                            <PulseLoader color='#ef4444' />
                         </div>
                     )}
-  
-                </Map>
-                
-            ) 
-            : 
-            <div className='h-full w-full flex items-center justify-center'>
-                <PulseLoader color="#ef4444" />
+                </div>
+
+                <ViewListings onListingClick={handleListingClick} />
             </div>
-            }
-
-            </div>
-
-            {/* pass function to set popup */}
-            <ViewListings onListingClick={handleListingClick}/>
-
-        </div>
         </APIProvider>
     );
 }
