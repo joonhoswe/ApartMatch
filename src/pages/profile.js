@@ -53,7 +53,7 @@ export default function Profile() {
       return isAuthenticated ? (
         <div className='min-h-[calc(100vh-54px)] h-auto w-full bg-gray-200 flex items-center justify-center text-black p-4 sm:p-8'>
   
-          <div className='h-auto w-[95vw] bg-white rounded-lg p-3 sm:p-6 flex flex-col space-y-8'>
+          <div className='h-auto min-h-[calc(70vh)] w-[95vw] bg-white rounded-lg p-3 sm:p-6 flex flex-col space-y-8'>
   
             <div className='flex items-center justify-between'>
               <div className='flex flex-row space-x-3 w-full items-center'>
@@ -68,7 +68,7 @@ export default function Profile() {
               <div className='w-full h-0.5 bg-red-500'/>
             </div>
 
-            <div className='flex gap-8 items-center flex-wrap'>
+            <div className='flex gap-4 items-center flex-wrap'>
             {listings.map((listing, index) => (
                 <div key={index} className='relative flex flex-col h-48 w-56 rounded-2xl shadow-2xl hover:cursor-pointer hover:scale-110 transition ease-in-out duration-300'>
                     <div className='absolute top-2 left-2 bg-yellow-400 text-white font-bold text-xs w-18 h-4 p-1 rounded-md flex items-center justify-center'> 
