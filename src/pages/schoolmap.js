@@ -39,9 +39,10 @@ export default function SchoolMap() {
     const { school } = router.query;
     const [searchInput, setSearchInput] = useState(school || '');
     const [priceRange, setPriceRange] = useState([,]);
-    const [houseType, setHouseType] = useState('');
-    const [genderType, setGenderType] = useState('');
+    const [homeType, setHomeType] = useState('');
+    const [gender, setGender] = useState('');
     const [rooms, setRooms] = useState(0);
+    const [bathrooms, setBathrooms] = useState(0);
     const [commute, setCommute] = useState([,]);
 
     const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
@@ -125,6 +126,7 @@ export default function SchoolMap() {
         }
     };
 
+    // whenever school chnages, update search input and fetch listings
     useEffect(() => {
         if (school) {
             setSearchInput(school);
@@ -133,6 +135,50 @@ export default function SchoolMap() {
 
         fetchListings();
     }, [school]);
+
+    // whenever a filter parameter changes, update the listings and markers
+    useEffect(() => {
+        const fetchFilteredListings = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/api/get');
+                const listings = response.data;
+
+                // left out commute time filtering for now
+                const filteredListings = listings.filter(listing => 
+                    (!priceRange[0] || listing.rent >= priceRange[0]) &&
+                    (!priceRange[1] || listing.rent <= priceRange[1]) &&
+                    (!homeType || listing.homeType === homeType) &&
+                    (!gender || listing.gender === gender) &&
+                    (!rooms || listing.rooms - listing.joinedListing.length === rooms) &&
+                    (!bathrooms || listing.bathrooms === bathrooms)
+                );
+
+                const markerPromises = filteredListings.map((listing) => {
+                    if (listing.rooms - listing.joinedListing.length !== 0) {
+                        return fromAddress(listing.address)
+                            .then((response) => {
+                                const { lat, lng } = response.results[0].geometry.location;
+                                return { ...listing, position: { lat, lng } };  // Include all original listing data
+                            })
+                            .catch((error) => {
+                                console.error(`Error geocoding address ${listing.address}:`, error);
+                                return null;
+                            });
+                    } else {
+                        return Promise.resolve(null);
+                    }
+                });
+    
+                const resolvedMarkers = await Promise.all(markerPromises);
+                setMarkers(resolvedMarkers.filter(marker => marker !== null));
+            } catch (error) {
+                console.error('Error fetching filtered listings:', error);
+            }
+        };
+
+        fetchFilteredListings();
+
+    }, [priceRange, homeType, gender, rooms, bathrooms]);
 
     return (
         <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
@@ -163,13 +209,13 @@ export default function SchoolMap() {
                                 className={`h-full w-1/2 rounded-l-lg md:rounded-l-2xl px-4 text-black outline-none ring-2 ring-red-500 text-xs md:text-sm ${priceRange[0] === 0 ? 'text-gray-400' : ''}`}
                                 placeholder="Min"
                                 value={priceRange[0]}
-                                onChange={(e) => setPriceRange([parseInt(e.target.value), priceRange[1]])}
+                                onChange={(e) => setPriceRange([parseInt(e.target.value) || 0, priceRange[1]])}
                             />
                             <input
                                 className={`h-full w-1/2 rounded-r-lg md:rounded-r-2xl px-4 text-black outline-none ring-2 ring-red-500 text-xs md:text-sm ${priceRange[1] === 1000000 ? 'text-gray-400' : ''}`}
                                 placeholder="Max"
                                 value={priceRange[1]}
-                                onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
+                                onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value) || 1000000])}
                             />
                         </div>
                     </div>
@@ -178,14 +224,14 @@ export default function SchoolMap() {
                         <p className='text-sm font-bold'> Home Type </p>
                         <div className='flex flex-row h-10 w-full'>
                             <button
-                                className={`h-full w-1/2 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm ${houseType === 'apartment' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                                onClick={() => setHouseType('apartment')}
+                                className={`h-full w-1/2 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm ${homeType === 'apartment' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                                onClick={() => setHomeType(homeType === 'apartment' ? '' : 'apartment')}
                             >
                                 Apartment
                             </button>
                             <button
-                                className={`h-full w-1/2 flex items-center justify-center rounded-r-lg md:rounded-r-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm ${houseType === 'house' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                                onClick={() => setHouseType('house')}
+                                className={`h-full w-1/2 flex items-center justify-center rounded-r-lg md:rounded-r-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm ${homeType === 'house' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                                onClick={() => setHomeType(homeType === 'house' ? '' : 'house')}
                             >
                                 House
                             </button>
@@ -196,20 +242,20 @@ export default function SchoolMap() {
                         <p className='text-sm font-bold'> Gender Preferences </p>
                         <div className='flex flex-row h-10 w-full'>
                             <button
-                                className={`h-full w-1/2 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs md:text-sm ${genderType === 'males' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                                onClick={() => setGenderType('males')}
+                                className={`h-full w-1/2 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs md:text-sm ${gender === 'males' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                                onClick={() => setGender(gender === 'males' ? '' : 'males')}
                             >
                                 M
                             </button>
                             <button
-                                className={`h-full w-1/2 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs md:text-sm ${genderType === 'females' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                                onClick={() => setGenderType('females')}
+                                className={`h-full w-1/2 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs md:text-sm ${gender === 'females' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                                onClick={() => setGender(gender === 'females' ? '' : 'females')}
                             >
                                 F
                             </button>
                             <button
-                                className={`h-full w-1/2 flex items-center justify-center rounded-r-lg md:rounded-r-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs md:text-sm ${genderType === 'both' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                                onClick={() => setGenderType('both')}
+                                className={`h-full w-1/2 flex items-center justify-center rounded-r-lg md:rounded-r-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs md:text-sm ${gender === 'both' ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                                onClick={() => setGender(gender === 'both' ? '' : 'both')}
                             >
                                 Co-Ed
                             </button>
@@ -221,28 +267,61 @@ export default function SchoolMap() {
                         <div className='flex flex-row h-10 w-full'>
                             <button
                                 className={`h-full w-1/4 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs md:text-sm ${rooms === 1 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                                onClick={() => setRooms(1)}
+                                onClick={() => setRooms(rooms === 1 ? 0 : 1)}
                             >
                                 1
                             </button>
 
                             <button
                                 className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs md:text-sm ${rooms === 2 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                                onClick={() => setRooms(2)}
+                                onClick={() => setRooms(rooms === 2 ? 0 : 2)}
                             >
                                 2
                             </button>
 
                             <button
                                 className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs md:text-sm ${rooms === 3 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                                onClick={() => setRooms(3)}
+                                onClick={() => setRooms(rooms === 3 ? 0 : 3)}
                             >
                                 3
                             </button>
                             <input
                                 placeholder='3+'
-                                className={`h-full w-1/4 flex text-center items-center justify-center rounded-r-lg md:rounded-r-2xl p-2 outline-none ring-2 ring-red-500 transition ease-in-out duration-200 text-xs md:text-sm ${rooms > 4 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                                onChange={(e) => setRooms(e.target.value)}
+                                className={`h-full w-1/4 flex text-center items-center justify-center rounded-r-lg md:rounded-r-2xl p-2 outline-none ring-2 ring-red-500 transition ease-in-out duration-200 text-xs md:text-sm ${rooms > 3 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                                value={rooms > 3 ? rooms : ''}
+                                onChange={(e) => setRooms(parseInt(e.target.value) || 0)}
+                            />
+                        </div>
+                    </div>
+
+                    <div className='flex flex-col space-y-1'>
+                        <p className='text-sm font-bold'> # of Bathrooms </p>
+                        <div className='flex flex-row h-10 w-full'>
+                            <button
+                                className={`h-full w-1/4 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs md:text-sm ${bathrooms === 1 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                                onClick={() => setBathrooms(bathrooms === 1 ? 0 : 1)}
+                            >
+                                1
+                            </button>
+
+                            <button
+                                className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs md:text-sm ${bathrooms === 2 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                                onClick={() => setBathrooms(bathrooms === 2 ? 0 : 2)}
+                            >
+                                2
+                            </button>
+
+                            <button
+                                className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs md:text-sm ${bathrooms === 3 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                                onClick={() => setBathrooms(bathrooms === 3 ? 0 : 3)}
+                            >
+                                3
+                            </button>
+                            <input
+                                placeholder='3+'
+                                className={`h-full w-1/4 flex text-center items-center justify-center rounded-r-lg md:rounded-r-2xl p-2 outline-none ring-2 ring-red-500 transition ease-in-out duration-200 text-xs md:text-sm ${bathrooms > 3 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                                value={bathrooms > 3 ? bathrooms : ''}
+                                onChange={(e) => setBathrooms(parseInt(e.target.value) || 0)}
                             />
                         </div>
                     </div>

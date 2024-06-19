@@ -68,6 +68,12 @@ export default function Profile() {
               <div className='w-full h-0.5 bg-red-500'/>
             </div>
 
+            {listings.length === 0 ?
+            <div className='flex items-center justify-center'>
+                <p className='text-gray-400 text-sm md:text-lg'> No listings joined or posted yet. </p>
+            </div> : 
+            <></>}
+
             <div className='flex gap-4 items-center flex-wrap'>
             {listings.map((listing, index) => (
                 <div key={index} className='relative flex flex-col h-48 w-56 rounded-2xl shadow-2xl hover:cursor-pointer hover:scale-110 transition ease-in-out duration-300'>
