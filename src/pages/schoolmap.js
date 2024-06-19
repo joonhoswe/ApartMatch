@@ -1,12 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { APIProvider, Map, AdvancedMarker, Pin } from '@vis.gl/react-google-maps';
+import { APIProvider, Map, AdvancedMarker } from '@vis.gl/react-google-maps';
 import ViewListings from '@components/viewListings';
 import { IoIosSearch } from "react-icons/io";
 import { setDefaults, fromAddress } from "react-geocode";
 import axios from 'axios';
 import Popup from '@components/listingPopup';
 import PulseLoader from 'react-spinners/PulseLoader';
+
+const CustomPin = ({ text }) => (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div style={{
+            width: '50px',
+            height: '25px',
+            backgroundColor: '#ef4444',
+            borderRadius: '10%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            color: 'white',
+            fontWeight: 'bold',
+            fontSize: '15px'
+        }}>
+            ${text}
+        </div>
+        <div style={{
+            width: 0,
+            height: 0,
+            borderLeft: '10px solid transparent',
+            borderRight: '10px solid transparent',
+            borderTop: '10px solid #ef4444',
+        }} />
+    </div>
+);
 
 export default function SchoolMap() {
     const router = useRouter();
@@ -109,7 +135,7 @@ export default function SchoolMap() {
     }, [school]);
 
     return (
-        <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
+        <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY} onLoad={() => initialize(searchInput)}>
             <div className='flex flex-row h-[calc(100vh-54px)] w-full bg-white'>
                 <div className='h-full w-1/3 hidden md:flex flex-col space-y-6 text-black p-4 border-2 border-gray-500'>
                     <div className='relative w-full'>
@@ -249,10 +275,8 @@ export default function SchoolMap() {
                             defaultZoom={16}
                         >
                             {markers.map((marker, index) => (
-                                <AdvancedMarker key={index} position={marker.position} onClick={() => handleMarkerClick(marker)}>
-                                    <Pin background={'#ef4444'} borderColor={'#ef4444'} glyphColor={'#ffffff'} style={{ width: '200px', height: '200px' }}>
-                                        <p>${marker.rent}</p>
-                                    </Pin>
+                                <AdvancedMarker key={index} position={marker.position} title={marker.address} onClick={() => handleMarkerClick(marker)}>
+                                    <CustomPin text={marker.rent} />
                                 </AdvancedMarker>
                             ))}
 
