@@ -38,16 +38,17 @@ export default function SchoolMap() {
     const router = useRouter();
     const { school } = router.query;
     const [searchInput, setSearchInput] = useState(school || '');
-    const [priceRange, setPriceRange] = useState([,]);
+    const [priceRange, setPriceRange] = useState([0, 1000000]);
     const [homeType, setHomeType] = useState('');
     const [gender, setGender] = useState('');
     const [rooms, setRooms] = useState(0);
     const [bathrooms, setBathrooms] = useState(0);
-    const [commute, setCommute] = useState([,]);
+    const [commute, setCommute] = useState([0, 100]);
 
     const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
     const [mapSet, setMapSet] = useState(false);
     const [markers, setMarkers] = useState([]);
+    const [filteredListings, setFilteredListings] = useState([]);
 
     const [popupActive, setPopupActive] = useState(false);
     const [selectedMarker, setSelectedMarker] = useState(null);
@@ -64,7 +65,7 @@ export default function SchoolMap() {
 
     const handleFindHomes = () => {
         if (searchInput.trim() !== '') {
-            router.push(`/schoolmap?school=${searchInput}`);
+            router.push(`/schoolmap?school=${encodeURIComponent(searchInput)}`);
             setMapSet(false);
             handleGeocode(searchInput);
         }
@@ -121,6 +122,7 @@ export default function SchoolMap() {
 
             const resolvedMarkers = await Promise.all(markerPromises);
             setMarkers(resolvedMarkers.filter(marker => marker !== null));
+            setFilteredListings(listings); // Initial full list
         } catch (error) {
             console.error('Error fetching listings:', error);
         }
@@ -171,6 +173,7 @@ export default function SchoolMap() {
     
                 const resolvedMarkers = await Promise.all(markerPromises);
                 setMarkers(resolvedMarkers.filter(marker => marker !== null));
+                setFilteredListings(filteredListings); // Update filtered listings
             } catch (error) {
                 console.error('Error fetching filtered listings:', error);
             }
@@ -380,7 +383,7 @@ export default function SchoolMap() {
                     )}
                 </div>
 
-                <ViewListings onListingClick={handleListingClick} />
+                <ViewListings listings={filteredListings} onListingClick={handleListingClick} />
             </div>
         </APIProvider>
     );
