@@ -3,6 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Logout from '@components/logout';
 import placeholder from '@assets/placeholder.jpeg';
 import axios from 'axios';
+import PulseLoader from 'react-spinners/PulseLoader';
 
 export default function Profile() {
 
@@ -48,7 +49,10 @@ export default function Profile() {
     }
 
     if (loading) {
-      return <div> Loading... </div>;
+      return (
+      <div className='h-screen bg-white w-full flex items-center justify-center'>
+          <PulseLoader color='#ef4444' />
+      </div>);
     } else {
       return isAuthenticated ? (
         <div className='min-h-[calc(100vh-54px)] h-auto w-full bg-gray-200 flex items-center justify-center text-black p-4 sm:p-8'>
