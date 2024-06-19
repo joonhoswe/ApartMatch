@@ -24,7 +24,7 @@ export default function postListing() {
     const [posted, setPosted] = useState(false);
     const [submitClicked, setSubmitClicked] = useState(false);
 
-    const isFormValid = owner !== '' && address !== '' && state !== '' && zipCode !== ''  && city !== '' && homeType !== '' && rooms !== '' && bathrooms !== '' && gender !== '';
+    const isFormValid = owner !== '' && address !== '' && state !== '' && zipCode !== ''  && city !== '' && homeType !== '' && rent !== '' && rooms !== 0 && bathrooms !== 0 && gender !== '';
 
     useEffect(() => {
         if (user) {
@@ -118,7 +118,7 @@ export default function postListing() {
 
                     <input 
                     value = {zipCode}
-                    onChange={(e) => setZipCode(e.target.value)}
+                    onChange={(e) => setZipCode(parseInt(e.target.value))}
                     placeholder="Zip Code: "
                     className='ring-2 ring-gray-300 outline-none focus:ring-2 focus:ring-red-600 bg-white rounded-2xl p-4 h-10 w-full'/>    
                 </div>
@@ -131,7 +131,7 @@ export default function postListing() {
 
                 <input 
                 value = {rent}
-                onChange={(e) => setRent(e.target.value)}
+                onChange={(e) => setRent(parseInt(e.target.value))}
                 placeholder="Monthly Rent: ex: 1200"
                 className='ring-2 ring-gray-300 outline-none focus:ring-2 focus:ring-red-600 bg-white rounded-2xl p-4 h-10 w-full'/>
 
