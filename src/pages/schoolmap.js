@@ -38,16 +38,17 @@ export default function SchoolMap() {
     const router = useRouter();
     const { school } = router.query;
     const [searchInput, setSearchInput] = useState(school || '');
-    const [priceRange, setPriceRange] = useState([,]);
+    const [priceRange, setPriceRange] = useState([0, 1000000]);
     const [homeType, setHomeType] = useState('');
     const [gender, setGender] = useState('');
     const [rooms, setRooms] = useState(0);
     const [bathrooms, setBathrooms] = useState(0);
-    const [commute, setCommute] = useState([,]);
+    const [commute, setCommute] = useState([0, 100]);
 
     const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
     const [mapSet, setMapSet] = useState(false);
     const [markers, setMarkers] = useState([]);
+    const [filteredListings, setFilteredListings] = useState([]);
 
     const [popupActive, setPopupActive] = useState(false);
     const [selectedMarker, setSelectedMarker] = useState(null);
@@ -64,7 +65,7 @@ export default function SchoolMap() {
 
     const handleFindHomes = () => {
         if (searchInput.trim() !== '') {
-            router.push(`/schoolmap?school=${searchInput}`);
+            router.push(`/schoolmap?school=${encodeURIComponent(searchInput)}`);
             setMapSet(false);
             handleGeocode(searchInput);
         }
@@ -76,7 +77,7 @@ export default function SchoolMap() {
                 .then((response) => {
                     const { lat, lng } = response.results[0].geometry.location;
                     setMapCenter({ lat, lng });
-                    setMapSet(true);
+                    
                 })
                 .catch((error) => {
                     console.error(error);
@@ -121,12 +122,14 @@ export default function SchoolMap() {
 
             const resolvedMarkers = await Promise.all(markerPromises);
             setMarkers(resolvedMarkers.filter(marker => marker !== null));
+            setFilteredListings(listings); // Initial full list
+            setMapSet(true);
         } catch (error) {
             console.error('Error fetching listings:', error);
         }
     };
 
-    // whenever school chnages, update search input and fetch listings
+    // whenever school changes, update search input and fetch listings
     useEffect(() => {
         if (school) {
             setSearchInput(school);
@@ -138,6 +141,7 @@ export default function SchoolMap() {
 
     // whenever a filter parameter changes, update the listings and markers
     useEffect(() => {
+        setMapSet(false);
         const fetchFilteredListings = async () => {
             try {
                 const response = await axios.get('http://localhost:8000/api/get');
@@ -171,6 +175,8 @@ export default function SchoolMap() {
     
                 const resolvedMarkers = await Promise.all(markerPromises);
                 setMarkers(resolvedMarkers.filter(marker => marker !== null));
+                setFilteredListings(filteredListings); // Update filtered listings
+                setMapSet(true);
             } catch (error) {
                 console.error('Error fetching filtered listings:', error);
             }
@@ -346,7 +352,11 @@ export default function SchoolMap() {
                 </div>
 
                 <div style={{ width: '100%', height: '100%' }} className='hidden sm:flex relative'>
-                    {mapSet ? (
+                    {!mapSet ? (
+                        <div className='h-full w-full flex items-center justify-center'>
+                            <PulseLoader color='#ef4444' />
+                        </div>
+                    ) : (
                         <Map
                             mapId='e1a96cb574a64c5a'
                             mapContainerStyle={{ width: '100%', height: '100%' }}
@@ -373,14 +383,10 @@ export default function SchoolMap() {
                                 </div>
                             )}
                         </Map>
-                    ) : (
-                        <div className='h-full w-full flex items-center justify-center'>
-                            <PulseLoader color='#ef4444' />
-                        </div>
                     )}
                 </div>
 
-                <ViewListings onListingClick={handleListingClick} />
+                <ViewListings loading={!mapSet} listings={filteredListings} onListingClick={handleListingClick} />
             </div>
         </APIProvider>
     );
