@@ -9,11 +9,11 @@ export default function Home() {
   const infoCards = [
     { 
       heading: '❌ Housing blogs? Yuck.', 
-      description: 'Say goodbye to sifting through outdated, irrelevant, and scam-filled posts. ApartMatch shows only listings by other students with extra rooms looking to be filled, enabling students to swiftly match into rooms.' 
+      description: 'Say goodbye to sifting through outdated, irrelevant, and scam-filled housing forums. ApartMatch shows only listings that real students are currently interested in.' 
     },
     { 
       heading: '✅ See openings, live.', 
-      description: 'Stay up-to-date with real-time availability. Instantly view and join partially filled apartments, making it easier and faster to save money while finding your ideal living situation.' 
+      description: 'Stay up-to-date with real-time availability. Instantly view and join partially filled apartments with one click, making it easier and faster to save money while finding your ideal living situation.' 
     },
     { 
       heading: '🔒 Only .edu emails.', 
@@ -65,9 +65,9 @@ export default function Home() {
         </div>
       </div>
 
-      <div className='bg-gray-200 w-full flex flex-col md:flex-row space-y-12 md:space-y-0 md:space-x-6 lg:space-x-12 items-center justify-center px-4 py-10'>
+      <div className='bg-gray-200 w-full items-center md:items-stretch flex flex-col md:flex-row space-y-12 md:space-y-0 md:space-x-6 lg:space-x-12 justify-center px-4 py-10'>
         {infoCards.map((card, index) => (
-          <div key={index} className='bg-white text-black h-56 md:h-72 w-64 md:w-80 rounded-2xl flex flex-col items-start space-y-4 p-4 md:p-6 shadow-2xl'>
+          <div key={index} className='bg-white text-black h-auto w-64 md:w-80 rounded-2xl flex flex-col items-start space-y-4 p-4 md:p-6 shadow-2xl'>
             <h1 className='text-sm md:text-xl lg:text-2xl'> {card.heading} </h1>
             <p className='text-sm md:text-sm lg:text-base font-normal'> {card.description} </p>
           </div>
