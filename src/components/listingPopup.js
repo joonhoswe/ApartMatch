@@ -1,15 +1,16 @@
 import React from 'react';
 import { useAuth0 } from "@auth0/auth0-react";
 import placeholder from '@assets/placeholder.jpeg';
+import axios from 'axios';
 
 export default function ListingPopup({ listing }) {
-    const { user, isAuthenticated, isLoading } = useAuth0();
+    const { user, isAuthenticated } = useAuth0();
 
     const handleJoin = async(id, user) => {
         try {
           const response = await axios.patch('http://localhost:8000/api/join/', { id, user });
           console.log('Response:', response.data);
-          fetchData();
+
         } catch (error) {
           if (error.response) {
             console.error('Error response data:', error.response.data);
@@ -28,7 +29,7 @@ export default function ListingPopup({ listing }) {
         try {
           const response = await axios.patch('http://localhost:8000/api/leave/',{id,user});
           console.log('Response:',response.data);
-          fetchData();
+
         } catch (error){
           if (error.response) {
             console.error('Error response data:', error.response.data);
