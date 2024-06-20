@@ -43,16 +43,18 @@ export default function ViewListings({ loading, listings, onListingClick }) {
                                 <p className='text-xs'> {listing.address} </p>
                                 <p className='text-xs'> {listing.city}, {listing.state}, {listing.zipCode}</p>
 
+                                <div className='flex items-center justify-center'>
                                 {/* if the user is not logged in, hide Join button */}
                                 {isAuthenticated && listing.joinedListing.includes(user.nickname) ? (
-                                    <button  className='text-red-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'>
+                                    <button className='w-12 h-4 outline-none ring-2 ring-red-500 bg-red-500 text-white hover:bg-white hover:text-red-500 flex items-center justify-center text-xs font-bold transition ease-in-out duration-300 rounded-md'>
                                         Leave
                                     </button>
                                 ) : isAuthenticated && !listing.joinedListing.includes(user.nickname) ? (
-                                    <button  className='text-green-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'>
+                                    <button className='w-12 h-4 outline-none ring-2 ring-green-500 bg-green-500 text-white hover:bg-white hover:text-green-500 flex items-center justify-center text-xs font-bold transition ease-in-out duration-300 rounded-md'>
                                         Join
                                     </button>
                                 ) : null}
+                                </div>
                             </div>
                         </div>
                     ))
