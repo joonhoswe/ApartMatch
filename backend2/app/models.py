@@ -10,10 +10,10 @@ class Listing(models.Model):
     state = models.CharField(max_length=20)
     zipCode = models.PositiveIntegerField()
     city = models.CharField(max_length=30)
-    rent = models.PositiveIntegerField(max_length=5)
+    rent = models.PositiveIntegerField()
     homeType = models.CharField(max_length=20)
-    rooms = models.PositiveIntegerField(max_length=20)
-    bathrooms = models.PositiveIntegerField(max_length=20)
+    rooms = models.PositiveIntegerField()
+    bathrooms = models.PositiveIntegerField()
     gender = models.CharField(max_length=10)
     joinedListing = ArrayField(models.CharField(max_length=20, blank=True), blank=True, default = list)
     
