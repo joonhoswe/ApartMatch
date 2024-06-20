@@ -138,6 +138,46 @@ export default function SchoolMap() {
         }
     };
 
+    const fetchFilteredListings = async () => {
+        try {
+            setMapSet(false);
+
+            // left out commute time filtering for now
+            const validListings = allListings.filter(listing =>
+                (!priceRange[0] || listing.rent >= priceRange[0]) &&
+                (!priceRange[1] || listing.rent <= priceRange[1]) &&
+                (!homeType || listing.homeType === homeType) &&
+                (!gender || listing.gender === gender) &&
+                (!rooms || listing.rooms - listing.joinedListing.length === rooms) &&
+                (!bathrooms || listing.bathrooms === bathrooms)
+            );
+
+            const markerPromises = validListings.map((listing) => {
+                if (listing.rooms - listing.joinedListing.length !== 0) {
+                    return fromAddress(listing.address)
+                        .then((response) => {
+                            const { lat, lng } = response.results[0].geometry.location;
+                            return { ...listing, position: { lat, lng } };  // Include all original listing data
+                        })
+                        .catch((error) => {
+                            console.error(`Error geocoding address ${listing.address}:`, error);
+                            return null;
+                        });
+                } else {
+                    return Promise.resolve(null);
+                }
+            });
+
+            const resolvedMarkers = await Promise.all(markerPromises);
+            setMarkers(resolvedMarkers.filter(marker => marker !== null));
+            setFilteredListings(validListings); // Update filtered listings
+            setMapSet(true);
+
+        } catch (error) {
+            console.error('Error fetching filtered listings:', error);
+        }
+    };
+
     // whenever school changes, update search input and fetch listings
     useEffect(() => {
         if (school) {
@@ -150,52 +190,14 @@ export default function SchoolMap() {
 
     // whenever a filter parameter changes, update the listings and markers
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setMapSet(false);
-            const fetchFilteredListings = async () => {
-                try {
+        if (allListings.length > 0) {
+            const timer = setTimeout(() => {
+                fetchFilteredListings();
+            }, 200); // Delay in milliseconds to reduce API Calls
 
-                    // left out commute time filtering for now
-                    const validListings = allListings.filter(listing => 
-                        (!priceRange[0] || listing.rent >= priceRange[0]) &&
-                        (!priceRange[1] || listing.rent <= priceRange[1]) &&
-                        (!homeType || listing.homeType === homeType) &&
-                        (!gender || listing.gender === gender) &&
-                        (!rooms || listing.rooms - listing.joinedListing.length === rooms) &&
-                        (!bathrooms || listing.bathrooms === bathrooms)
-                    );
-
-                    const markerPromises = validListings.map((listing) => {
-                        if (listing.rooms - listing.joinedListing.length !== 0) {
-                            return fromAddress(listing.address)
-                                .then((response) => {
-                                    const { lat, lng } = response.results[0].geometry.location;
-                                    return { ...listing, position: { lat, lng } };  // Include all original listing data
-                                })
-                                .catch((error) => {
-                                    console.error(`Error geocoding address ${listing.address}:`, error);
-                                    return null;
-                                });
-                        } else {
-                            return Promise.resolve(null);
-                        }
-                    });
-        
-                    const resolvedMarkers = await Promise.all(markerPromises);
-                    setMarkers(resolvedMarkers.filter(marker => marker !== null));
-                    setFilteredListings(validListings); // Update filtered listings
-                    setMapSet(true);
-
-                } catch (error) {
-                    console.error('Error fetching filtered listings:', error);
-                }
-            };
-
-            fetchFilteredListings();
-        }, 200); // Delay in milliseconds to reduce API Calls
-
-        return () => clearTimeout(timer); // Cleanup the timer on unmount or dependency change
-    }, [priceRange, homeType, gender, rooms, bathrooms]);
+            return () => clearTimeout(timer); // Cleanup the timer on unmount or dependency change
+        }
+    }, [priceRange, homeType, gender, rooms, bathrooms, allListings]);
 
     return (
         <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
