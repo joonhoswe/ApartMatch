@@ -1,38 +1,19 @@
 import React from 'react';
 import { useAuth0 } from "@auth0/auth0-react";
 import placeholder from '@assets/placeholder.jpeg';
-import axios from 'axios';
 import PacmanLoader from 'react-spinners/PacmanLoader';
 
 export default function ViewListings({ loading, listings, onListingClick }) {
     const { user, isAuthenticated, loginWithRedirect } = useAuth0();
 
-    const handleJoin = async (id, user) => {
-        try {
-            const response = await axios.patch('http://localhost:8000/api/join/', { id, user });
-            console.log('Response:', response.data);
-        } catch (error) {
-            console.error('Error joining listing:', error);
-        }
-    };
-
-    const handleLeave = async (id, user) => {
-        try {
-            const response = await axios.patch('http://localhost:8000/api/leave/', { id, user });
-            console.log('Response:', response.data);
-        } catch (error) {
-            console.error('Error leaving listing:', error);
-        }
-    };
-
     return (
-        <div className='h-[calc(100vh-54px)] w-full sm:w-2/5 sm:flex flex-col items-center space-y-6 text-black p-2 border-2 border-gray-500'>
+        <div className='h-[calc(100vh-54px)] w-full sm:w-2/5 sm:flex flex-col justify-center items-center space-y-6 text-black border-2 bg-white border-gray-500'>
             {!isAuthenticated ? (
                 <div className='w-full h-10 bg-white flex items-center justify-center'>
                     <p className='font-bold text-red-500'> Please <span onClick={loginWithRedirect} className='underline hover:cursor-pointer hover:text-red-400 transition ease-in-out duration-300'>sign in </span> to join a listing. </p>
                 </div>
             ) : null}
-            <div className='h-full overflow-scroll w-full sm:flex sm:flex-wrap gap-4 grid grid-cols-1 justify-items-center justify-center'>
+            <div className='h-full overflow-auto py-10 w-full sm:flex sm:flex-wrap gap-8 grid grid-cols-1 justify-items-center justify-center'>
                 {loading ? (
                     <div className='h-full w-full flex items-center justify-center'>
                         <PacmanLoader color="#ef4444" />
@@ -62,16 +43,18 @@ export default function ViewListings({ loading, listings, onListingClick }) {
                                 <p className='text-xs'> {listing.address} </p>
                                 <p className='text-xs'> {listing.city}, {listing.state}, {listing.zipCode}</p>
 
+                                <div className='flex items-center justify-center'>
                                 {/* if the user is not logged in, hide Join button */}
                                 {isAuthenticated && listing.joinedListing.includes(user.nickname) ? (
-                                    <button onClick={() => { handleLeave(listing.id, user.nickname) }} className='text-red-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'>
+                                    <button className='w-12 h-4 outline-none ring-2 ring-red-500 bg-red-500 text-white hover:bg-white hover:text-red-500 flex items-center justify-center text-xs font-bold transition ease-in-out duration-300 rounded-md'>
                                         Leave
                                     </button>
                                 ) : isAuthenticated && !listing.joinedListing.includes(user.nickname) ? (
-                                    <button onClick={() => handleJoin(listing.id, user.nickname)} className='text-green-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'>
+                                    <button className='w-12 h-4 outline-none ring-2 ring-green-500 bg-green-500 text-white hover:bg-white hover:text-green-500 flex items-center justify-center text-xs font-bold transition ease-in-out duration-300 rounded-md'>
                                         Join
                                     </button>
                                 ) : null}
+                                </div>
                             </div>
                         </div>
                     ))

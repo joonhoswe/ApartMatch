@@ -33,7 +33,6 @@ const CustomPin = ({ text }) => (
         }} />
     </div>
 );
-
 export default function SchoolMap() {
     const router = useRouter();
     const { school } = router.query;
@@ -49,6 +48,7 @@ export default function SchoolMap() {
     const [mapSet, setMapSet] = useState(false);
     const [markers, setMarkers] = useState([]);
     const [filteredListings, setFilteredListings] = useState([]);
+    const [allListings, setAllListings] = useState([]); // All listings from API
 
     const [popupActive, setPopupActive] = useState(false);
     const [selectedMarker, setSelectedMarker] = useState(null);
@@ -103,6 +103,7 @@ export default function SchoolMap() {
         try {
             const response = await axios.get('http://localhost:8000/api/get');
             const listings = response.data;
+            setAllListings(listings);
 
             const markerPromises = listings.map((listing) => {
                 if (listing.rooms - listing.joinedListing.length !== 0) {
@@ -124,6 +125,14 @@ export default function SchoolMap() {
             setMarkers(resolvedMarkers.filter(marker => marker !== null));
             setFilteredListings(listings); // Initial full list
             setMapSet(true);
+
+            // Update Popup's availability by updating selectedMarker if it's currently active
+            if (popupActive && selectedMarker) {
+                const updatedMarker = listings.find(listing => listing.id === selectedMarker.id);
+                if (updatedMarker) {
+                    setSelectedMarker(updatedMarker);
+                }
+            }
         } catch (error) {
             console.error('Error fetching listings:', error);
         }
@@ -139,17 +148,15 @@ export default function SchoolMap() {
         fetchListings();
     }, [school]);
 
-      // whenever a filter parameter changes, update the listings and markers
-      useEffect(() => {
+    // whenever a filter parameter changes, update the listings and markers
+    useEffect(() => {
         const timer = setTimeout(() => {
             setMapSet(false);
             const fetchFilteredListings = async () => {
                 try {
-                    const response = await axios.get('http://localhost:8000/api/get');
-                    const listings = response.data;
 
                     // left out commute time filtering for now
-                    const filteredListings = listings.filter(listing => 
+                    const validListings = allListings.filter(listing => 
                         (!priceRange[0] || listing.rent >= priceRange[0]) &&
                         (!priceRange[1] || listing.rent <= priceRange[1]) &&
                         (!homeType || listing.homeType === homeType) &&
@@ -158,7 +165,7 @@ export default function SchoolMap() {
                         (!bathrooms || listing.bathrooms === bathrooms)
                     );
 
-                    const markerPromises = filteredListings.map((listing) => {
+                    const markerPromises = validListings.map((listing) => {
                         if (listing.rooms - listing.joinedListing.length !== 0) {
                             return fromAddress(listing.address)
                                 .then((response) => {
@@ -176,15 +183,16 @@ export default function SchoolMap() {
         
                     const resolvedMarkers = await Promise.all(markerPromises);
                     setMarkers(resolvedMarkers.filter(marker => marker !== null));
-                    setFilteredListings(filteredListings); // Update filtered listings
+                    setFilteredListings(validListings); // Update filtered listings
                     setMapSet(true);
+
                 } catch (error) {
                     console.error('Error fetching filtered listings:', error);
                 }
             };
 
             fetchFilteredListings();
-        }, 200); // Delay in milliseconds
+        }, 200); // Delay in milliseconds to reduce API Calls
 
         return () => clearTimeout(timer); // Cleanup the timer on unmount or dependency change
     }, [priceRange, homeType, gender, rooms, bathrooms]);
@@ -193,22 +201,25 @@ export default function SchoolMap() {
         <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
             <div className='flex flex-row h-[calc(100vh-54px)] w-full bg-white'>
                 <div className='h-full w-1/3 hidden sm:flex flex-col space-y-6 text-black p-4 border-2 border-gray-500'>
-                    <div className='relative w-full'>
-                        <input
-                            className={`h-10 md:h-12 w-full rounded-lg md:rounded-2xl px-4 pr-10 text-black outline-none ring-2 ring-red-500 text-xs lg:text-base ${searchInput === '' ? 'text-gray-400' : ''}`}
-                            placeholder="Ex: Carnegie Mellon University"
-                            value={searchInput}
-                            onChange={(e) => setSearchInput(e.target.value)}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter' || e.key === 'Return') {
-                                    handleFindHomes();
-                                }
-                            }}
-                        />
-                        <IoIosSearch
-                            onClick={handleFindHomes}
-                            className='absolute right-3 top-1/2 transform -translate-y-1/2 h-6 w-6 text-red-500 hover:cursor-pointer'
-                        />
+                    <div className='flex flex-col space-y-1'>
+                        <p className='text-sm font-bold'> University </p>
+                        <div className='relative w-full'>
+                            <input
+                                className={`h-10 md:h-12 w-full rounded-lg md:rounded-2xl px-4 pr-10 text-black outline-none ring-2 ring-red-500 text-xs lg:text-base ${searchInput === '' ? 'text-gray-400' : ''}`}
+                                placeholder="Ex: Carnegie Mellon University"
+                                value={searchInput}
+                                onChange={(e) => setSearchInput(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.key === 'Return') {
+                                        handleFindHomes();
+                                    }
+                                }}
+                            />
+                            <IoIosSearch
+                                onClick={handleFindHomes}
+                                className='absolute right-3 top-1/2 transform -translate-y-1/2 h-6 w-6 text-red-500 hover:cursor-pointer'
+                            />
+                        </div>
                     </div>
 
                     <div className='flex flex-col space-y-1'>
@@ -218,13 +229,13 @@ export default function SchoolMap() {
                                 className={`h-full w-1/2 rounded-l-lg md:rounded-l-2xl px-4 text-black outline-none ring-2 ring-red-500 text-xs md:text-sm ${priceRange[0] === 0 ? 'text-gray-400' : ''}`}
                                 placeholder="Min"
                                 value={priceRange[0]}
-                                onChange={(e) => setPriceRange([parseInt(e.target.value) || 0, priceRange[1]])}
+                                onChange={(e) => setPriceRange([parseInt(e.target.value), priceRange[1]])}
                             />
                             <input
                                 className={`h-full w-1/2 rounded-r-lg md:rounded-r-2xl px-4 text-black outline-none ring-2 ring-red-500 text-xs md:text-sm ${priceRange[1] === 1000000 ? 'text-gray-400' : ''}`}
                                 placeholder="Max"
                                 value={priceRange[1]}
-                                onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value) || 1000000])}
+                                onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
                             />
                         </div>
                     </div>
@@ -381,7 +392,7 @@ export default function SchoolMap() {
                                         >
                                             x
                                         </button>
-                                        <Popup listing={selectedMarker} />
+                                        <Popup listing={selectedMarker} refreshListing={fetchListings}/>
                                     </div>
                                 </div>
                             )}

@@ -1,74 +1,87 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuth0 } from "@auth0/auth0-react";
 import placeholder from '@assets/placeholder.jpeg';
+import axios from 'axios';
+import { TailSpin } from 'react-loader-spinner';
 
-export default function ListingPopup({ listing }) {
-    const { user, isAuthenticated, isLoading } = useAuth0();
+export default function ListingPopup({ listing, refreshListing }) {
+    const { user, isAuthenticated } = useAuth0();
+    const [loading, setLoading] = useState(false);
+    const [confirm, setConfirm] = useState(false);
 
-    const handleJoin = async(id, user) => {
+    const handleJoin = async (id, user) => {
+        setLoading(true);
         try {
-          const response = await axios.patch('http://localhost:8000/api/join/', { id, user });
-          console.log('Response:', response.data);
-          fetchData();
+            await axios.patch('http://localhost:8000/api/join/', { id, user });
+            await refreshListing(); // Re-fetch listings after join
         } catch (error) {
-          if (error.response) {
-            console.error('Error response data:', error.response.data);
-            console.error('Error response status:', error.response.status);
-            console.error('Error response headers:', error.response.headers);
-          } else if (error.request) {
-            console.error('Error request data:', error.request);
-          } else {
-            console.error('Error message:', error.message);
-          }
-          console.error('Error config:', error.config);
+            console.error('Error joining listing:', error);
         }
-      }
+        setLoading(false);
+        setConfirm(false);
+    };
 
-    const handleLeave = async(id, user) => {
+    const handleLeave = async (id, user) => {
+        setLoading(true);
         try {
-          const response = await axios.patch('http://localhost:8000/api/leave/',{id,user});
-          console.log('Response:',response.data);
-          fetchData();
-        } catch (error){
-          if (error.response) {
-            console.error('Error response data:', error.response.data);
-            console.error('Error response status:', error.response.status);
-            console.error('Error response headers:', error.response.headers);
-          } else if (error.request) {
-            console.error('Error request data:', error.request);
-          } else {
-            console.error('Error message:', error.message);
-          }
-          console.error('Error config:', error.config);
+            await axios.patch('http://localhost:8000/api/leave/', { id, user });
+            await refreshListing(); // Re-fetch listings after leave
+        } catch (error) {
+            console.error('Error leaving listing:', error);
         }
-      }
+        setLoading(false);
+        setConfirm(false);
+    };
 
     return (
-        <div className='z-50 w-full bg-white text-black rounded-lg flex flex-col items-center justify-between p-4'>
-            <img src={placeholder.src} alt='placeholder' className='h-50 w-full mb-2' />
+        <div className='z-50 h-full w-full bg-white text-black rounded-lg flex flex-col items-center justify-between p-2'>
+            <div className='h-3/5 w-3/5 mb-2'>
+                <img src={placeholder.src} alt='placeholder' className='h-full w-full object-cover' />
+            </div>
 
-            <div className='flex flex-col space-y-1 justify-start text-start w-full px-4'>
+            <div className='flex flex-col space-y-1 justify-start text-start w-full px-4 mb-4'>
                 <div className='flex flex-row space-x-1 items-center'>
                     <h1 className='text-base font-bold'>${listing.rent}/mo</h1>
                     <p className='text-sm'>{listing.rooms} bed, {listing.bathrooms} bath</p>
                 </div>
-                <p className='text-sm font-bold text-green-500'>{listing.rooms - listing.joinedListing.length} / {listing.rooms} Rooms Open</p>
+                <p className='text-xs font-bold text-green-500'>{listing.rooms - listing.joinedListing.length} / {listing.rooms} Rooms Open</p>
                 <p className='text-xs'>{listing.address}</p>
                 <p className='text-xs'>{listing.city}, {listing.state}, {listing.zipCode}</p>
             </div>
 
             {
                 isAuthenticated && listing.joinedListing.includes(user.nickname) ? 
-                <button onClick={() => {handleLeave(listing.id, user.nickname)}} className='w-16 h-6 outline-none ring-2 ring-red-500 bg-red-500 text-white hover:bg-white hover:text-red-500 text-sm font-bold transition ease-in-out duration-300 rounded-lg'> 
-                    Leave 
-                </button>
+                <div className=' h-12 flex flex-col space-y-2 items-center justify-center'>
+                    <p className={`text-sm font-bold text-red-500 ${confirm ? 'block' : 'hidden'}`}> Are you sure you want to leave this listing? </p>
+                    <div className={`flex flex-row space-x-8 ${confirm ? 'block' : 'hidden'}`}>
+                        <button onClick={() => setConfirm(false)} className='text-gray-500 text-sm font-bold'> 
+                            Cancel 
+                        </button>
+                        <button onClick={() => handleLeave(listing.id, user.nickname)} className='flex items-center justify-center w-20 h-6 outline-none ring-2 ring-red-500 bg-red-500 text-white text-sm font-bold hover:scale-105 transition ease-in-out duration-300 rounded-lg'> 
+                            {loading ? <TailSpin color='#ffffff' height={15} width={15} /> : 'Confirm'}
+                        </button>
+                    </div>
+                    <button onClick={() => setConfirm(true)} className={`w-16 h-6 outline-none ring-2 ring-red-500 bg-red-500 text-white text-sm font-bold hover:scale-105 transition ease-in-out duration-300 rounded-lg ${confirm ? 'hidden' : 'block'}`}> 
+                        Leave 
+                    </button>
+                </div>
                 : isAuthenticated && !listing.joinedListing.includes(user.nickname) ? 
-                <button onClick={() => handleJoin(listing.id, user.nickname)} className='w-16 h-6 outline-none ring-2 ring-green-500 bg-green-500 text-white hover:bg-white hover:text-green-500 text-sm font-bold transition ease-in-out duration-300 rounded-lg'>
-                    Join
-                </button>
+                <div className=' h-12 flex flex-col space-y-2 items-center justify-center'>
+                    <p className={`text-sm font-bold text-green-500 ${confirm ? 'block' : 'hidden'}`}> Join this listing? </p>
+                    <div className={`flex flex-row space-x-8 ${confirm ? 'block' : 'hidden'}`}>
+                    <button onClick={() => setConfirm(false)} className='text-gray-500 text-sm font-bold'> 
+                            Cancel 
+                        </button>
+                        <button onClick={() => handleJoin(listing.id, user.nickname)} className='flex items-center justify-center w-20 h-6 outline-none ring-2 ring-green-500 bg-green-500 text-white text-sm font-bold hover:scale-105 transition ease-in-out duration-300 rounded-lg'> 
+                            {loading ? <TailSpin color='#ffffff' height={15} width={15} /> : 'Confirm'}
+                        </button>
+                    </div>
+                    <button onClick={() => setConfirm(true)} className={`w-16 h-6 outline-none ring-2 ring-green-500 bg-green-500 text-white text-sm font-bold hover:scale-105 transition ease-in-out duration-300 rounded-lg ${confirm ? 'hidden' : 'block'}`}> 
+                        Join 
+                    </button>
+                </div>
                 : <></>
             }
-
         </div>
     );
 }
