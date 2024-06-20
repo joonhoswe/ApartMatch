@@ -2,13 +2,12 @@ import { React, useState, useEffect } from  'react';
 import Background from '@assets/osuAstonPlaceApartments.jpeg';
 import { useAuth0 } from "@auth0/auth0-react";
 import ConfettiExplosion from 'react-confetti-explosion';
-
-
+import { TailSpin } from 'react-loader-spinner';
 import axios from 'axios';
 
 export default function postListing() {
 
-    const { user, isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
+    const { user, isAuthenticated, loginWithRedirect } = useAuth0();
 
     const [owner, setOwner] = useState('');
     const [address, setAddress] = useState('');
@@ -254,15 +253,27 @@ export default function postListing() {
                 </div>  
 
                 <div className='flex justify-center py-6'>
-                    <input 
+                    
+                    <button 
                         type='submit'
                         onClick={() => setSubmitClicked(true)}
                         className={`w-32 text-red-500 py-2 px-4 rounded-2xl transition duration-300 ease-in-out outline-none ring-2 ring-red-500 
                         ${
-                            isFormValid ? 'opacity-100 bg-red-500 text-white hover:bg-white hover:text-red-500 hover:cursor-pointer' : 'opacity-50 cursor-not-allowed'
+                            isFormValid ? 'opacity-100 bg-red-500 text-white hover:scale-105 hover:cursor-pointer' : 'opacity-50 cursor-not-allowed'
                         }`} 
                         disabled={!isFormValid}
-                    />
+                    >
+                    {
+                    submitClicked && !posted ? 
+                    <div className='flex items-center justify-center'>
+                        <TailSpin color='#ffffff' height={20} width={20}/> 
+                    </div> : 
+                    <p> Submit</p>
+                    }
+
+                    </button>
+                    
+                                 
                 </div>    
             </form>
         </div>
