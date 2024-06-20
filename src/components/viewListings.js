@@ -1,29 +1,10 @@
 import React from 'react';
 import { useAuth0 } from "@auth0/auth0-react";
 import placeholder from '@assets/placeholder.jpeg';
-import axios from 'axios';
 import PacmanLoader from 'react-spinners/PacmanLoader';
 
 export default function ViewListings({ loading, listings, onListingClick }) {
     const { user, isAuthenticated, loginWithRedirect } = useAuth0();
-
-    const handleJoin = async (id, user) => {
-        try {
-            const response = await axios.patch('http://localhost:8000/api/join/', { id, user });
-            console.log('Response:', response.data);
-        } catch (error) {
-            console.error('Error joining listing:', error);
-        }
-    };
-
-    const handleLeave = async (id, user) => {
-        try {
-            const response = await axios.patch('http://localhost:8000/api/leave/', { id, user });
-            console.log('Response:', response.data);
-        } catch (error) {
-            console.error('Error leaving listing:', error);
-        }
-    };
 
     return (
         <div className='h-[calc(100vh-54px)] w-full sm:w-2/5 sm:flex flex-col justify-center items-center space-y-6 text-black border-2 bg-white border-gray-500'>

@@ -3,47 +3,27 @@ import { useAuth0 } from "@auth0/auth0-react";
 import placeholder from '@assets/placeholder.jpeg';
 import axios from 'axios';
 
-export default function ListingPopup({ listing }) {
+export default function ListingPopup({ listing, refreshListing }) {
     const { user, isAuthenticated } = useAuth0();
 
-    const handleJoin = async(id, user) => {
+    const handleJoin = async (id, user) => {
         try {
-          const response = await axios.patch('http://localhost:8000/api/join/', { id, user });
-          console.log('Response:', response.data);
-
+            await axios.patch('http://localhost:8000/api/join/', { id, user });
+            await refreshListing(); // Re-fetch listings after join
         } catch (error) {
-          if (error.response) {
-            console.error('Error response data:', error.response.data);
-            console.error('Error response status:', error.response.status);
-            console.error('Error response headers:', error.response.headers);
-          } else if (error.request) {
-            console.error('Error request data:', error.request);
-          } else {
-            console.error('Error message:', error.message);
-          }
-          console.error('Error config:', error.config);
+            console.error('Error joining listing:', error);
         }
-      }
-
-    const handleLeave = async(id, user) => {
+    };
+    
+    const handleLeave = async (id, user) => {
         try {
-          const response = await axios.patch('http://localhost:8000/api/leave/',{id,user});
-          console.log('Response:',response.data);
-
-        } catch (error){
-          if (error.response) {
-            console.error('Error response data:', error.response.data);
-            console.error('Error response status:', error.response.status);
-            console.error('Error response headers:', error.response.headers);
-          } else if (error.request) {
-            console.error('Error request data:', error.request);
-          } else {
-            console.error('Error message:', error.message);
-          }
-          console.error('Error config:', error.config);
+            await axios.patch('http://localhost:8000/api/leave/', { id, user });
+            await refreshListing(); // Re-fetch listings after leave
+        } catch (error) {
+            console.error('Error leaving listing:', error);
         }
-      }
-
+    };
+  
     return (
         <div className='z-50 w-full bg-white text-black rounded-lg flex flex-col items-center justify-between p-4'>
             <img src={placeholder.src} alt='placeholder' className='h-50 w-full mb-2' />

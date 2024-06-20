@@ -125,6 +125,14 @@ export default function SchoolMap() {
             setMarkers(resolvedMarkers.filter(marker => marker !== null));
             setFilteredListings(listings); // Initial full list
             setMapSet(true);
+
+            // Update Popup's availability by updating selectedMarker if it's currently active
+            if (popupActive && selectedMarker) {
+                const updatedMarker = listings.find(listing => listing.id === selectedMarker.id);
+                if (updatedMarker) {
+                    setSelectedMarker(updatedMarker);
+                }
+            }
         } catch (error) {
             console.error('Error fetching listings:', error);
         }
@@ -384,7 +392,7 @@ export default function SchoolMap() {
                                         >
                                             x
                                         </button>
-                                        <Popup listing={selectedMarker} />
+                                        <Popup listing={selectedMarker} refreshListing={fetchListings}/>
                                     </div>
                                 </div>
                             )}
