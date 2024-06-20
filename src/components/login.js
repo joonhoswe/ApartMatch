@@ -1,12 +1,17 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import Link from "next/link";
+import PulseLoader from 'react-spinners/PulseLoader';
 
 function LoginButton() {
   const { loginWithRedirect, user, isAuthenticated, isLoading } = useAuth0();
 
   if (isLoading) {
-    return <div> Loading... </div>;
+    return (
+      <div className='h-screen bg-white w-full flex items-center justify-center'>
+        <PulseLoader color='#ef4444' />
+      </div> 
+    );
   }
 
   return isAuthenticated ? (

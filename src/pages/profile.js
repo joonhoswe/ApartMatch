@@ -7,7 +7,7 @@ import PulseLoader from 'react-spinners/PulseLoader';
 
 export default function Profile() {
 
-    const { user, isAuthenticated, isLoading } = useAuth0();
+    const { user, isAuthenticated } = useAuth0();
     const [database, setDatabase] = useState([]);
     const [listings, setListings] = useState([]);
     const [loading, setLoading] = useState(true);
