@@ -2,6 +2,7 @@ import { React, useState } from "react";
 import emailjs from '@emailjs/browser';
 import Background from '@assets/advertisement.jpeg';
 import ConfettiExplosion from 'react-confetti-explosion';
+import { TailSpin } from 'react-loader-spinner';
 import Link from 'next/link';
 
 const Advertise = () => {
@@ -9,9 +10,10 @@ const Advertise = () => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
+  const [submitClicked, setSubmitClicked] = useState(false); 
   const [sent, setSent] = useState(false);
 
-  const formValid = email != '' && name != '' && message != '';
+  const isFormValid = email != '' && name != '' && message != '';
 
   const sendMessage = (e) => {
     e.preventDefault();
@@ -32,6 +34,7 @@ const Advertise = () => {
         function (response) {
           console.log("SUCCESS!", response.status, response.text);
           setSent(true);
+          setSubmitClicked(false);
           setEmail('');
           setName('');
           setMessage('');
@@ -91,14 +94,24 @@ const Advertise = () => {
             </div>
 
             <div className='flex justify-center pt-6'>
-                <input 
-                    type='submit'
-                    className={`w-32 text-red-500 py-2 px-4 rounded-2xl transition duration-300 ease-in-out outline-none ring-2 ring-red-500 
-                    ${
-                        formValid ? 'opacity-100 bg-red-500 text-white hover:bg-white hover:text-red-500 hover:cursor-pointer' : 'opacity-50 cursor-not-allowed'
-                    }`} 
-                    disabled={!formValid}
-                />
+                <button 
+                  type='submit'
+                  onClick={() => setSubmitClicked(true)}
+                  className={`w-32 text-red-500 py-2 px-4 rounded-2xl transition duration-300 ease-in-out outline-none ring-2 ring-red-500 
+                  ${
+                      isFormValid ? 'opacity-100 bg-red-500 text-white hover:scale-105 hover:cursor-pointer' : 'opacity-50 cursor-not-allowed'
+                  }`} 
+                  disabled={!isFormValid}
+                >
+                {
+                submitClicked && !sent ? 
+                <div className='flex items-center justify-center'>
+                    <TailSpin color='#ffffff' height={20} width={20}/> 
+                </div> : 
+                <p> Submit </p>
+                }
+
+              </button>
             </div>    
             
             </div>
@@ -117,7 +130,7 @@ const Advertise = () => {
             duration={3000}
             />
             <p className='text-sm sm:text-base md:text-xl text-black font-bold text-center'> 
-                Inquiry Sent! <br/> Our team will be in touch shortly. 
+                Inquiry sent! <br/> Our team will be in touch shortly. 
             </p>
         
             <Link href='/home' className="bg-red-500 text-xs md:text-base w-24 sm:w-32 h-10 rounded-md text-white px-2 py-1 flex items-center justify-center transition duration-500 hover:bg-white hover:text-red-500 hover:outline hover:outline-2 hover:red-500">
