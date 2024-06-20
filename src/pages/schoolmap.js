@@ -192,7 +192,7 @@ export default function SchoolMap() {
             };
 
             fetchFilteredListings();
-        }, 200); // Delay in milliseconds
+        }, 200); // Delay in milliseconds to reduce API Calls
 
         return () => clearTimeout(timer); // Cleanup the timer on unmount or dependency change
     }, [priceRange, homeType, gender, rooms, bathrooms]);
