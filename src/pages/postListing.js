@@ -19,6 +19,7 @@ export default function postListing() {
     const [rooms, setRooms] = useState(0);
     const [bathrooms, setBathrooms] = useState(0);
     const [gender, setGender] = useState('');
+    const [image, setImage] = useState();
 
     const [posted, setPosted] = useState(false);
     const [submitClicked, setSubmitClicked] = useState(false);
@@ -49,6 +50,7 @@ export default function postListing() {
         setBathrooms(0);
         setGender('');
         setJoinedListing([]);
+        setImage(); //what data type should this be 🤔
     };
 
     const handleSubmit = async (e) => {
@@ -69,6 +71,7 @@ export default function postListing() {
             bathrooms,
             gender,
             joinedListing,
+            image,
         };
 
         console.log("Submitting form: ", dataForSql);
@@ -84,6 +87,10 @@ export default function postListing() {
             setSubmitClicked(false);
         }
     };
+
+    const onPhoto = async(e) => {
+        e.preventDefault();
+    }
     
 
     return (isAuthenticated && !posted) ? (
@@ -250,6 +257,12 @@ export default function postListing() {
                         No Preference
                         </button>
                     </div>
+                </div>
+
+                <div className='w-full h-15 bg-white flex flex-col space-y-1'>
+                    <p className="flex justify-start">Upload Photos</p>
+                    <input className="flex h-full flex items-center rounded-lg justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-300 text-xs sm:text-sm lg:text-base"
+                    type="file" onChange={onPhoto} placeholder="Choose File"/>
                 </div>  
 
                 <div className='flex justify-center py-6'>
