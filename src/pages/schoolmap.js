@@ -53,6 +53,8 @@ export default function SchoolMap() {
     const [popupActive, setPopupActive] = useState(false);
     const [selectedMarker, setSelectedMarker] = useState(null);
 
+    const re = /^\d*$/;
+
     const handleMarkerClick = (marker) => {
         setPopupActive(true);
         setSelectedMarker(marker);
@@ -178,26 +180,19 @@ export default function SchoolMap() {
         }
     };
 
+    const applyFilters = () => {
+        console.log("applying")
+        fetchFilteredListings();
+    }
+
     // whenever school changes, update search input and fetch listings
     useEffect(() => {
         if (school) {
             setSearchInput(school);
             initialize(school);
         }
-
         fetchListings();
     }, [school]);
-
-    // whenever a filter parameter changes, update the listings and markers
-    useEffect(() => {
-        if (allListings.length > 0) {
-            const timer = setTimeout(() => {
-                fetchFilteredListings();
-            }, 200); // Delay in milliseconds to reduce API Calls
-
-            return () => clearTimeout(timer); // Cleanup the timer on unmount or dependency change
-        }
-    }, [priceRange, homeType, gender, rooms, bathrooms, allListings]);
 
     return (
         <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
@@ -231,13 +226,23 @@ export default function SchoolMap() {
                                 className={`h-full w-1/2 rounded-l-lg md:rounded-l-2xl px-4 text-black outline-none ring-2 ring-red-500 text-xs md:text-sm ${priceRange[0] === 0 ? 'text-gray-400' : ''}`}
                                 placeholder="Min"
                                 value={priceRange[0]}
-                                onChange={(e) => setPriceRange([parseInt(e.target.value), priceRange[1]])}
+                                onChange={(e) => setPriceRange([e.target.value === '' ? '' : parseInt(e.target.value), priceRange[1]])}
+                                onKeyDown={(e) => {
+                                    if (!/[0-9]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') {
+                                        e.preventDefault();
+                                    }
+                                }}
                             />
                             <input
                                 className={`h-full w-1/2 rounded-r-lg md:rounded-r-2xl px-4 text-black outline-none ring-2 ring-red-500 text-xs md:text-sm ${priceRange[1] === 1000000 ? 'text-gray-400' : ''}`}
                                 placeholder="Max"
                                 value={priceRange[1]}
-                                onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
+                                onChange={(e) => setPriceRange([priceRange[0], e.target.value === '' ? '' : parseInt(e.target.value)])}
+                                onKeyDown={(e) => {
+                                    if (!/[0-9]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') {
+                                        e.preventDefault();
+                                    }
+                                }}
                             />
                         </div>
                     </div>
@@ -355,15 +360,31 @@ export default function SchoolMap() {
                                 className={`h-full w-1/2 rounded-l-lg md:rounded-l-2xl px-4 text-black outline-none ring-2 ring-red-500 text-xs md:text-sm ${commute[0] === 0 ? 'text-gray-400' : ''}`}
                                 placeholder="Min"
                                 value={commute[0]}
-                                onChange={(e) => setCommute([parseInt(e.target.value), commute[1]])}
+                                onChange={(e) => setPriceRange([commute[0], e.target.value === '' ? '' : parseInt(e.target.value)])}
+                                onKeyDown={(e) => {
+                                    if (!/[0-9]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') {
+                                        e.preventDefault();
+                                    }
+                                }}
                             />
                             <input
                                 className={`h-full w-1/2 rounded-r-lg md:rounded-r-2xl px-4 text-black outline-none ring-2 ring-red-500 text-xs md:text-sm ${commute[1] === 1000000 ? 'text-gray-400' : ''}`}
                                 placeholder="Max"
                                 value={commute[1]}
-                                onChange={(e) => setCommute([commute[0], parseInt(e.target.value)])}
+                                onChange={(e) => setPriceRange([e.target.value === '' ? '' : parseInt(e.target.value), commute[1]])}
+                                onKeyDown={(e) => {
+                                    if (!/[0-9]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') {
+                                        e.preventDefault();
+                                    }
+                                }}
                             />
                         </div>
+                    </div>
+
+                    <div className='flex items-center justify-center'>
+                        <button onClick={applyFilters} className='w-32 h-8 bg-red-500 outline-none text-white p-2 rounded-lg flex items-center justify-center hover:scale-110 transition ease-in-out duration-300'>
+                            Apply Filters
+                        </button>
                     </div>
                 </div>
 
