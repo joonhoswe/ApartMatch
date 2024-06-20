@@ -80,7 +80,7 @@ export default function Profile() {
 
             <div className='flex gap-4 items-center flex-wrap'>
             {listings.map((listing, index) => (
-                <div key={index} className='relative flex flex-col h-48 w-56 rounded-2xl shadow-2xl hover:cursor-pointer hover:scale-110 transition ease-in-out duration-300'>
+                <div key={index} className='relative flex flex-col h-56 w-48  justify-between rounded-2xl shadow-2xl hover:cursor-pointer hover:scale-110 transition ease-in-out duration-300 pb-3'>
                     <div className='absolute top-2 left-2 bg-yellow-400 text-white font-bold text-xs w-18 h-4 p-1 rounded-md flex items-center justify-center'> 
                       <p className=''>☆OWNER </p>
                     </div>
@@ -92,8 +92,9 @@ export default function Profile() {
                         </div>
                         <p className='text-xs'> {listing.address} </p>
                         <p className='text-xs'> {listing.city}, {listing.state}, {listing.zipCode}</p>
-                        <button onClick={() => handleDelete(listing.id)} className='text-red-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'> Delete </button>
                     </div>
+                    <button onClick={() => handleDelete(listing.id)} className='text-red-500 text-xs font-bold transition ease-in-out duration-300 hover:text-gray-400'> Delete </button>
+
                 </div>
             ))}
             </div>
