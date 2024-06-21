@@ -53,8 +53,6 @@ export default function SchoolMap() {
     const [popupActive, setPopupActive] = useState(false);
     const [selectedMarker, setSelectedMarker] = useState(null);
 
-    const re = /^\d*$/;
-
     const handleMarkerClick = (marker) => {
         setPopupActive(true);
         setSelectedMarker(marker);

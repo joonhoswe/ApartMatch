@@ -50,7 +50,7 @@ export default function ListingPopup({ listing, refreshListing }) {
             </div>
 
             {
-                isAuthenticated && listing.joinedListing.includes(user.nickname) ? 
+                isAuthenticated && user.email_verified && listing.joinedListing.includes(user.nickname) ? 
                 <div className=' h-12 flex flex-col space-y-2 items-center justify-center'>
                     <p className={`text-sm font-bold text-red-500 ${confirm ? 'block' : 'hidden'}`}> Are you sure you want to leave this listing? </p>
                     <div className={`flex flex-row space-x-8 ${confirm ? 'block' : 'hidden'}`}>
@@ -65,7 +65,7 @@ export default function ListingPopup({ listing, refreshListing }) {
                         Leave 
                     </button>
                 </div>
-                : isAuthenticated && !listing.joinedListing.includes(user.nickname) ? 
+                : isAuthenticated && user.email_verified && !listing.joinedListing.includes(user.nickname) ? 
                 <div className=' h-12 flex flex-col space-y-2 items-center justify-center'>
                     <p className={`text-sm font-bold text-green-500 ${confirm ? 'block' : 'hidden'}`}> Join this listing? </p>
                     <div className={`flex flex-row space-x-8 ${confirm ? 'block' : 'hidden'}`}>
