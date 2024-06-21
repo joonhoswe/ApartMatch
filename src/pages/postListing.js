@@ -103,9 +103,13 @@ export default function postListing() {
     ) : (isAuthenticated && !user.email_verified) ?
     (
         <div className='h-[calc(100vh-54px)] w-full bg-gray-200 flex items-center justify-center'>
-            <div className='h-2/5 rounded-2xl w-4/5 md:w-3/5 lg:w-1/3 flex flex-col bg-white items-center justify-between border-y-8 border-red-500 p-4 md:p-8'>
+            <div className='h-3/5 rounded-2xl w-4/5 md:w-3/5 lg:w-1/3 flex flex-col bg-white items-center justify-between border-y-8 border-red-500 p-4 md:p-8'>
                 <p className='text-sm sm:text-base md:text-xl text-black font-bold text-center'> 
                     To protect the safety of our students, please verify your email before posting a listing.
+                </p>
+
+                <p className='text-xs sm:text-sm md:text-base text-black italic text-center'> 
+                    NOTE: If you've already verified your email and are still seeing this message, please log out and log back in.
                 </p>
 
                 <Link href='/home' className="bg-red-500 text-xs md:text-base w-24 sm:w-32 h-10 rounded-md text-white px-2 py-1 flex items-center justify-center transition duration-500 hover:bg-white hover:text-red-500 hover:outline hover:outline-2 hover:red-500">
