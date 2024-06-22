@@ -9,13 +9,16 @@ import Popup from '@components/listingPopup';
 export default function Profile() {
 
     const { user, isAuthenticated } = useAuth0();
-    const [database, setDatabase] = useState([]);
-    const [listings, setListings] = useState([]);
+    const [userListings, setUserListings] = useState([]);
     const [allListings, setAllListings] = useState([]);
     const [loading, setLoading] = useState(true);
 
     const [popupActive, setPopupActive] = useState(false);
     const [selectedMarker, setSelectedMarker] = useState(null);
+    
+    const handleUserListingChange = (listings) => {
+      setUserListings(listings);
+    };
 
     const handlePopupActiveChange = (active) => {
       setPopupActive(active);
@@ -29,11 +32,11 @@ export default function Profile() {
     const fetchData = async () => {
       try{
         const response = await axios.get('http://localhost:8000/api/get');
-        setDatabase(response.data);
+        const database = response.data;
         if (user) {
-          const listings = response.data;
-          const userJoinedListings = listings.filter(listing => listing.joinedListing.includes(user.nickname));
-          setListings(userJoinedListings);
+          setAllListings(response.data);
+          const userJoinedListings = database.filter(listing => listing.joinedListing.includes(user.nickname));
+          setUserListings(userJoinedListings);
         }
         setLoading(false); // Set loading to false after the data has been fetched
       } catch(error){
@@ -81,13 +84,13 @@ export default function Profile() {
               <div className='w-full h-0.5 bg-red-500'/>
             </div>
 
-            {listings.length === 0 ?
+            {userListings.length === 0 ?
             <div className='flex items-center justify-center'>
                 <p className='text-gray-400 text-sm md:text-lg'> No listings joined or posted yet. </p>
             </div> : <></>}
 
             <div className='flex gap-4 items-center flex-wrap'>
-              {listings.map((listing, index) => (
+              {userListings.map((listing, index) => (
                   <div onClick={() => handleListingClick(listing)} key={index} className='relative flex flex-col h-56 w-48 rounded-2xl shadow-2xl hover:cursor-pointer hover:scale-110 transition ease-in-out duration-300'>
 
                       {listing.owner === user.nickname ? (
@@ -124,7 +127,7 @@ export default function Profile() {
                             x
                         </button>
                         {/* need to close listing after leave or delete is handled */}
-                        <Popup allListings={listings} listing={selectedMarker} refreshListing={fetchData} changePopupActive={handlePopupActiveChange}/>
+                        <Popup allListings={userListings} listing={selectedMarker} refreshListing={fetchData} changePopupActive={handlePopupActiveChange} changeUserListing={handleUserListingChange}/>
                     </div>
                 </div>
             )}

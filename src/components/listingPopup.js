@@ -4,7 +4,7 @@ import placeholder from '@assets/placeholder.jpeg';
 import axios from 'axios';
 import { TailSpin } from 'react-loader-spinner';
 
-export default function ListingPopup({ allListings, listing, refreshListing, changePopupActive }) {
+export default function ListingPopup({ allListings, listing, refreshListing, changePopupActive, changeUserListing }) {
     const { user, isAuthenticated } = useAuth0();
     const [loading, setLoading] = useState(false);
     const [confirm, setConfirm] = useState(false);
@@ -36,12 +36,17 @@ export default function ListingPopup({ allListings, listing, refreshListing, cha
     };
 
     const handleDelete = async(id) => {
-        await axios.delete(`http://localhost:8000/api/delete/${id}`);
-        //remove from listings array
-        const updatedListings = allListings.filter(listing => listing.id !== id);
-        // ** check if this is needed or not for updating functionality, if not remove it **
-        setListings(updatedListings);
-        await changePopupActive(false);
+        setLoading(true);
+        try {
+            await axios.delete(`http://localhost:8000/api/delete/${id}`);
+            const updatedListings = allListings.filter(listing => listing.id !== id);
+            await changeUserListing(updatedListings);
+            await changePopupActive(false);
+        } catch (error) {
+            console.error('Error deleting listing:', error);
+        }
+        setLoading(false);
+        setConfirm(false);
       }
 
     return (
