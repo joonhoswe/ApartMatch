@@ -53,7 +53,9 @@ export default function SchoolMap() {
     const [popupActive, setPopupActive] = useState(false);
     const [selectedMarker, setSelectedMarker] = useState(null);
 
-    const re = /^\d*$/;
+    const handlePopupActiveChange = (active) => {
+        setPopupActive(active);
+    };
 
     const handleMarkerClick = (marker) => {
         setPopupActive(true);
@@ -104,7 +106,9 @@ export default function SchoolMap() {
     const fetchListings = async () => {
         try {
             const response = await axios.get('http://localhost:8000/api/get');
-            const listings = response.data;
+            // Filter listings by city
+            const listings = response.data.filter(listing => listing.city === response.data[0].city);
+            // store same city listings in allListings to keep track of all listings to filter from
             setAllListings(listings);
 
             const markerPromises = listings.map((listing) => {
@@ -190,8 +194,9 @@ export default function SchoolMap() {
         if (school) {
             setSearchInput(school);
             initialize(school);
+            fetchListings();
         }
-        fetchListings();
+        // moved fetchListings up from here
     }, [school]);
 
     return (
@@ -409,13 +414,14 @@ export default function SchoolMap() {
                             {popupActive && selectedMarker && (
                                 <div className='absolute top-0 left-0 w-full h-full flex items-center justify-center z-50 px-4'>
                                     <div className='relative bg-white p-4 rounded-lg shadow-lg'>
+                                        {/* future: move button to listing component and pass popupActive */}
                                         <button
                                             onClick={() => setPopupActive(false)}
                                             className='absolute top-2 right-2 h-6 w-6 rounded-lg outline-none ring-2 ring-red-500 bg-red-500 text-white hover:bg-white hover:text-red-500 transition duration-300 ease-in-out font-bold'
                                         >
                                             x
                                         </button>
-                                        <Popup listing={selectedMarker} refreshListing={fetchListings}/>
+                                        <Popup listing={selectedMarker} refreshListing={fetchListings} changePopupActive={handlePopupActiveChange}/>
                                     </div>
                                 </div>
                             )}
