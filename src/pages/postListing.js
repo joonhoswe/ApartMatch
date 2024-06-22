@@ -300,6 +300,7 @@ export default function postListing() {
                 </div>  
 
                 <div className="">
+                    Upload Photo Below<br></br>
                     <input type="file" onChange={handleFileChange}/>
                 </div>
 
