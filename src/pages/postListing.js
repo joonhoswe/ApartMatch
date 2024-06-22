@@ -4,8 +4,18 @@ import { useAuth0 } from "@auth0/auth0-react";
 import ConfettiExplosion from 'react-confetti-explosion';
 import { TailSpin } from 'react-loader-spinner';
 import axios from 'axios';
+import AWS from 'aws-sdk';
 
 export default function postListing() {
+
+    AWS.config.update({
+        region: 'us-east-2',
+        credentials: new AWS.Credentials(
+            process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID,
+            process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY
+        )
+    });
+    const s3 = new AWS.S3();
 
     const { user, isAuthenticated, loginWithRedirect } = useAuth0();
 
@@ -19,6 +29,7 @@ export default function postListing() {
     const [rooms, setRooms] = useState(0);
     const [bathrooms, setBathrooms] = useState(0);
     const [gender, setGender] = useState('');
+    const [image, setImage] = useState(null);
 
     const [posted, setPosted] = useState(false);
     const [submitClicked, setSubmitClicked] = useState(false);
@@ -83,6 +94,32 @@ export default function postListing() {
         } finally {
             setSubmitClicked(false);
         }
+
+        console.log("this was reached");
+        handleAWS();
+    };
+
+    const handleFileChange = (event) => {
+        setImage(event.target.files[0]);
+    };
+
+    const handleAWS = async() => {
+        if(!image) return;
+
+        const params = {
+            Bucket: 'imagesapartmatch',
+            Key: image.name,
+            Body: image,
+            ContentType: image.type,
+          };
+      
+          s3.upload(params, (err, data) => {
+            if (err) {
+              console.error('Error uploading file:', err);
+              return;
+            }
+            console.log('File uploaded successfully:', data.Location);
+        });
     };
     
 
@@ -261,6 +298,10 @@ export default function postListing() {
                         </button>
                     </div>
                 </div>  
+
+                <div className="">
+                    <input type="file" onChange={handleFileChange}/>
+                </div>
 
                 <div className='flex justify-center py-6'>
                     
