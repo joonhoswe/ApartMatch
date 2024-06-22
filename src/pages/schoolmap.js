@@ -102,7 +102,9 @@ export default function SchoolMap() {
     const fetchListings = async () => {
         try {
             const response = await axios.get('http://localhost:8000/api/get');
-            const listings = response.data;
+            // Filter listings by city
+            const listings = response.data.filter(listing => listing.city === response.data[0].city);
+            // store same city listings in allListings to keep track of all listings to filter from
             setAllListings(listings);
 
             const markerPromises = listings.map((listing) => {
@@ -188,8 +190,9 @@ export default function SchoolMap() {
         if (school) {
             setSearchInput(school);
             initialize(school);
+            fetchListings();
         }
-        fetchListings();
+        // moved fetchListings up from here
     }, [school]);
 
     return (
