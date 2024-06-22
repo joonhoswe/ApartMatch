@@ -61,6 +61,7 @@ export default function ListingPopup({ allListings, listing, refreshListing, cha
             </div>
 
             {   
+            // ** possible to combine all 3 and use conditional rendering **
                 isAuthenticated && user.email_verified && listing.owner === user.nickname ? 
                 <div className=' h-12 flex flex-col space-y-2 items-center justify-center'>
                     {/* confirmation text if the user pressed an action button */}
