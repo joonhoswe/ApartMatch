@@ -156,7 +156,7 @@ export default function postListing() {
             </div>  
       </div>
     ) : (isAuthenticated && !posted) ? (
-        <div className="bg-gray-200 flex flex-col justify-center items-center w-full h-[calc(100vh-54px)]" 
+        <div className="bg-gray-200 flex flex-col justify-center items-center w-full h-auto min-h-[calc(100vh-54px)] px-2 py-8" 
             style={{ 
                 backgroundImage: `url(${Background.src})`, 
                 backgroundSize: 'cover',

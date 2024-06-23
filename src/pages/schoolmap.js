@@ -44,6 +44,9 @@ export default function SchoolMap() {
     const [bathrooms, setBathrooms] = useState(0);
     const [commute, setCommute] = useState([, ]);
 
+    const [roomExactMatch, setRoomExactMatch] = useState(false);
+    const [bathroomExactMatch, setBathroomExactMatch] = useState(false);
+
     const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
     const [mapSet, setMapSet] = useState(false);
     const [markers, setMarkers] = useState([]);
@@ -154,9 +157,10 @@ export default function SchoolMap() {
                 (!priceRange[1] || listing.rent <= priceRange[1]) &&
                 (!homeType || listing.homeType === homeType) &&
                 (!gender || listing.gender === gender) &&
-                (!rooms || listing.rooms - listing.joinedListing.length === rooms) &&
-                (!bathrooms || listing.bathrooms === bathrooms)
+                (!rooms || (roomExactMatch ? listing.rooms - listing.joinedListing.length === rooms : listing.rooms - listing.joinedListing.length >= rooms)) &&
+                (!bathrooms || (bathroomExactMatch ? listing.bathrooms === bathrooms : listing.bathrooms >= bathrooms))
             );
+            
 
             const markerPromises = validListings.map((listing) => {
                 if (listing.rooms - listing.joinedListing.length !== 0) {
@@ -185,7 +189,6 @@ export default function SchoolMap() {
     };
 
     const applyFilters = () => {
-        console.log("applying")
         fetchFilteredListings();
     }
 
@@ -324,6 +327,15 @@ export default function SchoolMap() {
                                 onChange={(e) => setRooms(parseInt(e.target.value) || 0)}
                             />
                         </div>
+                        <div className='flex items-center justify-start'>
+                            <input
+                                type='checkbox'
+                                className='h-4 w-4 mt-1 '
+                                checked={roomExactMatch}
+                                onChange={() => setRoomExactMatch(!roomExactMatch)}
+                            />
+                            <p className='text-xs ml-1 mt-1'> Exact Match </p>
+                        </div>
                     </div>
 
                     <div className='flex flex-col space-y-1'>
@@ -355,6 +367,15 @@ export default function SchoolMap() {
                                 value={bathrooms > 3 ? bathrooms : ''}
                                 onChange={(e) => setBathrooms(parseInt(e.target.value) || 0)}
                             />
+                        </div>
+                        <div className='flex items-center justify-start'>
+                            <input
+                                type='checkbox'
+                                className='h-4 w-4 mt-1 '
+                                checked={bathroomExactMatch}
+                                onChange={() => setBathroomExactMatch(!bathroomExactMatch)}
+                            />
+                            <p className='text-xs ml-1 mt-1'> Exact Match </p>
                         </div>
                     </div>
 
