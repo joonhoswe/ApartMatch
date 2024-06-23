@@ -68,7 +68,7 @@ export default function Navbar() {
             <Image src={Logo} alt="ApartMatch Logo" width={128} height={32} />
         </Link>
         {/* Mobile NavBar Icon */}
-        <div className='flex flex-row space-x-2 items-center justify-center'>
+        <div className='flex flex-row space-x-0.5 items-center justify-center'>
           <Login />
           <Hamburger rounded size={24} duration={0.4} distance='lg' hideOutline={false} onToggle={toggleMenu} />
         </div>
