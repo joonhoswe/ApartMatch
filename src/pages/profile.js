@@ -99,7 +99,7 @@ export default function Profile() {
                         </div>
                       ):<></>}
 
-                      <img src = {placeholder.src} alt = 'placeholder' className='h-24 w-full rounded-t-2xl'/>
+                      <img src = {listing.imageUrl} alt = 'placeholder' className='h-24 w-full rounded-t-2xl'/>
                       <div className='flex flex-col space-y-1 justify-start text-start px-4'>
                           <div className='flex flex-row space-x-1 items-center'>
                             <h1 className='text-sm font-bold'> ${listing.rent}/mo </h1>
