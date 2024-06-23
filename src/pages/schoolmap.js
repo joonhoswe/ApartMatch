@@ -46,8 +46,8 @@ export default function SchoolMap() {
     const [bathrooms, setBathrooms] = useState(0);
     const [commute, setCommute] = useState([, ]);
 
-    const [roomExactMatch, setRoomExactMatch] = useState(false);
-    const [bathroomExactMatch, setBathroomExactMatch] = useState(false);
+    const [roomExactMatch, setRoomExactMatch] = useState(true);
+    const [bathroomExactMatch, setBathroomExactMatch] = useState(true);
 
     const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
     const [mapSet, setMapSet] = useState(false);
@@ -308,21 +308,21 @@ export default function SchoolMap() {
                                 className={`h-full w-1/4 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs md:text-sm ${rooms === 1 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
                                 onClick={() => setRooms(rooms === 1 ? 0 : 1)}
                             >
-                                1
+                                {roomExactMatch ? '1' : '1+'}
                             </button>
 
                             <button
                                 className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs md:text-sm ${rooms === 2 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
                                 onClick={() => setRooms(rooms === 2 ? 0 : 2)}
                             >
-                                2
+                                {roomExactMatch ? '2' : '2+'}
                             </button>
 
                             <button
                                 className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs md:text-sm ${rooms === 3 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
                                 onClick={() => setRooms(rooms === 3 ? 0 : 3)}
                             >
-                                3
+                                {roomExactMatch ? '3' : '3+'}
                             </button>
                             <input
                                 placeholder='3+'
@@ -349,21 +349,21 @@ export default function SchoolMap() {
                                 className={`h-full w-1/4 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs md:text-sm ${bathrooms === 1 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
                                 onClick={() => setBathrooms(bathrooms === 1 ? 0 : 1)}
                             >
-                                1
+                                {bathroomExactMatch ? '1' : '1+'}
                             </button>
 
                             <button
                                 className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs md:text-sm ${bathrooms === 2 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
                                 onClick={() => setBathrooms(bathrooms === 2 ? 0 : 2)}
                             >
-                                2
+                                {bathroomExactMatch ? '2' : '2+'}
                             </button>
 
                             <button
                                 className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs md:text-sm ${bathrooms === 3 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
                                 onClick={() => setBathrooms(bathrooms === 3 ? 0 : 3)}
                             >
-                                3
+                                {bathroomExactMatch ? '3' : '3+'}
                             </button>
                             <input
                                 placeholder='3+'
