@@ -92,7 +92,12 @@ export default function Profile() {
             <div className='flex gap-4 items-center flex-wrap'>
               {userListings.map((listing, index) => (
                   <div onClick={() => handleListingClick(listing)} key={index} className='relative flex flex-col h-56 w-48 rounded-2xl shadow-2xl hover:cursor-pointer hover:scale-110 transition ease-in-out duration-300'>
+                      {/* badge for gender preference */}
+                      <div className={`${listing.gender == 'males' ? 'bg-blue-500' : listing.gender === 'females' ? 'bg-pink-500' : 'bg-gray-500'} absolute top-2 right-2 text-white font-bold text-xs w-16 h-4 p-1 rounded-md flex items-center justify-center`}>
+                          <p className=''> {listing.gender} </p>
+                      </div>
 
+                      {/* owner badge */}
                       {listing.owner === user.nickname ? (
                         <div className='absolute top-2 left-2 bg-yellow-400 text-white font-bold text-xs w-18 h-4 p-1 rounded-md flex items-center justify-center'> 
                         <p className=''>☆OWNER </p>
@@ -105,6 +110,7 @@ export default function Profile() {
                             <h1 className='text-sm font-bold'> ${listing.rent}/mo </h1>
                             <p className='text-xs'> {listing.rooms} bed, {listing.bathrooms} bath </p>
                           </div>
+                          <p className='text-xs font-bold text-green-500'> {listing.rooms - listing.joinedListing.length} / {listing.rooms} Rooms Open </p>
                           <p className='text-xs'> {listing.address} </p>
                           <p className='text-xs'> {listing.city}, {listing.state}, {listing.zipCode}</p>
                       </div>
