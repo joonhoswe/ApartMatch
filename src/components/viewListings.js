@@ -37,7 +37,8 @@ export default function ViewListings({ loading, listings, onListingClick }) {
                             </div>
 
                             {/* listing images */}
-                            <img src={placeholder.src} alt='placeholder' className='h-24 w-full rounded-t-2xl' />
+                            {console.log(listing.imageUrl)}
+                            <img src={listing.imageUrl} alt='placeholder' className='h-24 w-full rounded-t-2xl' />
 
                             <div className='flex flex-col space-y-1 justify-start text-start px-2'>
                                 <div className='flex flex-row space-x-1 items-center'>

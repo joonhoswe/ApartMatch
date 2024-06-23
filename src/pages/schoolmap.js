@@ -36,6 +36,8 @@ const CustomPin = ({ text }) => (
 export default function SchoolMap() {
     const router = useRouter();
     const { school } = router.query;
+    let schoolCity = null;
+
     const [searchInput, setSearchInput] = useState(school || '');
     const [priceRange, setPriceRange] = useState([, ]);
     const [homeType, setHomeType] = useState('');
@@ -84,7 +86,9 @@ export default function SchoolMap() {
                 .then((response) => {
                     const { lat, lng } = response.results[0].geometry.location;
                     setMapCenter({ lat, lng });
-                    
+                    console.log(response.results[0]);
+                    console.log(response.results[0].address_components[2].long_name)
+                    schoolCity = (response.results[0].address_components[2].long_name);
                 })
                 .catch((error) => {
                     console.error(error);
@@ -109,8 +113,8 @@ export default function SchoolMap() {
     const fetchListings = async () => {
         try {
             const response = await axios.get('http://localhost:8000/api/get');
-            // Filter listings by city
-            const listings = response.data.filter(listing => listing.city === response.data[0].city);
+            // Filter listings by city   
+            const listings = response.data.filter(listing => listing.city === schoolCity);
             // store same city listings in allListings to keep track of all listings to filter from
             setAllListings(listings);
 
