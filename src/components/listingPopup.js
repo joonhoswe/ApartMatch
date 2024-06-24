@@ -96,7 +96,7 @@ export default function ListingPopup({ allListings, listing, refreshListing, cha
                 isAuthenticated && user.email_verified && listing.joinedListing.includes(user.nickname) ? 
                 <div className=' h-12 flex flex-col space-y-2 items-center justify-center'>
                     {/* confirmation text if the user pressed an action button */}
-                    {confirm && <p className= 'text-sm font-bold text-red-500'> Leave this listing? </p> }
+                    {confirm && <p className= 'text-sm font-bold text-orange-500'> Leave this listing? </p> }
 
                     {/* confirm button if user pressed an action button */}
                     {confirm ? (
@@ -104,7 +104,7 @@ export default function ListingPopup({ allListings, listing, refreshListing, cha
                         <button onClick={() => setConfirm(false)} className='text-gray-500 text-sm font-bold'> 
                                 Cancel 
                         </button>
-                        <button onClick={() => handleLeave(listing.id, user.nickname)} className='flex items-center justify-center w-20 h-6 outline-none ring-2 ring-red-500 bg-red-500 text-white text-sm font-bold hover:scale-105 transition ease-in-out duration-300 rounded-lg'> 
+                        <button onClick={() => handleLeave(listing.id, user.nickname)} className='flex items-center justify-center w-20 h-6 outline-none ring-2 ring-orange-500 bg-orange-500 text-white text-sm font-bold hover:scale-105 transition ease-in-out duration-300 rounded-lg'> 
                             {loading ? <TailSpin color='#ffffff' height={15} width={15} /> : 'Confirm'}
                         </button>
                     </div>
