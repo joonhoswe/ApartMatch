@@ -37,6 +37,7 @@ export default function SchoolMap() {
     const router = useRouter();
     const { school } = router.query;
     let schoolCity = null;
+    let schoolState = null;
 
     const [searchInput, setSearchInput] = useState(school || '');
     const [priceRange, setPriceRange] = useState([, ]);
@@ -89,10 +90,11 @@ export default function SchoolMap() {
     
                     const addressComponents = response.results[0].address_components;
                     const localityComponent = addressComponents.find(component => component.types.includes('locality'));
-
+                    const stateComponent = addressComponents.find(component => component.types.includes('administrative_area_level_1'));
                     
                     if (localityComponent) {
                         schoolCity = localityComponent.long_name;
+                        schoolState = stateComponent.short_name;
                     } else {
                         console.error("Locality (city) not found in address components");
                     }
@@ -217,7 +219,7 @@ export default function SchoolMap() {
     return (
         <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
             <div className='flex flex-row h-[calc(100vh-54px)] w-full bg-white'>
-                <div className='h-full w-1/3 hidden sm:flex flex-col space-y-6 text-black p-4 border-2 border-gray-500'>
+                <div className='h-full w-1/3 hidden sm:flex flex-col space-y-6 text-black p-4 border-2 border-gray-300'>
                     <div className='flex flex-col space-y-1'>
                         <p className='text-sm font-bold'> University </p>
                         <div className='relative w-full'>

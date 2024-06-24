@@ -137,7 +137,7 @@ const Contact = () => {
         backgroundSize: 'cover',
         backgroundPosition: 'center'
       }}>
-        <div className='h-3/5 rounded-2xl w-5/6 sm:w-3/5 lg:w-2/5 flex flex-col bg-white items-center justify-between py-8 px-2 border-y-8 border-red-500'>
+        <div className='h-3/5 rounded-2xl w-5/6 sm:w-3/5 lg:w-2/5 flex flex-col bg-white items-center justify-between py-8 px-2 border-y-8 border-red-500 animate-jump-in animate-duration-700 animate-delay-100'>
             <ConfettiExplosion 
             particleCount={200}
             duration={3000}
