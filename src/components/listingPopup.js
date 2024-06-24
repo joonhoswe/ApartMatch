@@ -50,20 +50,22 @@ export default function ListingPopup({ allListings, listing, refreshListing, cha
       }
 
     return (
-        <div className='z-50 h-full w-full bg-white text-black rounded-lg flex flex-col items-center justify-between p-2'>
-            <div className='h-3/5 w-3/5 mb-2'>
+        <div className='z-50 h-full w-full bg-white text-black rounded-lg flex flex-col items-center justify-between'>
+            <div className='h-3/5 w-full mb-2'>
                 {/*change photo*/}
                 <img src={!listing.imageUrl ? placeholder.src : listing.imageUrl} alt='placeholder' className='h-full w-full' />
             </div>
 
             <div className='flex flex-col space-y-1 justify-start text-start w-full px-4 mb-4'>
-                <div className='flex flex-row space-x-1 items-center'>
-                    <h1 className='text-base font-bold'>${listing.rent}/mo</h1>
-                    <p className='text-sm'>{listing.rooms} bed, {listing.bathrooms} bath</p>
+                <div className='flex items-center justify-between'>
+                    <div className='flex flex-row space-x-1 items-center'>
+                        <h1 className='text-lg font-bold'>${listing.rent}/mo</h1>
+                        <p className='text-base'>{listing.rooms} bed, {listing.bathrooms} bath</p>
+                    </div>
+                    <p className='text-base font-bold text-green-500'> {listing.rooms - listing.joinedListing.length} / {listing.rooms} Rooms Open </p>
                 </div>
-                <p className='text-xs font-bold text-green-500'>{listing.rooms - listing.joinedListing.length} / {listing.rooms} Rooms Open</p>
-                <p className='text-xs'>{listing.address}</p>
-                <p className='text-xs'>{listing.city}, {listing.state}, {listing.zipCode}</p>
+
+                <p className='text-sm'>{listing.address} <br/> {listing.city}, {listing.state}, {listing.zipCode}</p>
             </div>
 
             {   
