@@ -38,6 +38,8 @@ export default function SchoolMap() {
     const { school } = router.query;
     let schoolCity = null;
     let schoolState = null;
+    // const [schoolCity, setSchoolCity] = useState(null);
+    // const [schoolState, setSchoolState] = useState(null);
 
     const [searchInput, setSearchInput] = useState(school || '');
     const [priceRange, setPriceRange] = useState([, ]);
@@ -92,6 +94,7 @@ export default function SchoolMap() {
                     const localityComponent = addressComponents.find(component => component.types.includes('locality'));
                     const stateComponent = addressComponents.find(component => component.types.includes('administrative_area_level_1'));
                     
+                    // setSchoolCity(localityComponent.long_name);
                     if (localityComponent) {
                         schoolCity = localityComponent.long_name;
                         schoolState = stateComponent.short_name;
@@ -119,6 +122,55 @@ export default function SchoolMap() {
             handleGeocode(searchInput);
         }
     };
+
+    // * used for when an action is taken from a popup *
+    // gets all listings in the same city and then filters right away
+    const resetFilterListings = async() => {
+        try {
+            setMapSet(false);
+
+            const response = await axios.get('http://localhost:8000/api/get');
+            // Filter listings by city   
+            const listings = response.data.filter(listing => listing.city === schoolCity);
+            // store same city listings in allListings to keep track of all listings to filter from
+            setAllListings(listings);
+
+            // left out commute time filtering for now
+            const validListings = listings.filter(listing =>
+                (!priceRange[0] || listing.rent >= priceRange[0]) &&
+                (!priceRange[1] || listing.rent <= priceRange[1]) &&
+                (!homeType || listing.homeType === homeType) &&
+                (!gender || listing.gender === gender) &&
+                (!rooms || (roomExactMatch ? listing.rooms - listing.joinedListing.length === rooms : listing.rooms - listing.joinedListing.length >= rooms)) &&
+                (!bathrooms || (bathroomExactMatch ? listing.bathrooms === bathrooms : listing.bathrooms >= bathrooms))
+            );
+            
+
+            const markerPromises = validListings.map((listing) => {
+                if (listing.rooms - listing.joinedListing.length !== 0) {
+                    return fromAddress(listing.address)
+                        .then((response) => {
+                            const { lat, lng } = response.results[0].geometry.location;
+                            return { ...listing, position: { lat, lng } };  // Include all original listing data
+                        })
+                        .catch((error) => {
+                            console.error(`Error geocoding address ${listing.address}:`, error);
+                            return null;
+                        });
+                } else {
+                    return Promise.resolve(null);
+                }
+            });
+
+            const resolvedMarkers = await Promise.all(markerPromises);
+            setMarkers(resolvedMarkers.filter(marker => marker !== null));
+            setFilteredListings(validListings); // Update filtered listings
+            setMapSet(true);
+
+        } catch (error) {
+            console.error('Error fetching filtered listings:', error);
+        }
+    }
 
     const fetchListings = async () => {
         try {
@@ -206,6 +258,11 @@ export default function SchoolMap() {
         fetchFilteredListings();
     }
 
+    const reset = async () => {
+        await initialize(school);
+        await resetFilterListings();
+    }
+
     // whenever school changes, update search input and fetch listings
     useEffect(() => {
         if (school) {
@@ -213,7 +270,6 @@ export default function SchoolMap() {
             initialize(school);
             fetchListings();
         }
-        // moved fetchListings up from here
     }, [school]);
 
     return (
@@ -456,7 +512,7 @@ export default function SchoolMap() {
                                         >
                                             x
                                         </button>
-                                        <Popup listing={selectedMarker} refreshListing={fetchListings} changePopupActive={handlePopupActiveChange}/>
+                                        <Popup listing={selectedMarker} refreshListing={reset} changePopupActive={handlePopupActiveChange}/>
                                     </div>
                                 </div>
                             )}

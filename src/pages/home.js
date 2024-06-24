@@ -47,7 +47,7 @@ export default function Home() {
         </div> 
 
         {/* school search bar, passes string to Geocoder API for Google Map search */}
-        <div className='flex bg-white h-10 md:h-12 w-3/4 md:w-1/2 rounded-lg md:rounded-2xl animate-fade-down animate-duration-1000 animate-delay-1000'>
+        <div className='flex bg-white h-10 md:h-12 w-3/4 md:w-1/2 rounded-lg md:rounded-2xl animate-fade-down animate-duration-500 animate-delay-1000'>
           <input 
             className={`h-full w-5/6 rounded-l-lg md:rounded-l-2xl px-4 text-black outline-none text-xs sm:text-sm lg:text-base`} 
             placeholder="Ex: Carnegie Mellon University"
