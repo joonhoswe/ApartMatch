@@ -37,6 +37,7 @@ export default function SchoolMap() {
     const router = useRouter();
     const { school } = router.query;
     let schoolCity = null;
+    let schoolState = null;
 
     const [searchInput, setSearchInput] = useState(school || '');
     const [priceRange, setPriceRange] = useState([, ]);
@@ -89,10 +90,11 @@ export default function SchoolMap() {
     
                     const addressComponents = response.results[0].address_components;
                     const localityComponent = addressComponents.find(component => component.types.includes('locality'));
-
+                    const stateComponent = addressComponents.find(component => component.types.includes('administrative_area_level_1'));
                     
                     if (localityComponent) {
                         schoolCity = localityComponent.long_name;
+                        schoolState = stateComponent.short_name;
                     } else {
                         console.error("Locality (city) not found in address components");
                     }
@@ -462,7 +464,7 @@ export default function SchoolMap() {
                     )}
                 </div>
 
-                <ViewListings loading={!mapSet} listings={filteredListings} onListingClick={handleListingClick} />
+                <ViewListings loading={!mapSet} listings={filteredListings} onListingClick={handleListingClick} city={schoolCity} state={schoolState} />
             </div>
         </APIProvider>
     );
