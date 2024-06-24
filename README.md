@@ -19,6 +19,7 @@
   <h2> Application Architecture </h2>
   <p> Frontend: Next.js, React, JavaScript, and TailwindCSS </p> 
   <p> Backend: Django with Python </p> 
+  <p> Image Storage: AWS S3 </p>
   <p> Database: PostgreSQL </p> 
   <p> APIs: Google Maps for dynamic maps with listing markers and Auth0 for user authentication </p>
   <p> Deployments: Vercel[frontend] | Fly.io[backend] | Railway[database] </p>
