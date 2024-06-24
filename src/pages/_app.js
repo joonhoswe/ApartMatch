@@ -13,9 +13,8 @@ export default function MyApp({ Component, pageProps }) {
     }, []);
 
     if (!redirectUri) {
-        return <div>Loading...</div>;
+        return <div> Loading... </div>;
       }
-    console.log(process.env.NEXT_PUBLIC_AUTH0_CLIENTID);
 
     return (
         <Auth0Provider
