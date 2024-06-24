@@ -86,9 +86,16 @@ export default function SchoolMap() {
                 .then((response) => {
                     const { lat, lng } = response.results[0].geometry.location;
                     setMapCenter({ lat, lng });
-                    console.log(response.results[0]);
-                    console.log(response.results[0].address_components[2].long_name)
-                    schoolCity = (response.results[0].address_components[2].long_name);
+    
+                    const addressComponents = response.results[0].address_components;
+                    const localityComponent = addressComponents.find(component => component.types.includes('locality'));
+
+                    
+                    if (localityComponent) {
+                        schoolCity = localityComponent.long_name;
+                    } else {
+                        console.error("Locality (city) not found in address components");
+                    }
                 })
                 .catch((error) => {
                     console.error(error);
@@ -97,6 +104,7 @@ export default function SchoolMap() {
             console.error("Address is missing or invalid.");
         }
     };
+    
 
     const initialize = (searchInput) => {
         if (searchInput) {
