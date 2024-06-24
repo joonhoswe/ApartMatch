@@ -520,7 +520,7 @@ export default function SchoolMap() {
                     )}
                 </div>
 
-                <ViewListings loading={!mapSet} listings={filteredListings} onListingClick={handleListingClick} />
+                <ViewListings loading={!mapSet} listings={filteredListings} onListingClick={handleListingClick} school={school} />
             </div>
         </APIProvider>
     );

@@ -1,13 +1,49 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth0 } from "@auth0/auth0-react";
 import placeholder from '@assets/placeholder.jpeg';
 import PacmanLoader from 'react-spinners/PacmanLoader';
+import { setDefaults, fromAddress } from "react-geocode";
 
-export default function ViewListings({ loading, listings, onListingClick }) {
+export default function ViewListings({ loading, listings, onListingClick, school }) {
     const { user, isAuthenticated, loginWithRedirect } = useAuth0();
 
-    const city = listings[0]?.city;
-    const state = listings[0]?.state;
+    const [city, setCity] = useState(null);
+    const [state, setState] = useState(null);
+
+    const handleGeocode = (school) => {
+        if (school) {
+            fromAddress(school)
+                .then((response) => {
+                    const addressComponents = response.results[0].address_components;
+                    const localityComponent = addressComponents.find(component => component.types.includes('locality'));
+                    const stateComponent = addressComponents.find(component => component.types.includes('administrative_area_level_1'));
+                    
+                    if (localityComponent) {
+                        setCity(localityComponent.long_name);
+                        setState(stateComponent.short_name);
+                    } else {
+                        console.error("Locality (city) not found in address components");
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        } else {
+            console.error("Address is missing or invalid.");
+        }
+    };
+
+    useEffect(() => {
+        if (school) {
+            console.log(`now loading map for ${school}`);
+            setDefaults({
+                key: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+                language: "en",
+                region: "es",
+            });
+            handleGeocode(school);
+        }
+    }, [school]);
 
     return (
         <div className='min-h-[calc(100vh-54px)] w-full sm:w-2/5 flex flex-col items-center space-y-6 text-black border-2 border-gray-300'>
@@ -29,7 +65,7 @@ export default function ViewListings({ loading, listings, onListingClick }) {
                 ) : (
                     <>
                         <div className='w-full h-10 bg-white flex items-center justify-start px-2 border-b-2 border-gray-300'>
-                            <p className=''> {listings.length} listings in {city}, {state} </p>
+                            <p className='text-sm'> {listings.length} listings in {city}, {state} </p>
                         </div>
                         {listings.map((listing, index) => (
                             <div key={index} onClick={() => onListingClick(listing)} className={`${listing.rooms - listing.joinedListing.length === 0 ? 'hidden' : 'flex'} bg-white relative flex-col h-auto w-full hover:cursor-pointer border-y-2 border-gray-300`}>
