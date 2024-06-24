@@ -38,8 +38,6 @@ export default function SchoolMap() {
     const { school } = router.query;
     let schoolCity = null;
     let schoolState = null;
-    // const [schoolCity, setSchoolCity] = useState(null);
-    // const [schoolState, setSchoolState] = useState(null);
 
     const [searchInput, setSearchInput] = useState(school || '');
     const [priceRange, setPriceRange] = useState([, ]);
@@ -94,10 +92,9 @@ export default function SchoolMap() {
                     const localityComponent = addressComponents.find(component => component.types.includes('locality'));
                     const stateComponent = addressComponents.find(component => component.types.includes('administrative_area_level_1'));
                     
-                    // setSchoolCity(localityComponent.long_name);
                     if (localityComponent) {
                         schoolCity = localityComponent.long_name;
-                        schoolState = stateComponent.short_name;
+                        schoolState = stateComponent.long_name; // *SWITCH TO SHORT_NAME AFTER ADDING STATE DROPDOWN IN POSTLISTING*
                     } else {
                         console.error("Locality (city) not found in address components");
                     }
@@ -131,7 +128,7 @@ export default function SchoolMap() {
 
             const response = await axios.get('http://localhost:8000/api/get');
             // Filter listings by city   
-            const listings = response.data.filter(listing => listing.city === schoolCity);
+            const listings = response.data.filter(listing => listing.city === schoolCity && listing.state == schoolState);
             // store same city listings in allListings to keep track of all listings to filter from
             setAllListings(listings);
 
