@@ -374,7 +374,7 @@ export default function postListing() {
             backgroundSize: 'cover',
             backgroundPosition: 'center'
           }}>
-            <div className='h-3/5 rounded-2xl w-4/5 md:w-3/5 lg:w-2/5 flex flex-col space-y-8 bg-white items-center justify-center border-y-8 border-red-500'>
+            <div className='h-3/5 rounded-2xl w-4/5 md:w-3/5 lg:w-2/5 flex flex-col space-y-8 bg-white items-center justify-center border-y-8 border-red-500 animate-jump-in animate-duration-700 animate-delay-100'>
                 <ConfettiExplosion 
                 particleCount={200}
                 duration={3000}

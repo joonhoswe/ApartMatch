@@ -15,12 +15,12 @@ function LoginButton() {
   }
 
   return isAuthenticated ? (
-    <Link href='/profile' className="flex items-center flex-row space-x-2 text-sm md:text-base font-bold transition duration-300 ease-in-out text-black bg-white rounded-2xl px-2 md:px-4 py-1 md:py-2">
+    <Link href='/profile' className="flex items-center flex-row space-x-2 text-sm md:text-base font-bold transition duration-300 ease-in-out text-black bg-white rounded-2xl px-2 md:px-4 py-1 md:py-2 animate-fade animate-duration-1000 animate-delay-1000">
       <img src={user.picture} alt={user.name} className="w-6 h-6 rounded-full" />
       <p className="font-bold transition duration-300 ease-in-out hover:text-gray-400"> {user.nickname} </p>
     </Link>
   ) : (
-    <button onClick={() => loginWithRedirect()} className="font-bold transition duration-300 ease-in-out hover:text-gray-400">
+    <button onClick={() => loginWithRedirect()} className="font-bold transition duration-300 ease-in-out hover:text-gray-400 animate-fade animate-duration-1000">
       Login / Register
     </button>
   );

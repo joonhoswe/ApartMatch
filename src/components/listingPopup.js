@@ -50,7 +50,7 @@ export default function ListingPopup({ allListings, listing, refreshListing, cha
       }
 
     return (
-        <div className='z-50 h-full w-full bg-white text-black rounded-lg flex flex-col items-center justify-between'>
+        <div className='z-50 h-full w-full bg-white text-black rounded-lg flex flex-col items-center justify-between' >
             <div className='h-3/5 w-full mb-2'>
                 {/*change photo*/}
                 <img src={!listing.imageUrl ? placeholder.src : listing.imageUrl} alt='placeholder' className='h-full w-full' />

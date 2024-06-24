@@ -19,9 +19,10 @@ export default function Navbar() {
 
   const navLinks = [
     //{ title: "About", path:"/about"},
-    { title: "Post a Listing", path: "/postListing" },
-    { title: "Contact Us", path: "/contact" },
-    { title: "Advertise", path: "/advertise" },
+    { title: "Post a Listing", path: "/postListing", delay: 100 },
+    { title: "Contact Us", path: "/contact", delay: 200 },
+    { title: "Advertise", path: "/advertise", delay: 500 },
+    
   ];
 
   const sidebarVariants = {
@@ -36,11 +37,11 @@ export default function Navbar() {
         
         <div className="flex items-center justify-center space-x-6">
             <Link href = '/home' className='transition duration-300 ease-in-out hover:scale-110 hover:cursor-pointer'>
-                <Image src={Logo} alt="ApartMatch Logo" width={128} height={32} />
+                <Image src={Logo} alt="ApartMatch Logo" width={128} height={32} className='animate-fade animate-duration-1000' />
             </Link>
           
             {navLinks.map((link) => (
-              <Link key={link.title} href = {link.path} className="font-bold transition duration-300 ease-in-out hover:text-gray-400"> 
+              <Link key={link.title} href={link.path} className={`font-bold transition duration-300 ease-in-out hover:text-gray-400 animate-fade animate-duration-1200 animate-delay-${link.delay}`}> 
                 {link.title}
               </Link>
             ))}
