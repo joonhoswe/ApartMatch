@@ -19,9 +19,9 @@ export default function Navbar() {
 
   const navLinks = [
     //{ title: "About", path:"/about"},
-    { title: "Post a Listing", path: "/postListing", delay: 100 },
-    { title: "Contact Us", path: "/contact", delay: 200 },
-    { title: "Advertise", path: "/advertise", delay: 500 },
+    { title: "Post a Listing", path: "/postListing", delay: 300 },
+    { title: "Contact Us", path: "/contact", delay: 500 },
+    { title: "Advertise", path: "/advertise", delay: 1000 },
     
   ];
 
