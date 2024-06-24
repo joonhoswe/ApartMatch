@@ -18,14 +18,14 @@ export default function ViewListings({ loading, listings, onListingClick }) {
                 </div>
             ) : <></>
             } 
-            <div className='h-full overflow-auto w-full sm:flex sm:flex-wrap gap-8 grid grid-cols-1 justify-items-center justify-center py-6'>
+            <div className='h-full overflow-auto w-full flex flex-col space-y-2 items-center justify-center py-6'>
                 {loading ? (
                     <div className='h-full w-full flex items-center justify-center'>
                         <PacmanLoader color="#ef4444" />
                     </div>
                 ) : (
                     listings.map((listing, index) => (
-                        <div key={index} onClick={() => onListingClick(listing)} className={`${listing.rooms - listing.joinedListing.length === 0 ? 'hidden' : 'flex'} relative items-center flex-col h-56 w-48 rounded-2xl shadow-2xl hover:cursor-pointer hover:scale-105 transition ease-in-out duration-300`}>
+                        <div key={index} onClick={() => onListingClick(listing)} className={`${listing.rooms - listing.joinedListing.length === 0 ? 'hidden' : 'flex'} relative items-center flex-col h-56 w-full rounded-2xl shadow-2xl hover:cursor-pointer`}>
                             {/* badge for gender preference */}
                             <div className={`${listing.gender == 'males' ? 'bg-blue-500' : listing.gender === 'females' ? 'bg-pink-500' : 'bg-gray-500'} absolute top-2 right-2 text-white font-bold text-xs w-16 h-4 p-1 rounded-md flex items-center justify-center`}>
                                 <p className=''> {listing.gender} </p>
@@ -37,8 +37,7 @@ export default function ViewListings({ loading, listings, onListingClick }) {
                             </div>
 
                             {/* listing images */}
-                            {console.log(listing.imageUrl)}
-                            <img src={listing.imageUrl} alt='placeholder' className='h-24 w-full rounded-t-2xl' />
+                            <img src={!listing.imageUrl ? placeholder.src : listing.imageUrl} alt='placeholder' className='h-24 w-full rounded-t-2xl' />
 
                             <div className='flex flex-col space-y-1 justify-start text-start px-2'>
                                 <div className='flex flex-row space-x-1 items-center'>
