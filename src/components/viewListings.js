@@ -32,7 +32,7 @@ export default function ViewListings({ loading, listings, onListingClick }) {
                             <p className=''> {listings.length} listings in {city}, {state} </p>
                         </div>
                         {listings.map((listing, index) => (
-                            <div key={index} onClick={() => onListingClick(listing)} className={`${listing.rooms - listing.joinedListing.length === 0 ? 'hidden' : 'flex'} bg-white relative flex-col h-auto w-full hover:cursor-pointer`}>
+                            <div key={index} onClick={() => onListingClick(listing)} className={`${listing.rooms - listing.joinedListing.length === 0 ? 'hidden' : 'flex'} bg-white relative flex-col h-auto w-full hover:cursor-pointer border-y-2 border-gray-300`}>
                                 {/* badge for gender preference */}
                                 <div className={`${listing.gender === 'males' ? 'bg-blue-500' : listing.gender === 'females' ? 'bg-pink-500' : 'bg-gray-500'} absolute top-2 right-2 text-white font-bold text-xs w-16 h-4 p-1 rounded-md flex items-center justify-center`}>
                                     <p className=''> {listing.gender} </p>
