@@ -38,6 +38,8 @@ export default function SchoolMap() {
     const { school } = router.query;
     let schoolCity = null;
     let schoolState = null;
+    // const [schoolCity, setSchoolCity] = useState(null);
+    // const [schoolState, setSchoolState] = useState(null);
 
     const [searchInput, setSearchInput] = useState(school || '');
     const [priceRange, setPriceRange] = useState([, ]);
@@ -92,6 +94,7 @@ export default function SchoolMap() {
                     const localityComponent = addressComponents.find(component => component.types.includes('locality'));
                     const stateComponent = addressComponents.find(component => component.types.includes('administrative_area_level_1'));
                     
+                    // setSchoolCity(localityComponent.long_name);
                     if (localityComponent) {
                         schoolCity = localityComponent.long_name;
                         schoolState = stateComponent.short_name;
@@ -206,6 +209,11 @@ export default function SchoolMap() {
         fetchFilteredListings();
     }
 
+    const reset = () => {
+        initialize(school);
+        fetchListings();
+    }
+
     // whenever school changes, update search input and fetch listings
     useEffect(() => {
         if (school) {
@@ -213,7 +221,6 @@ export default function SchoolMap() {
             initialize(school);
             fetchListings();
         }
-        // moved fetchListings up from here
     }, [school]);
 
     return (
@@ -456,7 +463,7 @@ export default function SchoolMap() {
                                         >
                                             x
                                         </button>
-                                        <Popup listing={selectedMarker} refreshListing={fetchListings} changePopupActive={handlePopupActiveChange}/>
+                                        <Popup listing={selectedMarker} refreshListing={reset} changePopupActive={handlePopupActiveChange}/>
                                     </div>
                                 </div>
                             )}
