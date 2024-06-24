@@ -36,8 +36,11 @@ const CustomPin = ({ text }) => (
 export default function SchoolMap() {
     const router = useRouter();
     const { school } = router.query;
-    let schoolCity = null;
-    let schoolState = null;
+    // let schoolCity = null;
+    // let schoolState = null;
+
+    const [schoolCity, setSchoolCity] = useState(null);
+    const [schoolState, setSchoolState] = useState(null);
 
     const [searchInput, setSearchInput] = useState(school || '');
     const [priceRange, setPriceRange] = useState([, ]);
