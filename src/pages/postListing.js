@@ -31,7 +31,7 @@ export default function postListing() {
     const [bathrooms, setBathrooms] = useState(0);
     const [gender, setGender] = useState('');
     const [image, setImage] = useState(null);
-    let imageUrl=null;
+    let imageUrl=[];
 
 
     const [posted, setPosted] = useState(false);
@@ -121,7 +121,7 @@ export default function postListing() {
       
           try {
             const data = await s3.upload(params).promise();
-            imageUrl = data.Location
+            imageUrl[0] = data.Location;
             console.log('File uploaded successfully:', data.Location);
         } catch (err) {
             console.error('Error uploading file:', err);
