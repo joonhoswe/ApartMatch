@@ -31,7 +31,7 @@ export default function postListing() {
     const [bathrooms, setBathrooms] = useState(0);
     const [gender, setGender] = useState('');
     const [image, setImage] = useState(null);
-    let imageUrl=[];
+    let images=[];
 
 
     const [posted, setPosted] = useState(false);
@@ -72,7 +72,7 @@ export default function postListing() {
     
         // Data to send to backend
         await handleAWS();
-        console.log(imageUrl);
+        console.log(images);
         const dataForSql = {
             owner,
             address,
@@ -85,7 +85,7 @@ export default function postListing() {
             bathrooms,
             gender,
             joinedListing,
-            imageUrl,
+            images,
         };
 
         console.log("Submitting form: ", dataForSql);
@@ -121,7 +121,7 @@ export default function postListing() {
       
           try {
             const data = await s3.upload(params).promise();
-            imageUrl[0] = data.Location;
+            images[0] = data.Location;
             console.log('File uploaded successfully:', data.Location);
         } catch (err) {
             console.error('Error uploading file:', err);
