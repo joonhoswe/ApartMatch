@@ -15,7 +15,6 @@ export default function MyApp({ Component, pageProps }) {
     if (!redirectUri) {
         return <div> Loading... </div>;
       }
-
     return (
         <Auth0Provider
         domain = {process.env.NEXT_PUBLIC_AUTH0_DOMAIN}

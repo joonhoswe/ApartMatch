@@ -113,7 +113,7 @@ export default function postListing() {
         if(!image) return;
 
         const params = {
-            Bucket: 'imagesapartmatch',
+            Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET,
             Key: image.name,
             Body: image,
             ContentType: image.type,
