@@ -16,7 +16,7 @@ class Listing(models.Model):
     bathrooms = models.PositiveIntegerField()
     gender = models.CharField(max_length=10)
     joinedListing = ArrayField(models.CharField(max_length=20, blank=True), blank=True, default = list)
-    imageUrl = models.CharField(max_length=200, default='')
+    images = ArrayField(models.CharField(max_length=500, blank=True), blank=True, default = list)
     
 
     def __str__(self):

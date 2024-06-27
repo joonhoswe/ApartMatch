@@ -3,11 +3,18 @@ import { useAuth0 } from "@auth0/auth0-react";
 import placeholder from '@assets/placeholder.jpeg';
 import axios from 'axios';
 import { TailSpin } from 'react-loader-spinner';
+import AWS from 'aws-sdk';
 
 export default function ListingPopup({ allListings, listing, refreshListing, changePopupActive, changeUserListing }) {
     const { user, isAuthenticated } = useAuth0();
     const [loading, setLoading] = useState(false);
     const [confirm, setConfirm] = useState(false);
+
+    const s3 = new AWS.S3({
+        accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY,
+        region: 'us-east-2',
+    });
 
     const handleJoin = async (id, user) => {
         setLoading(true);
@@ -39,6 +46,14 @@ export default function ListingPopup({ allListings, listing, refreshListing, cha
         setLoading(true);
         try {
             await axios.delete(`http://localhost:8000/api/delete/${id}`);
+            const information = {
+                Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET,
+                Key: listing.imageUrl[0].split('/').pop(),
+            }
+            console.log(information.Key);
+            if(information.Key.length!=0){
+                await s3.deleteObject(information).promise();
+            }
             const updatedListings = allListings.filter(listing => listing.id !== id);
             await changeUserListing(updatedListings);
             await changePopupActive(false);
@@ -53,7 +68,7 @@ export default function ListingPopup({ allListings, listing, refreshListing, cha
         <div className='z-50 h-full w-full bg-white text-black rounded-lg flex flex-col items-center justify-between' >
             <div className='h-3/5 w-full mb-2'>
                 {/*change photo*/}
-                <img src={!listing.imageUrl ? placeholder.src : listing.imageUrl} alt='placeholder' className='h-full w-full' />
+                <img src={!listing.imageUrl ? placeholder.src : listing.imageUrl[0]} alt='placeholder' className='h-full w-full' />
             </div>
 
             <div className='flex flex-col space-y-1 justify-start text-start w-full px-4 mb-4'>
