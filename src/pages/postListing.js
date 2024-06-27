@@ -13,7 +13,7 @@ export default function postListing() {
         region: 'us-east-2',
         credentials: new AWS.Credentials(
             process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID,
-            process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY
+            process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY,
         )
     });
     const s3 = new AWS.S3();
@@ -63,6 +63,7 @@ export default function postListing() {
         setBathrooms(0);
         setGender('');
         setJoinedListing([]);
+        images=[];
     };
 
     const handleSubmit = async (e) => {
@@ -106,7 +107,7 @@ export default function postListing() {
     };
 
     const handleFileChange = (event) => {
-        setImage(event.target.files[0]);
+        setImage([...event.target.files]);
     };
 
     const handleAWS = async() => {
@@ -339,7 +340,7 @@ export default function postListing() {
 
                 <div className="">
                     Upload Photo Below<br></br>
-                    <input type="file" onChange={handleFileChange}/>
+                    <input type="file" multiple onChange={handleFileChange}/>
                 </div>
 
                 <div className='flex justify-center py-6'>
