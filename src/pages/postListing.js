@@ -75,7 +75,7 @@ export default function postListing() {
         // Data to send to backend
         await handleAWS();
         console.log(images);
-        const uploaded = await handleAWS();
+        setImages(await handleAWS());
         const dataForSql = {
             owner,
             address,
@@ -88,7 +88,7 @@ export default function postListing() {
             bathrooms,
             gender,
             joinedListing,
-            images: uploaded,
+            images,
         };
 
         console.log("Submitting form: ", dataForSql);
