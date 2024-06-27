@@ -48,7 +48,7 @@ export default function ListingPopup({ allListings, listing, refreshListing, cha
             await axios.delete(`http://localhost:8000/api/delete/${id}`);
             const information = {
                 Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET,
-                Key: listing.imageUrl[0].split('/').pop(),
+                Key: listing.images[0].split('/').pop(),
             }
             console.log(information.Key);
             if(information.Key.length!=0){

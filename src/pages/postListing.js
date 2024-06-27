@@ -29,27 +29,29 @@ export default function postListing() {
     const [city, setCity] = useState('');
     const [homeType, setHomeType] = useState('');
     const [rent, setRent] = useState('');
-    const [rooms, setRooms] = useState();
-    const [bathrooms, setBathrooms] = useState();
+    const [rooms, setRooms] = useState(0);
+    const [bathrooms, setBathrooms] = useState(0);
     const [gender, setGender] = useState('');
-    const [images, setImages] = useState([]);
     const [unit, setUnit] = useState('');
     const [joinedListing, setJoinedListing] = useState([]);
 
     const [posted, setPosted] = useState(false);
     const [submitClicked, setSubmitClicked] = useState(false);
 
+    const [imageObjects, setImageObjects] = useState([]);
+    let images = [];
+
     // checks to see if the apartment unit # was entered before submitting
     const isUnitValid = homeType === 'apartment' ? unit !== '' : unit === '';
 
     // checks if all required fields are filled in before submitting
-    const isFormValid = owner !== '' && address !== '' && state !== '' && zipCode !== ''  && city !== '' && homeType !== '' && isUnitValid && rent !== '' && rooms !== 0 && bathrooms !== 0 && gender !== '' && images.length > 0;
+    const isFormValid = owner !== '' && address !== '' && state !== '' && zipCode !== ''  && city !== '' && homeType !== '' && isUnitValid && rent !== '' && rooms !== 0 && bathrooms !== 0 && gender !== '' && imageObjects.length > 0;
 
     // set the owner of the listing to the poster by default
     useEffect(() => {
         if (user) {
           setOwner(user.nickname);
-          setJoinedListing([owner]); // Ensure the first person joined is owner
+          setJoinedListing([user.nickname]); // Ensure the first person joined is owner
         }
       }, [user]);
 
@@ -65,16 +67,18 @@ export default function postListing() {
         setBathrooms(0);
         setGender('');
         setJoinedListing([]);
-        setImages([]);
+        setImageObjects([]);
+        images = [];
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         
         if (!isFormValid || !submitClicked) return; // Prevent invalid submissions (client-side validation)
-    
+        
         // Data to send to backend
-        setImages(await handleAWS());
+        images = (await handleAWS());
+
         const dataForSql = {
             owner,
             address,
@@ -103,20 +107,17 @@ export default function postListing() {
         } finally {
             setSubmitClicked(false);
         }
-
-        console.log("this was reached");
-        
     };
 
     const handleFileChange = (event) => {
-        setImages([...event.target.files]);
+        setImageObjects([...event.target.files]);
     };
 
     const handleAWS = async () => {
         const s3 = new AWS.S3();
-        const uploadedImages = [];
+        let uploadedImages = [];
 
-        for (const image of images) {
+        for (const image of imageObjects) {
             const params = {
                 Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET,
                 Key: image.name,
@@ -287,28 +288,28 @@ export default function postListing() {
                     <div className='flex flex-row h-10 w-full'>
                         <button 
                         className={`h-full w-1/4 flex items-center justify-center rounded-l-lg md:rounded-l-2xl ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${rooms === 1 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                        onClick={() => updateRoomsAndJoined(1)}
+                        onClick={() => setRooms(1)}
                         >
                         1
                         </button>
 
                         <button 
                         className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${rooms === 2 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                        onClick={() => updateRoomsAndJoined(2)}
+                        onClick={() => setRooms(2)}
                         >
                         2
                         </button>
 
                         <button 
                         className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${rooms === 3 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                        onClick={() => updateRoomsAndJoined(3)}
+                        onClick={() => setRooms(3)}
                         >
                         3
                         </button>
 
                         <button 
                         className={`h-full w-1/4 flex items-center justify-center ring-2 ring-red-500 hover:bg-red-600 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${rooms === 4 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                        onClick={() => updateRoomsAndJoined(4)}
+                        onClick={() => setRooms(4)}
                         >
                         4
                         </button>
