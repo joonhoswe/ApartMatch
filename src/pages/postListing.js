@@ -37,7 +37,7 @@ export default function postListing() {
     const [posted, setPosted] = useState(false);
     const [submitClicked, setSubmitClicked] = useState(false);
 
-    const isFormValid = owner !== '' && address !== '' && state !== '' && zipCode !== ''  && city !== '' && homeType !== '' && rent !== '' && rooms !== 0 && bathrooms !== 0 && gender !== '';
+    const isFormValid = owner !== '' && address !== '' && state !== '' && zipCode !== ''  && city !== '' && homeType !== '' && rent !== '' && rooms !== 0 && bathrooms !== 0 && gender !== '' && image != null;
 
     useEffect(() => {
         if (user) {
@@ -129,6 +129,23 @@ export default function postListing() {
         } 
         
     };
+
+    const uploadCity = (city) => {
+        let cityString = city.toLowerCase();
+        cityString = cityString.charAt(0).toUpperCase() + cityString.slice(1);
+        setCity(cityString);
+    }
+
+    const states = [
+        "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", 
+        "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", 
+        "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", 
+        "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", 
+        "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", 
+        "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", 
+        "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", 
+        "Wisconsin", "Wyoming"
+    ];
     
 
     return (!isAuthenticated) ? // If user is not authenticated, display this message and button to login
@@ -186,16 +203,16 @@ export default function postListing() {
 
                 <div className='flex flex-row space-x-2'>
                     <input 
-                    value = {state}
-                    onChange={(e) => setState(e.target.value)}
-                    placeholder="State: "
+                    value = {city}
+                    onChange={(e) => uploadCity(e.target.value)}
+                    placeholder="City: "
                     className='ring-2 ring-gray-300 outline-none focus:ring-2 focus:ring-red-600 bg-white rounded-2xl p-4 h-10 w-full'/>
 
                     <input 
                     value = {zipCode}
                     onChange={(e) => setZipCode(e.target.value === '' ? '' : parseInt(e.target.value))}
                     onKeyDown={(e) => {
-                        if (!/[0-9]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') {
+                        if (!/[0-9]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight' && e.key !== 'Tab') {
                             e.preventDefault();
                         }
                     }}
@@ -203,11 +220,17 @@ export default function postListing() {
                     className='ring-2 ring-gray-300 outline-none focus:ring-2 focus:ring-red-600 bg-white rounded-2xl p-4 h-10 w-full'/>    
                 </div>
 
-                <input 
-                value = {city}
-                onChange={(e) => setCity(e.target.value)}
-                placeholder="City: "
-                className='ring-2 ring-gray-300 outline-none focus:ring-2 focus:ring-red-600 bg-white rounded-2xl p-4 h-10 w-full'/>
+                 <select
+                value={state}
+                onChange={(e) => setState(e.target.value)}
+                className='ring-2 ring-gray-300 outline-none focus:ring-2 focus:ring-red-600 bg-white rounded-2xl p-2 h-10 w-full'>
+                    <option value=""> Select State </option>
+                    {states.map((state) => (
+                        <option key={state} value={state}>
+                            {state}
+                        </option>
+                    ))}
+                </select>
 
                 <input 
                 value = {rent}
