@@ -73,8 +73,6 @@ export default function postListing() {
         if (!isFormValid || !submitClicked) return; // Prevent invalid submissions (client-side validation)
     
         // Data to send to backend
-        await handleAWS();
-        console.log(images);
         setImages(await handleAWS());
         const dataForSql = {
             owner,
@@ -336,7 +334,7 @@ export default function postListing() {
                         4
                         </button>
                         <input 
-                        placeholder='4+' m   
+                        placeholder='4+'  
                         className={`h-full w-1/4 flex text-center items-center justify-center rounded-r-lg md:rounded-r-2xl p-2 outline-none ring-2 ring-red-500 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${bathrooms > 4 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
                         onChange={(e) => setBathrooms(e.target.value)}
                         />
