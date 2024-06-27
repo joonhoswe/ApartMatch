@@ -9,14 +9,16 @@ import AWS from 'aws-sdk';
 
 export default function postListing() {
 
-    AWS.config.update({
-        region: 'us-east-2',
-        credentials: new AWS.Credentials(
-            process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID,
-            process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY,
-        )
-    });
-    const s3 = new AWS.S3();
+    useEffect(() => {
+        AWS.config.update({
+            region: 'us-east-2',
+            credentials: new AWS.Credentials(
+                process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID,
+                process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY
+            )
+        });
+    }, []);
+    
 
     const { user, isAuthenticated, loginWithRedirect } = useAuth0();
 
@@ -30,14 +32,13 @@ export default function postListing() {
     const [rooms, setRooms] = useState(0);
     const [bathrooms, setBathrooms] = useState(0);
     const [gender, setGender] = useState('');
-    const [image, setImage] = useState(null);
-    let images=[];
+    const [images, setImages] = useState([]);
 
 
     const [posted, setPosted] = useState(false);
     const [submitClicked, setSubmitClicked] = useState(false);
 
-    const isFormValid = owner !== '' && address !== '' && state !== '' && zipCode !== ''  && city !== '' && homeType !== '' && rent !== '' && rooms !== 0 && bathrooms !== 0 && gender !== '' && image != null;
+    const isFormValid = owner !== '' && address !== '' && state !== '' && zipCode !== ''  && city !== '' && homeType !== '' && rent !== '' && rooms !== 0 && bathrooms !== 0 && gender !== '' && images.length>0;
 
     useEffect(() => {
         if (user) {
@@ -63,7 +64,7 @@ export default function postListing() {
         setBathrooms(0);
         setGender('');
         setJoinedListing([]);
-        images=[];
+        setImages([]);
     };
 
     const handleSubmit = async (e) => {
@@ -74,6 +75,7 @@ export default function postListing() {
         // Data to send to backend
         await handleAWS();
         console.log(images);
+        const uploaded = await handleAWS();
         const dataForSql = {
             owner,
             address,
@@ -86,7 +88,7 @@ export default function postListing() {
             bathrooms,
             gender,
             joinedListing,
-            images,
+            images: uploaded,
         };
 
         console.log("Submitting form: ", dataForSql);
@@ -107,27 +109,31 @@ export default function postListing() {
     };
 
     const handleFileChange = (event) => {
-        setImage([...event.target.files]);
+        setImages([...event.target.files]);
     };
 
-    const handleAWS = async() => {
-        if(!image) return;
+    const handleAWS = async () => {
+        const s3 = new AWS.S3();
+        const uploadedImages = [];
 
-        const params = {
-            Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET,
-            Key: image.name,
-            Body: image,
-            ContentType: image.type,
-          };
-      
-          try {
-            const data = await s3.upload(params).promise();
-            images[0] = data.Location;
-            console.log('File uploaded successfully:', data.Location);
-        } catch (err) {
-            console.error('Error uploading file:', err);
-        } 
-        
+        for (const image of images) {
+            const params = {
+                Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET,
+                Key: image.name,
+                Body: image,
+                ContentType: image.type,
+            };
+
+            try {
+                const data = await s3.upload(params).promise();
+                uploadedImages.push(data.Location);
+                console.log('File uploaded successfully:', data.Location);
+            } catch (err) {
+                console.error('Error uploading file:', err);
+            }
+        }
+
+        return uploadedImages;
     };
 
     const uploadCity = (city) => {
@@ -330,7 +336,7 @@ export default function postListing() {
                         4
                         </button>
                         <input 
-                        placeholder='4+'
+                        placeholder='4+' m   
                         className={`h-full w-1/4 flex text-center items-center justify-center rounded-r-lg md:rounded-r-2xl p-2 outline-none ring-2 ring-red-500 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${bathrooms > 4 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
                         onChange={(e) => setBathrooms(e.target.value)}
                         />
@@ -362,7 +368,7 @@ export default function postListing() {
                 </div>  
 
                 <div className="">
-                    Upload Photo Below<br></br>
+                    Upload Photos Below<br></br>
                     <input type="file" multiple onChange={handleFileChange}/>
                 </div>
 
