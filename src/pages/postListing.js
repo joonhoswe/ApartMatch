@@ -29,29 +29,29 @@ export default function postListing() {
     const [city, setCity] = useState('');
     const [homeType, setHomeType] = useState('');
     const [rent, setRent] = useState('');
-    const [rooms, setRooms] = useState(0);
-    const [bathrooms, setBathrooms] = useState(0);
+    const [rooms, setRooms] = useState();
+    const [bathrooms, setBathrooms] = useState();
     const [gender, setGender] = useState('');
     const [images, setImages] = useState([]);
-
+    const [unit, setUnit] = useState('');
+    const [joinedListing, setJoinedListing] = useState([]);
 
     const [posted, setPosted] = useState(false);
     const [submitClicked, setSubmitClicked] = useState(false);
 
-    const isFormValid = owner !== '' && address !== '' && state !== '' && zipCode !== ''  && city !== '' && homeType !== '' && rent !== '' && rooms !== 0 && bathrooms !== 0 && gender !== '' && images.length>0;
+    // checks to see if the apartment unit # was entered before submitting
+    const isUnitValid = homeType === 'apartment' ? unit !== '' : unit === '';
 
+    // checks if all required fields are filled in before submitting
+    const isFormValid = owner !== '' && address !== '' && state !== '' && zipCode !== ''  && city !== '' && homeType !== '' && isUnitValid && rent !== '' && rooms !== 0 && bathrooms !== 0 && gender !== '' && images.length > 0;
+
+    // set the owner of the listing to the poster by default
     useEffect(() => {
         if (user) {
           setOwner(user.nickname);
+          setJoinedListing([owner]); // Ensure the first person joined is owner
         }
       }, [user]);
-
-    const [joinedListing, setJoinedListing] = useState([]);
-
-    const updateRoomsAndJoined = (numRooms) => {
-        setRooms(numRooms);
-        setJoinedListing([owner]); // Ensure the first person joined is owner
-    };    
 
     const clearForm = () => {
         setAddress('');
@@ -59,6 +59,7 @@ export default function postListing() {
         setState('');
         setCity('');
         setHomeType('');
+        setUnit('');
         setRent('');
         setRooms(0);
         setBathrooms(0);
@@ -82,6 +83,7 @@ export default function postListing() {
             city,
             rent,
             homeType,
+            unit,
             rooms,
             bathrooms,
             gender,
@@ -264,6 +266,21 @@ export default function postListing() {
                         </button>
                     </div>
                 </div>
+                
+                {/* apartment unit # only if home type is an apartment */}
+                <div className={`${homeType === 'apartment' ? 'visible' : 'hidden'} w-full bg-white flex flex-col space-y-1`}>
+                    <p className='flex justify-start'> Unit # </p>
+                    <input 
+                    value = {unit}
+                    onChange={(e) => setUnit(e.target.value === '' ? '' : parseInt(e.target.value))}
+                    onKeyDown={(e) => {
+                        if (!/[0-9]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') {
+                            e.preventDefault();
+                        }
+                    }}
+                    placeholder="ex: 505"
+                    className='ring-2 ring-gray-300 outline-none focus:ring-2 focus:ring-red-600 bg-white rounded-2xl p-4 h-10 w-full'/>
+                </div>
 
                 <div className='w-full bg-white flex flex-col space-y-1'>
                     <p className='flex justify-start'> # of Rooms </p>
@@ -296,9 +313,14 @@ export default function postListing() {
                         4
                         </button>
                         <input 
+                        onChange={(e) => setRooms(e.target.value === '' ? '' : parseInt(e.target.value))}
+                        onKeyDown={(e) => {
+                            if (!/[0-9]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') {
+                                e.preventDefault();
+                            }
+                        }}
                         placeholder='4+'
                         className={`h-full w-1/4 flex text-center items-center justify-center rounded-r-lg md:rounded-r-2xl p-2 outline-none ring-2 ring-red-500 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${rooms > 4 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                        onChange={(e) => updateRoomsAndJoined(e.target.value)}
                         />
                     </div>
                 </div> 
@@ -334,9 +356,14 @@ export default function postListing() {
                         4
                         </button>
                         <input 
-                        placeholder='4+'  
+                        onChange={(e) => setBathrooms(e.target.value === '' ? '' : parseInt(e.target.value))}
+                        onKeyDown={(e) => {
+                            if (!/[0-9]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') {
+                                e.preventDefault();
+                            }
+                        }}
+                        placeholder='4+'
                         className={`h-full w-1/4 flex text-center items-center justify-center rounded-r-lg md:rounded-r-2xl p-2 outline-none ring-2 ring-red-500 transition ease-in-out duration-200 text-xs sm:text-sm lg:text-base ${bathrooms > 4 ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
-                        onChange={(e) => setBathrooms(e.target.value)}
                         />
                     </div>
                 </div> 
@@ -366,7 +393,7 @@ export default function postListing() {
                 </div>  
 
                 <div className="">
-                    Upload Photos Below<br></br>
+                    Upload Photos Below<br/>
                     <input type="file" multiple onChange={handleFileChange}/>
                 </div>
 
