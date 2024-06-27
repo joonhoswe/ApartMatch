@@ -9,12 +9,13 @@ export default function ListingPopup({ allListings, listing, refreshListing, cha
     const { user, isAuthenticated } = useAuth0();
     const [loading, setLoading] = useState(false);
     const [confirm, setConfirm] = useState(false);
-
-    const s3 = new AWS.S3({
-        accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY,
-        region: 'us-east-2',
-    });
+    useEffect(() => {
+        const s3 = new AWS.S3({
+            accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID,
+            secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY,
+            region: 'us-east-2',
+        });
+    }, []);
 
     const handleJoin = async (id, user) => {
         setLoading(true);
