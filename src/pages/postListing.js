@@ -9,18 +9,9 @@ import AWS from 'aws-sdk';
 
 export default function postListing() {
 
-    useEffect(() => {
-        AWS.config.update({
-            region: 'us-east-2',
-            credentials: new AWS.Credentials(
-                process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID,
-                process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY
-            )
-        });
-    }, []);
-    
-
     const { user, isAuthenticated, loginWithRedirect } = useAuth0();
+
+    const [listings, setListings] = useState([]);
 
     const [owner, setOwner] = useState('');
     const [address, setAddress] = useState('');
@@ -39,13 +30,55 @@ export default function postListing() {
     const [submitClicked, setSubmitClicked] = useState(false);
 
     const [imageObjects, setImageObjects] = useState([]);
+    const [isListingValid, setIsListingValid] = useState(true);
+
     let images = [];
 
     // checks to see if the apartment unit # was entered before submitting
     const isUnitValid = homeType === 'apartment' ? unit !== '' : unit === '';
 
+    useEffect(() => {
+        fetchListings();
+    }, []);
+
+    useEffect(() => {
+        const allFieldsEntered = (homeType === 'apartment' && address && city && state && zipCode && unit) ||
+                                 (homeType === 'house' && address && city && state && zipCode);
+
+        if (allFieldsEntered) {
+            const isValid = computeIsListingValid();
+            setIsListingValid(isValid);
+
+            if (!isValid) {
+                alert('Listing already exists! Please enter a new listing.');
+            }
+        }
+    }, [address, city, state, zipCode, homeType, unit]);
+    
+      
+    function computeIsListingValid() {
+        return listings.some(listing => 
+            listing.address === address && 
+            listing.city === city && 
+            listing.state === state && 
+            listing.zipCode === zipCode && 
+            (homeType === 'apartment' ? listing.unit === unit : true)
+        ) ? false : true;
+    }
+
     // checks if all required fields are filled in before submitting
-    const isFormValid = owner !== '' && address !== '' && state !== '' && zipCode !== ''  && city !== '' && homeType !== '' && isUnitValid && rent !== '' && rooms !== 0 && bathrooms !== 0 && gender !== '' && imageObjects.length > 0;
+    const isFormValid = isListingValid && owner !== '' && address !== '' && state !== '' && zipCode !== ''  && city !== '' && homeType !== '' && isUnitValid && rent !== '' && rooms !== 0 && bathrooms !== 0 && gender !== '' && imageObjects.length > 0;
+
+    // initialize AWS
+    useEffect(() => {
+        AWS.config.update({
+            region: 'us-east-2',
+            credentials: new AWS.Credentials(
+                process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID,
+                process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY
+            )
+        });
+    }, []);
 
     // set the owner of the listing to the poster by default
     useEffect(() => {
@@ -71,7 +104,18 @@ export default function postListing() {
         images = [];
     };
 
+    const fetchListings = async () => {
+        try {
+            const response = await axios.get('http://localhost:8000/api/get');
+            setListings(response.data);
+        }
+        catch {
+            console.error('Error fetching listings');
+        }
+    }
+
     const handleSubmit = async (e) => {
+
         e.preventDefault();
         
         if (!isFormValid || !submitClicked) return; // Prevent invalid submissions (client-side validation)
