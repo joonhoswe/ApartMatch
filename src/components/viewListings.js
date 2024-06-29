@@ -90,7 +90,7 @@ export default function ViewListings({ loading, listings, onListingClick, school
                                         </div>
                                         <p className='text-xs font-bold text-green-500'> {listing.rooms - listing.joinedListing.length} / {listing.rooms} Rooms Open </p>
                                     </div>
-                                    <p className={`${listing.homeType === 'apartment' ? 'visible' : 'hidden'} font-bold text-xs`}> Apartment Unit #{listing.unit}</p>
+                                    <p className={`${listing.homeType === 'apartment' ? 'visible' : 'hidden'} font-bold text-xs`}> Apartment Unit #{listing.unit} </p>
                                     <p className='text-xs'> {listing.address} <br/> {listing.city}, {listing.state}, {listing.zipCode} </p>
 
                                     <div className='flex items-center justify-center pt-4 pb-2'>

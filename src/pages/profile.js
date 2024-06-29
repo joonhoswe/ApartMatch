@@ -100,7 +100,7 @@ export default function Profile() {
                       {/* owner badge */}
                       {listing.owner === user.nickname ? (
                         <div className='absolute top-2 left-2 bg-yellow-400 text-white font-bold text-xs w-18 h-4 p-1 rounded-md flex items-center justify-center'> 
-                        <p className=''>☆OWNER </p>
+                        <p className=''> ☆OWNER </p>
                         </div>
                       ):<></>}
 
@@ -111,6 +111,8 @@ export default function Profile() {
                             <p className='text-xs'> {listing.rooms} bed, {listing.bathrooms} bath </p>
                           </div>
                           <p className='text-xs font-bold text-green-500'> {listing.rooms - listing.joinedListing.length} / {listing.rooms} Rooms Open </p>
+
+                          <p className={`${listing.homeType === 'apartment' ? 'visible' : 'hidden'} font-bold text-xs`}> Apartment Unit #{listing.unit} </p>
                           <p className='text-xs'> {listing.address} </p>
                           <p className='text-xs'> {listing.city}, {listing.state}, {listing.zipCode}</p>
                       </div>
