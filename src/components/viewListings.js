@@ -57,7 +57,7 @@ export default function ViewListings({ loading, listings, onListingClick, school
                 </div>
             ) : null }
             
-            <div className='bg-gray-200 min-h-full w-full flex flex-col space-y-2 items-center justify-start pb-6 overflow-auto'>
+            <div className='bg-gray-200 min-h-full w-full flex flex-col space-y-2 items-center justify-start overflow-auto'>
                 {loading ? (
                     <div className='h-full w-full flex items-center justify-center bg-white'>
                         <PacmanLoader color="#ef4444" />

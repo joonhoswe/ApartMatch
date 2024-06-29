@@ -12,7 +12,7 @@ class Listing(models.Model):
     city = models.CharField(max_length=30)
     rent = models.PositiveIntegerField()
     homeType = models.CharField(max_length=20)
-    unit = models.CharField(max_length=10, default='N/A')
+    unit = models.CharField(max_length=10, default='N/A', blank=True)
     rooms = models.PositiveIntegerField()
     bathrooms = models.PositiveIntegerField()
     gender = models.CharField(max_length=10)
