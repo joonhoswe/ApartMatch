@@ -89,9 +89,9 @@ export default function Profile() {
                 <p className='text-gray-400 text-sm md:text-lg'> No listings joined or posted yet. </p>
             </div> : <></>}
 
-            <div className='flex gap-4 items-center flex-wrap'>
+            <div className='flex gap-6 items-center flex-wrap'>
               {userListings.map((listing, index) => (
-                  <div onClick={() => handleListingClick(listing)} key={index} className='relative flex flex-col h-56 w-48 rounded-2xl shadow-2xl hover:cursor-pointer hover:scale-110 transition ease-in-out duration-300'>
+                  <div onClick={() => handleListingClick(listing)} key={index} className='relative flex flex-col h-64 w-56 rounded-2xl shadow-2xl hover:cursor-pointer hover:scale-110 transition ease-in-out duration-300'>
                       {/* badge for gender preference */}
                       <div className={`${listing.gender == 'males' ? 'bg-blue-500' : listing.gender === 'females' ? 'bg-pink-500' : 'bg-gray-500'} absolute top-2 right-2 text-white font-bold text-xs w-16 h-4 p-1 rounded-md flex items-center justify-center`}>
                           <p className=''> {listing.gender} </p>
@@ -104,7 +104,7 @@ export default function Profile() {
                         </div>
                       ):<></>}
 
-                      <img src = {!listing.imageUrl ? placeholder.src : listing.imageUrl} alt = 'placeholder' className='h-24 w-full rounded-t-2xl'/>
+                      <img src = {!listing.images[0] ? placeholder.src : listing.images[0]} alt='Listing Image' className='h-24 w-full rounded-t-2xl'/>
                       <div className='flex flex-col space-y-1 justify-start text-start px-4'>
                           <div className='flex flex-row space-x-1 items-center'>
                             <h1 className='text-sm font-bold'> ${listing.rent}/mo </h1>
@@ -112,9 +112,9 @@ export default function Profile() {
                           </div>
                           <p className='text-xs font-bold text-green-500'> {listing.rooms - listing.joinedListing.length} / {listing.rooms} Rooms Open </p>
 
-                          <p className={`${listing.homeType === 'apartment' ? 'visible' : 'hidden'} font-bold text-xs`}> Apartment Unit #{listing.unit} </p>
                           <p className='text-xs'> {listing.address} </p>
                           <p className='text-xs'> {listing.city}, {listing.state}, {listing.zipCode}</p>
+                          <p className='text-xs'> Unit #: {listing.homeType === 'apartment' ? listing.unit: 'N/A'} </p>
                       </div>
                       <button className={`absolute bottom-3 left-1/2 transform -translate-x-1/2 w-12 h-4 outline-none ring-2 ${listing.owner === user.nickname ? 'ring-red-500 bg-red-500 hover:text-red-500' : listing.joinedListing.includes(user.nickname) ? 'ring-orange-500 bg-orange-500 hover:text-orange-500' : 'ring-green-500 bg-green-500 hover:text-green-500'} text-white hover:bg-white flex items-center justify-center text-xs font-bold transition ease-in-out duration-300 rounded-md`}> 
                       {listing.owner === user.nickname ? 'Delete'
@@ -127,14 +127,7 @@ export default function Profile() {
 
             {popupActive && selectedMarker && (
                 <div className='absolute top-0 left-0 w-full h-full flex items-center justify-center z-50 px-4'>
-                    <div className='relative bg-white p-4 rounded-lg shadow-lg h-4/5 w-3/5'>
-                        <button
-                            onClick={() => setPopupActive(false)}
-                            className='absolute top-2 right-2 h-6 w-6 rounded-lg outline-none ring-2 ring-red-500 bg-red-500 text-white hover:bg-white hover:text-red-500 transition duration-300 ease-in-out font-bold'
-                        >
-                            x
-                        </button>
-                        {/* need to close listing after leave or delete is handled */}
+                    <div className='relative bg-white p-4 rounded-lg shadow-lg'>
                         <Popup allListings={userListings} listing={selectedMarker} refreshListing={fetchData} changePopupActive={handlePopupActiveChange} changeUserListing={handleUserListingChange}/>
                     </div>
                 </div>
