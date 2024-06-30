@@ -6,7 +6,7 @@ import { IoIosSearch } from "react-icons/io";
 import { setDefaults, fromAddress } from "react-geocode";
 import axios from 'axios';
 import Popup from '@components/listingPopup';
-import PulseLoader from 'react-spinners/PulseLoader';
+import { MagnifyingGlass } from 'react-loader-spinner';
 
 const CustomPin = ({ text }) => (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -484,7 +484,7 @@ export default function SchoolMap() {
                 <div style={{ width: '100%', height: '100%' }} className='hidden sm:flex relative'>
                     {!mapSet ? (
                         <div className='h-full w-full flex items-center justify-center'>
-                            <PulseLoader color='#ef4444' />
+                            <MagnifyingGlass height={120} />
                         </div>
                     ) : (
                         <Map

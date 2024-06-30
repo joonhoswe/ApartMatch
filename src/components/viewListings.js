@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth0 } from "@auth0/auth0-react";
 import placeholder from '@assets/placeholder.jpeg';
-import PacmanLoader from 'react-spinners/PacmanLoader';
+import PulseLoader from 'react-spinners/PulseLoader';
 import { setDefaults, fromAddress } from "react-geocode";
 
 export default function ViewListings({ loading, listings, onListingClick, school }) {
@@ -60,7 +60,7 @@ export default function ViewListings({ loading, listings, onListingClick, school
             <div className='bg-gray-200 min-h-full w-full flex flex-col space-y-2 items-center justify-start overflow-auto'>
                 {loading ? (
                     <div className='h-full w-full flex items-center justify-center bg-white'>
-                        <PacmanLoader color="#ef4444" />
+                        <PulseLoader color="#ef4444" />
                     </div>
                 ) : (
                     <>
