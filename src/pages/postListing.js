@@ -48,11 +48,11 @@ export default function postListing() {
     useEffect(() => {
         const allFieldsEntered = (homeType === 'apartment' && address && city && state && zipCode && unit) ||
         (homeType === 'house' && address && city && state && zipCode);
-    
+        let valid = true;
+
         if (allFieldsEntered) {
             const trimmedUnit = String(unit).trim();
-            let valid = true;
-    
+            
             listings.forEach(listing => {
                 const trimmedListingUnit = String(listing.unit).trim();
     
@@ -65,10 +65,11 @@ export default function postListing() {
                 ) {
                     valid = false;
                 }
-            });
-    
-            setIsListingValid(valid);
+            });  
         }
+        
+        setIsListingValid(valid);
+        
     }, [homeType, unit, address, city, state, zipCode, listings]);
     
 
@@ -341,8 +342,8 @@ export default function postListing() {
                 </div>
 
                 {!isListingValid && (
-                    <div className="w-full text-sm text-red-500 font-bold">
-                        <p>Listing already exists! Please enter a new listing.</p>
+                    <div className="w-full text-sm text-red-500 font-bold animate-jump-in">
+                        <p> ⚠️ Listing already exists! Please enter a new listing. ⚠️ </p>
                     </div>
                 )}
 
