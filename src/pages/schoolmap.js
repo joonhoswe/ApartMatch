@@ -509,7 +509,7 @@ export default function SchoolMap() {
                                         >
                                             x
                                         </button>
-                                        <Popup listing={selectedMarker} refreshListing={reset} changePopupActive={handlePopupActiveChange}/>
+                                        <Popup allListings={allListings} listing={selectedMarker} refreshListing={reset} changePopupActive={handlePopupActiveChange}/>
                                     </div>
                                 </div>
                             )}

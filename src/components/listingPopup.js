@@ -42,27 +42,49 @@ export default function ListingPopup({ allListings, listing, refreshListing, cha
         setConfirm(false);
     };
 
-    const handleDelete = async(id) => {
+    const handleDelete = async (id) => {
         setLoading(true);
         try {
+            // Find the listing to be deleted using the provided id
+            const listing = allListings.find(listing => listing.id === id);
+            if (!listing) {
+                throw new Error("Listing not found");
+            }
+    
+            // Delete the listing from the database
             await axios.delete(`http://localhost:8000/api/delete/${id}`);
-            const information = {
-                Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET,
-                Key: listing.images[0].split('/').pop(),
+    
+            // Delete images from AWS S3
+            for (const imageUrl of listing.images) {
+                const imageKey = imageUrl.split('/').pop();
+                if (imageKey.length !== 0) {
+                    const information = {
+                        Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET,
+                        Key: imageKey,
+                    };
+                    await s3.deleteObject(information).promise();
+                }
             }
-            console.log(information.Key);
-            if(information.Key.length!=0){
-                await s3.deleteObject(information).promise();
-            }
+    
+            // Update the local state to remove the deleted listing
             const updatedListings = allListings.filter(listing => listing.id !== id);
-            await changeUserListing(updatedListings);
+
+            // Update the user's listings if called from Profile to re-render the listings joined by the user
+            if (changeUserListing) {
+                await changeUserListing(updatedListings);
+            }
+            else{
+                await refreshListing(updatedListings);
+            }
+
             await changePopupActive(false);
         } catch (error) {
             console.error('Error deleting listing:', error);
+        } finally {
+            setLoading(false);
+            setConfirm(false);
         }
-        setLoading(false);
-        setConfirm(false);
-      }
+    };
 
     return (
         <div className='z-50 h-full w-full bg-white text-black rounded-lg flex flex-col items-center justify-between' >
