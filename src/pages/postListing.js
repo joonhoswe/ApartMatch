@@ -30,7 +30,10 @@ export default function postListing() {
     const [submitClicked, setSubmitClicked] = useState(false);
 
     const [imageObjects, setImageObjects] = useState([]);
-    const [isListingValid, setIsListingValid] = useState(true);
+
+    // let isListingValid = true;
+    const [isListingValid, setIsListingValid] = useState(true); // Use state for listing validation
+
 
     let images = [];
 
@@ -41,33 +44,36 @@ export default function postListing() {
         fetchListings();
     }, []);
 
+    // checks if there is a duplicate listing present in the database
     useEffect(() => {
         const allFieldsEntered = (homeType === 'apartment' && address && city && state && zipCode && unit) ||
-                                 (homeType === 'house' && address && city && state && zipCode);
-
-        if (allFieldsEntered) {
-            const isValid = computeIsListingValid();
-            setIsListingValid(isValid);
-
-            if (!isValid) {
-                alert('Listing already exists! Please enter a new listing.');
-            }
-        }
-    }, [address, city, state, zipCode, homeType, unit]);
+        (homeType === 'house' && address && city && state && zipCode);
     
-      
-    function computeIsListingValid() {
-        return listings.some(listing => 
-            listing.address === address && 
-            listing.city === city && 
-            listing.state === state && 
-            listing.zipCode === zipCode && 
-            (homeType === 'apartment' ? listing.unit === unit : true)
-        ) ? false : true;
-    }
+        if (allFieldsEntered) {
+            const trimmedUnit = String(unit).trim();
+            let valid = true;
+    
+            listings.forEach(listing => {
+                const trimmedListingUnit = String(listing.unit).trim();
+    
+                if (
+                    listing.address === address && 
+                    listing.city === city && 
+                    listing.state === state && 
+                    listing.zipCode === zipCode && 
+                    (homeType === 'apartment' ? trimmedListingUnit === trimmedUnit : true)
+                ) {
+                    valid = false;
+                }
+            });
+    
+            setIsListingValid(valid);
+        }
+    }, [homeType, unit, address, city, state, zipCode, listings]);
+    
 
     // checks if all required fields are filled in before submitting
-    const isFormValid = isListingValid && owner !== '' && address !== '' && state !== '' && zipCode !== ''  && city !== '' && homeType !== '' && isUnitValid && rent !== '' && rooms !== 0 && bathrooms !== 0 && gender !== '' && imageObjects.length > 0;
+    let isFormValid = isListingValid && owner !== '' && address !== '' && state !== '' && zipCode !== ''  && city !== '' && homeType !== '' && isUnitValid && rent !== '' && rooms !== 0 && bathrooms !== 0 && gender !== '' && imageObjects.length > 0;
 
     // initialize AWS
     useEffect(() => {
@@ -88,6 +94,7 @@ export default function postListing() {
         }
       }, [user]);
 
+    // clear form after submission
     const clearForm = () => {
         setAddress('');
         setZipCode('');
@@ -104,6 +111,7 @@ export default function postListing() {
         images = [];
     };
 
+    // fetch listings from the database to check for duplicates
     const fetchListings = async () => {
         try {
             const response = await axios.get('http://localhost:8000/api/get');
@@ -114,15 +122,17 @@ export default function postListing() {
         }
     }
 
+    // submit the form to the database along with images to AWS S3 bucket
     const handleSubmit = async (e) => {
 
         e.preventDefault();
         
-        if (!isFormValid || !submitClicked) return; // Prevent invalid submissions (client-side validation)
+        if (!isFormValid || !submitClicked || !isListingValid) return; // Prevent invalid submissions (client-side validation)
         
-        // Data to send to backend
+        // Retrieve the image URLs from AWS S3
         images = (await handleAWS());
 
+        // Data to be sent to the database
         const dataForSql = {
             owner,
             address,
@@ -153,10 +163,12 @@ export default function postListing() {
         }
     };
 
+    // append images to the imageObjects array
     const handleFileChange = (event) => {
         setImageObjects([...event.target.files]);
     };
 
+    // upload images to AWS S3 bucket and return URLs to be stored in PostgreSQL
     const handleAWS = async () => {
         const s3 = new AWS.S3();
         let uploadedImages = [];
@@ -181,12 +193,14 @@ export default function postListing() {
         return uploadedImages;
     };
 
+    // capitalize the first letter of the city to ensure database consistency
     const uploadCity = (city) => {
         let cityString = city.toLowerCase();
         cityString = cityString.charAt(0).toUpperCase() + cityString.slice(1);
         setCity(cityString);
     }
 
+    // list of states to be displayed in the dropdown
     const states = [
         "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", 
         "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", 
@@ -197,7 +211,6 @@ export default function postListing() {
         "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", 
         "Wisconsin", "Wyoming"
     ];
-    
 
     return (!isAuthenticated) ? // If user is not authenticated, display this message and button to login
     (
@@ -237,7 +250,7 @@ export default function postListing() {
                 backgroundSize: 'cover',
                 backgroundPosition: 'center'
             }}>
-            <form onSubmit={handleSubmit} className="bg-white text-xs sm:text-base rounded-2xl px-8 py-2 shadow-2xl text-black text-center w-full sm:w-3/5 md:w-3/5 lg:w-1/3 flex flex-col space-y-3 border-y-8 border-red-500">
+            <form onSubmit={handleSubmit} className="bg-white text-xs sm:text-base rounded-2xl px-8 py-2 shadow-2xl text-black text-center w-full sm:w-3/5 md:w-3/5 lg:w-1/3 flex flex-col space-y-3 border-y-8 border-red-500 relative">
                 <div className = "text-base sm:text-xl p-4 rounded-2xl font-bold mb-2">
                     Thank you for your interest in posting to ApartMatch! 
                 </div>
@@ -326,6 +339,13 @@ export default function postListing() {
                     placeholder="ex: 505"
                     className='ring-2 ring-gray-300 outline-none focus:ring-2 focus:ring-red-600 bg-white rounded-2xl p-4 h-10 w-full'/>
                 </div>
+
+                {!isListingValid && (
+                    <div className="w-full text-sm text-red-500 font-bold">
+                        <p>Listing already exists! Please enter a new listing.</p>
+                    </div>
+                )}
+
 
                 <div className='w-full bg-white flex flex-col space-y-1'>
                     <p className='flex justify-start'> # of Rooms </p>
@@ -443,28 +463,23 @@ export default function postListing() {
                 </div>
 
                 <div className='flex justify-center py-6'>
-                    
                     <button 
-                        type='submit'
-                        onClick={() => setSubmitClicked(true)}
-                        className={`w-32 text-red-500 py-2 px-4 rounded-2xl transition duration-300 ease-in-out outline-none ring-2 ring-red-500 
-                        ${
-                            isFormValid ? 'opacity-100 bg-red-500 text-white hover:scale-105 hover:cursor-pointer' : 'opacity-50 cursor-not-allowed'
-                        }`} 
-                        disabled={!isFormValid}
+                    type='submit'
+                    onClick={() => setSubmitClicked(true)}
+                    className={`w-32 text-red-500 py-2 px-4 rounded-2xl transition duration-300 ease-in-out outline-none ring-2 ring-red-500 
+                    ${
+                        isFormValid ? 'opacity-100 bg-red-500 text-white hover:scale-105 hover:cursor-pointer' : 'opacity-50 cursor-not-allowed'
+                    }`} 
+                    disabled={!isFormValid}
                     >
-                    {
-                    submitClicked && !posted ? 
-                    <div className='flex items-center justify-center'>
-                        <TailSpin color='#ffffff' height={20} width={20}/> 
-                    </div> : 
-                    <p> Submit</p>
-                    }
+                        {submitClicked && !posted ? 
+                        <div className='flex items-center justify-center'>
+                            <TailSpin color='#ffffff' height={20} width={20}/> 
+                        </div> : 
+                        <p> Submit </p>}
+                    </button>            
+                </div>   
 
-                    </button>
-                    
-                                 
-                </div>    
             </form>
         </div>
     ) : (isAuthenticated && posted) ? (
