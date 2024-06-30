@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { act, useState } from 'react';
 import { useAuth0 } from "@auth0/auth0-react";
 import placeholder from '@assets/placeholder.jpeg';
 import axios from 'axios';
@@ -102,13 +102,26 @@ export default function ListingPopup({ allListings, listing, refreshListing, cha
     };
 
     return (
-        <div className='z-50 h-full w-full bg-white text-black rounded-lg flex flex-col items-center justify-between' >
+        <div className='z-50 relative h-full w-full bg-white text-black rounded-lg flex flex-col items-center justify-between' >
+            
+            <button
+                onClick={() => changePopupActive(false)}
+                className='z-50 absolute top-0 right-0 h-8 w-8 rounded-lg outline-none ring-2 ring-red-500 bg-red-500 text-white hover:bg-white hover:text-red-500 transition duration-300 ease-in-out font-bold'
+            >
+                x
+            </button>
             <div className='h-3/5 w-full mb-2 relative'>
-                <button onClick={handlePrev} className='z-50 absolute top-1/2 left-4 h-9 w-9 md:h-12 md:w-12 rounded-full bg-white text-black flex items-center justify-center text-base md:text-2xl font-bold shadow-2xl hover:bg-red-500 transition ease-in-out duration-300'> 〈  </button>
+                <button onClick={handlePrev} className='z-10 absolute top-1/2 left-4 h-9 w-9 md:h-12 md:w-12 rounded-full bg-white text-black flex items-center justify-center text-base md:text-2xl font-bold shadow-2xl hover:bg-red-500 transition ease-in-out duration-300'> 〈  </button>
                 
-                <img src={!listing.images[0] ? placeholder.src : listing.images[0]} alt='Listing Image' className='h-full w-full' />
+                <img src={!listing.images[activeImage] ? placeholder.src : listing.images[activeImage]} alt='Listing Image' className='h-full w-full' />
 
                 <button onClick={handleNext} className='z-50 absolute top-1/2 right-4 h-9 w-9 md:h-12 md:w-12 rounded-full bg-white text-black flex items-center justify-center text-base md:text-2xl font-bold shadow-2xl hover:bg-red-500 transition ease-in-out duration-300'> 〉  </button>
+            
+                <div className='z-50 absolute bottom-2 left-1/2 flex flex-row space-x-2 items-center justify-center'>
+                    { listing.images.map((exp, index) => (
+                        <div key={index} className={`rounded-full h-2 w-2 ${activeImage === index ? 'bg-red-500' : 'bg-white'}`}/>
+                    ))}
+                </div>
             </div>
 
             <div className='flex flex-col space-y-1 justify-start text-start w-full px-4 mb-4'>

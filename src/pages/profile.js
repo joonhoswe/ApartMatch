@@ -128,13 +128,6 @@ export default function Profile() {
             {popupActive && selectedMarker && (
                 <div className='absolute top-0 left-0 w-full h-full flex items-center justify-center z-50 px-4'>
                     <div className='relative bg-white p-4 rounded-lg shadow-lg h-4/5 w-3/5'>
-                        <button
-                            onClick={() => setPopupActive(false)}
-                            className='absolute top-2 right-2 h-6 w-6 rounded-lg outline-none ring-2 ring-red-500 bg-red-500 text-white hover:bg-white hover:text-red-500 transition duration-300 ease-in-out font-bold'
-                        >
-                            x
-                        </button>
-                        {/* need to close listing after leave or delete is handled */}
                         <Popup allListings={userListings} listing={selectedMarker} refreshListing={fetchData} changePopupActive={handlePopupActiveChange} changeUserListing={handleUserListingChange}/>
                     </div>
                 </div>
