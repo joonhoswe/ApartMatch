@@ -127,7 +127,7 @@ export default function Profile() {
 
             {popupActive && selectedMarker && (
                 <div className='absolute top-0 left-0 w-full h-full flex items-center justify-center z-50 px-4'>
-                    <div className='relative bg-white p-4 rounded-lg shadow-lg h-4/5 w-3/5'>
+                    <div className='relative bg-white p-4 rounded-lg shadow-lg'>
                         <Popup allListings={userListings} listing={selectedMarker} refreshListing={fetchData} changePopupActive={handlePopupActiveChange} changeUserListing={handleUserListingChange}/>
                     </div>
                 </div>
