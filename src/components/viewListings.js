@@ -75,9 +75,11 @@ export default function ViewListings({ loading, listings, onListingClick, school
                                 </div>
 
                                 {/* owner badge */}
+                                {isAuthenticated && (
                                 <div className={`${listing.owner === user.nickname ? 'block' : 'hidden'} absolute top-2 left-2 bg-yellow-400 text-white font-bold text-xs w-18 h-4 p-1 rounded-md flex items-center justify-center`}>
                                     <p className=''> ☆OWNER </p>
                                 </div>
+                                )}
 
                                 {/* listing images */}
                                 <img src={!listing.images[0] ? placeholder.src : listing.images[0]} alt='Listing Image' className='h-40 w-full' />
@@ -91,8 +93,7 @@ export default function ViewListings({ loading, listings, onListingClick, school
                                         <p className='text-xs font-bold text-green-500'> {listing.rooms - listing.joinedListing.length} / {listing.rooms} Rooms Open </p>
                                     </div>
 
-                                    <p className='text-xs'> {listing.address} <br/> {listing.city}, {listing.state}, {listing.zipCode} </p>
-                                    <p className='text-xs'> Unit #: {listing.homeType === 'apartment' ? listing.unit: 'N/A'} </p>
+                                    <p className='text-xs items-center'> {listing.address} <br/> {listing.homeType === 'apartment' ? `Unit ${listing.unit}` : null } <br/> {listing.city}, {listing.state}, {listing.zipCode} </p>
 
                                     <div className='flex items-center justify-center pt-4 pb-2'>
                                         {/* if the user is not logged in, hide Join button */}

@@ -25,6 +25,7 @@ export default function postListing() {
     const [gender, setGender] = useState('');
     const [unit, setUnit] = useState('');
     const [joinedListing, setJoinedListing] = useState([]);
+    const [emails, setEmails] = useState([]);
 
     const [posted, setPosted] = useState(false);
     const [submitClicked, setSubmitClicked] = useState(false);
@@ -92,6 +93,7 @@ export default function postListing() {
         if (user) {
           setOwner(user.nickname);
           setJoinedListing([user.nickname]); // Ensure the first person joined is owner
+          setEmails([user.email]);
         }
       }, [user]);
 
@@ -108,6 +110,7 @@ export default function postListing() {
         setBathrooms(0);
         setGender('');
         setJoinedListing([]);
+        setEmails([]);
         setImageObjects([]);
         images = [];
     };
@@ -147,6 +150,7 @@ export default function postListing() {
             bathrooms,
             gender,
             joinedListing,
+            emails,
             images,
         };
 

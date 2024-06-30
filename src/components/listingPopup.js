@@ -1,4 +1,4 @@
-import React, { act, useState } from 'react';
+import React, { act, useEffect, useState } from 'react';
 import { useAuth0 } from "@auth0/auth0-react";
 import placeholder from '@assets/placeholder.jpeg';
 import axios from 'axios';
@@ -19,10 +19,10 @@ export default function ListingPopup({ allListings, listing, refreshListing, cha
         region: 'us-east-2',
     });
 
-    const handleJoin = async (id, user) => {
+    const handleJoin = async (id, user, email) => {
         setLoading(true);
         try {
-            await axios.patch('http://localhost:8000/api/join/', { id, user });
+            await axios.patch('http://localhost:8000/api/join/', { id, user, email });
             await refreshListing(); // Re-fetch listings after join
             await changePopupActive(false);
         } catch (error) {
@@ -32,10 +32,10 @@ export default function ListingPopup({ allListings, listing, refreshListing, cha
         setConfirm(false);
     };
 
-    const handleLeave = async (id, user) => {
+    const handleLeave = async (id, user, email) => {
         setLoading(true);
         try {
-            await axios.patch('http://localhost:8000/api/leave/', { id, user });
+            await axios.patch('http://localhost:8000/api/leave/', { id, user, email });
             await refreshListing(); // Re-fetch listings after leave
             await changePopupActive(false);
         } catch (error) {
@@ -103,12 +103,17 @@ export default function ListingPopup({ allListings, listing, refreshListing, cha
         else setActiveImage(activeImage + 1);
     };
 
+    useEffect(() => {
+        console.log(user)
+    });
+
     return (
-        <div className='z-50 relative h-full w-full bg-white text-black rounded-lg flex flex-col items-center justify-between' >
+        <div className='z-50 relative h-full w-full bg-white text-black rounded-lg flex flex-col items-center justify-between overflow-auto' >
             
+            {/* close popup button */}
             <button
                 onClick={() => changePopupActive(false)}
-                className='z-50 absolute top-0 right-0 h-8 w-8 rounded-lg outline-none ring-2 ring-red-500 bg-red-500 text-white hover:bg-white hover:text-red-500 transition duration-300 ease-in-out font-bold'
+                className='z-50 absolute top-1 right-1 h-8 w-8 rounded-lg outline-none ring-2 ring-red-500 bg-red-500 text-white hover:bg-white hover:text-red-500 transition duration-300 ease-in-out font-bold'
             >
                 x
             </button>
@@ -134,29 +139,42 @@ export default function ListingPopup({ allListings, listing, refreshListing, cha
                     </div>
 
                     <div className='flex flex-row space-x-1 items-center'>
-                        {Array.from({ length: listing.rooms - listing.joinedListing.length }).map((_, index) => (
-                            <div key={index} className='flex flex-row space-x-1 items-center'>
-                                <img src={available.src} alt='available' className="w-3 h-6" />
-                            </div>
-                        ))}
                         {listing.joinedListing.map((user, index) => (
                             <div key={index} className='flex flex-row space-x-1 items-center'>
                                 <img src={taken.src} alt='taken' className="w-3 h-6" />
+                            </div>
+                        ))}
+                        {Array.from({ length: listing.rooms - listing.joinedListing.length }).map((_, index) => (
+                            <div key={index} className='flex flex-row space-x-1 items-center'>
+                                <img src={available.src} alt='available' className="w-3 h-6" />
                             </div>
                         ))}
                     </div>
                 </div>
                 
                 <div className='flex justify-between'>
-                    <p className='text-sm items-center'> {listing.address} <br/> {listing.city}, {listing.state}, {listing.zipCode} </p>
+                    <p className='text-sm items-center'> {listing.address} <br/> {listing.homeType === 'apartment' ? `Unit ${listing.unit}` : null } <br/> {listing.city}, {listing.state}, {listing.zipCode} </p>
+                    
                     <div className='flex flex-col text-right'>
                         <p className='text-base font-bold text-green-500'> {listing.rooms - listing.joinedListing.length} / {listing.rooms} Rooms Open </p>
                         <p className={`${listing.gender === 'males' ? 'text-blue-500' : listing.gender === 'females' ? 'text-pink-500' : 'text-gray-500'} font-bold text-base`}> {listing.gender} </p>
                     </div>
                 </div>
+
+                {/* if the home is an apartment, show the unit # */}
                 <div className='flex items-center justify-between'>
-                    <p className='text-sm'> Unit #: {listing.homeType === 'apartment' ? listing.unit: 'N/A' } </p>
+                    
                 </div>
+
+                {/* emails of joined users */}
+                {isAuthenticated && listing.joinedListing.includes(user.nickname) && (
+                <div className='flex flex-col'>
+                    <p className='text-sm font-bold'> Joined Users: </p>
+                    {listing.emails.map((user, index) => (
+                        <p key={index} className='text-xs'> {user} </p>
+                    ))}
+                </div>
+                )}
 
             </div>
 
@@ -196,7 +214,7 @@ export default function ListingPopup({ allListings, listing, refreshListing, cha
                         <button onClick={() => setConfirm(false)} className='text-gray-500 text-sm font-bold'> 
                                 Cancel 
                         </button>
-                        <button onClick={() => handleLeave(listing.id, user.nickname)} className='flex items-center justify-center w-20 h-6 outline-none ring-2 ring-orange-500 bg-orange-500 text-white text-sm font-bold hover:scale-105 transition ease-in-out duration-300 rounded-lg'> 
+                        <button onClick={() => handleLeave(listing.id, user.nickname, user.email)} className='flex items-center justify-center w-20 h-6 outline-none ring-2 ring-orange-500 bg-orange-500 text-white text-sm font-bold hover:scale-105 transition ease-in-out duration-300 rounded-lg'> 
                             {loading ? <TailSpin color='#ffffff' height={15} width={15} /> : 'Confirm'}
                         </button>
                     </div>
@@ -219,7 +237,7 @@ export default function ListingPopup({ allListings, listing, refreshListing, cha
                         <button onClick={() => setConfirm(false)} className='text-gray-500 text-sm font-bold'> 
                                 Cancel 
                         </button>
-                        <button onClick={() => handleJoin(listing.id, user.nickname)} className='flex items-center justify-center w-20 h-6 outline-none ring-2 ring-green-500 bg-green-500 text-white text-sm font-bold hover:scale-105 transition ease-in-out duration-300 rounded-lg'> 
+                        <button onClick={() => handleJoin(listing.id, user.nickname, user.email)} className='flex items-center justify-center w-20 h-6 outline-none ring-2 ring-green-500 bg-green-500 text-white text-sm font-bold hover:scale-105 transition ease-in-out duration-300 rounded-lg'> 
                             {loading ? <TailSpin color='#ffffff' height={15} width={15} /> : 'Confirm'}
                         </button>
                     </div>

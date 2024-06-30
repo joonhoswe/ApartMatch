@@ -74,13 +74,13 @@ export default function Profile() {
             <div className='flex items-center justify-between'>
               <div className='flex flex-row space-x-3 w-full items-center'>
                 <img src={user.picture} alt={user.name} className="w-8 h-8 sm:w-10 sm:h-10 rounded-full" />
-                <p className='text-xs sm:text-base'> Welcome, {user.nickname} </p>
+                <p className='text-xs sm:text-base'> Welcome, {user.nickname}! </p>
               </div>
               <Logout />
             </div>
   
             <div>
-              <h1 className='text-lg font-bold text-red-500'> Listings </h1>
+              <h1 className='text-lg font-bold text-red-500'> Your Listings </h1>
               <div className='w-full h-0.5 bg-red-500'/>
             </div>
 
@@ -112,9 +112,7 @@ export default function Profile() {
                           </div>
                           <p className='text-xs font-bold text-green-500'> {listing.rooms - listing.joinedListing.length} / {listing.rooms} Rooms Open </p>
 
-                          <p className='text-xs'> {listing.address} </p>
-                          <p className='text-xs'> {listing.city}, {listing.state}, {listing.zipCode}</p>
-                          <p className='text-xs'> Unit #: {listing.homeType === 'apartment' ? listing.unit: 'N/A'} </p>
+                          <p className='text-xs items-center'> {listing.address} <br/> {listing.homeType === 'apartment' ? `Unit ${listing.unit}` : null } <br/> {listing.city}, {listing.state}, {listing.zipCode} </p>
                       </div>
                       <button className={`absolute bottom-3 left-1/2 transform -translate-x-1/2 w-12 h-4 outline-none ring-2 ${listing.owner === user.nickname ? 'ring-red-500 bg-red-500 hover:text-red-500' : listing.joinedListing.includes(user.nickname) ? 'ring-orange-500 bg-orange-500 hover:text-orange-500' : 'ring-green-500 bg-green-500 hover:text-green-500'} text-white hover:bg-white flex items-center justify-center text-xs font-bold transition ease-in-out duration-300 rounded-md`}> 
                       {listing.owner === user.nickname ? 'Delete'
@@ -125,9 +123,13 @@ export default function Profile() {
               ))}
             </div>
 
+            <div className='w-full h-12 absolute bottom-0 left-0 right-0 flex items-center justify-center px-2'>
+              <p className='text-xs md:text-base font-bold text-red-500 '> * Once joined in a listing, find your future roommates' emails and connect with them! * </p>
+            </div>
+
             {popupActive && selectedMarker && (
                 <div className='absolute top-0 left-0 w-full h-full flex items-center justify-center z-50 px-4'>
-                    <div className='relative bg-white p-4 rounded-lg shadow-lg'>
+                    <div className='relative bg-white p-4 rounded-lg shadow-lg h-160 w-160'>
                         <Popup allListings={userListings} listing={selectedMarker} refreshListing={fetchData} changePopupActive={handlePopupActiveChange} changeUserListing={handleUserListingChange}/>
                     </div>
                 </div>
