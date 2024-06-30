@@ -17,6 +17,7 @@ class Listing(models.Model):
     bathrooms = models.PositiveIntegerField()
     gender = models.CharField(max_length=10)
     joinedListing = ArrayField(models.CharField(max_length=20, blank=True), blank=True, default = list)
+    emails = ArrayField(models.CharField(max_length=50, blank=True), blank=True, default = list)
     images = ArrayField(models.CharField(max_length=500, blank=True), blank=True, default = list)
     
 
