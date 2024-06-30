@@ -9,6 +9,7 @@ export default function ListingPopup({ allListings, listing, refreshListing, cha
     const { user, isAuthenticated } = useAuth0();
     const [loading, setLoading] = useState(false);
     const [confirm, setConfirm] = useState(false);
+    const [activeImage, setActiveImage] = useState(0);
 
     const s3 = new AWS.S3({
         accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID,
@@ -86,11 +87,28 @@ export default function ListingPopup({ allListings, listing, refreshListing, cha
         }
     };
 
+    const handlePrev = () => {
+        if (activeImage === 0) {
+            setActiveImage(listing.images.length - 1);
+        }
+        else setActiveImage(activeImage - 1);
+    };
+
+    const handleNext = () => {
+        if (activeImage === listing.images.length - 1) {
+            setActiveImage(0);
+        }
+        else setActiveImage(activeImage + 1);
+    };
+
     return (
         <div className='z-50 h-full w-full bg-white text-black rounded-lg flex flex-col items-center justify-between' >
-            <div className='h-3/5 w-full mb-2'>
-                {/*change photo*/}
-                <img src={!listing.imageUrl ? placeholder.src : listing.imageUrl[0]} alt='placeholder' className='h-full w-full' />
+            <div className='h-3/5 w-full mb-2 relative'>
+                <button onClick={handlePrev} className='z-50 absolute top-1/2 left-4 h-9 w-9 md:h-12 md:w-12 rounded-full bg-white text-black flex items-center justify-center text-base md:text-2xl font-bold shadow-2xl hover:bg-red-500 transition ease-in-out duration-300'> 〈  </button>
+                
+                <img src={!listing.images[0] ? placeholder.src : listing.images[0]} alt='Listing Image' className='h-full w-full' />
+
+                <button onClick={handleNext} className='z-50 absolute top-1/2 right-4 h-9 w-9 md:h-12 md:w-12 rounded-full bg-white text-black flex items-center justify-center text-base md:text-2xl font-bold shadow-2xl hover:bg-red-500 transition ease-in-out duration-300'> 〉  </button>
             </div>
 
             <div className='flex flex-col space-y-1 justify-start text-start w-full px-4 mb-4'>
@@ -102,7 +120,9 @@ export default function ListingPopup({ allListings, listing, refreshListing, cha
                     <p className='text-base font-bold text-green-500'> {listing.rooms - listing.joinedListing.length} / {listing.rooms} Rooms Open </p>
                 </div>
 
+                
                 <p className='text-sm'>{listing.address} <br/> {listing.city}, {listing.state}, {listing.zipCode}</p>
+                <p className='text-sm'> Unit #: {listing.homeType === 'apartment' ? listing.unit: 'N/A' } </p>
             </div>
 
             {   

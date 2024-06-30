@@ -80,7 +80,7 @@ export default function ViewListings({ loading, listings, onListingClick, school
                                 </div>
 
                                 {/* listing images */}
-                                <img src={!listing.imageUrl ? placeholder.src : listing.imageUrl} alt='placeholder' className='h-40 w-full' />
+                                <img src={!listing.images[0] ? placeholder.src : listing.images[0]} alt='Listing Image' className='h-40 w-full' />
 
                                 <div className='flex flex-col space-y-1 justify-start text-start px-2 py-1'>
                                     <div className='flex items-center justify-between'>
@@ -90,8 +90,9 @@ export default function ViewListings({ loading, listings, onListingClick, school
                                         </div>
                                         <p className='text-xs font-bold text-green-500'> {listing.rooms - listing.joinedListing.length} / {listing.rooms} Rooms Open </p>
                                     </div>
-                                    <p className={`${listing.homeType === 'apartment' ? 'visible' : 'hidden'} font-bold text-xs`}> Apartment Unit #{listing.unit} </p>
+
                                     <p className='text-xs'> {listing.address} <br/> {listing.city}, {listing.state}, {listing.zipCode} </p>
+                                    <p className='text-xs'> Unit #: {listing.homeType === 'apartment' ? listing.unit: 'N/A'} </p>
 
                                     <div className='flex items-center justify-center pt-4 pb-2'>
                                         {/* if the user is not logged in, hide Join button */}
