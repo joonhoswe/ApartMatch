@@ -115,7 +115,7 @@ export default function ListingPopup({ allListings, listing, refreshListing, cha
                 
                 <img src={!listing.images[activeImage] ? placeholder.src : listing.images[activeImage]} alt='Listing Image' className='h-96 w-160' />
 
-                <button onClick={handleNext} className='z-50 absolute top-1/2 right-4 h-9 w-9 md:h-12 md:w-12 rounded-full bg-white text-black flex items-center justify-center text-base md:text-2xl font-bold shadow-2xl hover:bg-red-500 transition ease-in-out duration-300'> 〉  </button>
+                <button onClick={handleNext} className='z-10 absolute top-1/2 right-4 h-9 w-9 md:h-12 md:w-12 rounded-full bg-white text-black flex items-center justify-center text-base md:text-2xl font-bold shadow-2xl hover:bg-red-500 transition ease-in-out duration-300'> 〉  </button>
             
                 <div className='z-50 absolute bottom-2 left-1/2 flex flex-row space-x-2 items-center justify-center'>
                     { listing.images.map((exp, index) => (
