@@ -8,7 +8,7 @@ import axios from 'axios';
 import Link from 'next/link';
 import AWS from 'aws-sdk';
 
-export default function postListing() {
+export default function PostListing() {
 
     const { user, isAuthenticated, loginWithRedirect } = useAuth0();
 

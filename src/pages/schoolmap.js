@@ -267,7 +267,7 @@ export default function SchoolMap() {
             initialize(school);
             fetchListings();
         }
-    }, [school]);
+    }, [school, initialize, fetchListings]);
 
     return (
         <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
