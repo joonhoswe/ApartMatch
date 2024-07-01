@@ -1,5 +1,6 @@
 import { React, useState, useEffect } from  'react';
 import Background from '@assets/osuAstonPlaceApartments.jpeg';
+import upload from '@assets/upload.png';
 import { useAuth0 } from "@auth0/auth0-react";
 import ConfettiExplosion from 'react-confetti-explosion';
 import { TailSpin } from 'react-loader-spinner';
@@ -31,6 +32,7 @@ export default function postListing() {
     const [submitClicked, setSubmitClicked] = useState(false);
 
     const [imageObjects, setImageObjects] = useState([]);
+    const [fileNames, setFileNames] = useState([]);
 
     // let isListingValid = true;
     const [isListingValid, setIsListingValid] = useState(true); // Use state for listing validation
@@ -170,8 +172,17 @@ export default function postListing() {
 
     // append images to the imageObjects array
     const handleFileChange = (event) => {
-        setImageObjects([...event.target.files]);
+        const newFiles = Array.from(event.target.files);
+        setImageObjects(prevFiles => [...prevFiles, ...newFiles]);
+        setFileNames(prevNames => [...prevNames, ...newFiles.map(file => file.name)]);
+        console.log('Files:', fileNames);
     };
+
+    const handleFileDelete = (index) => {
+        setImageObjects(imageObjects.filter((_, i) => i !== index));
+        setFileNames(fileNames.filter((_, i) => i !== index));
+    };
+    
 
     // upload images to AWS S3 bucket and return URLs to be stored in PostgreSQL
     const handleAWS = async () => {
@@ -462,10 +473,36 @@ export default function postListing() {
                     </div>
                 </div>  
 
-                <div className="">
-                    Upload Photos Below<br/>
-                    <input type="file" multiple onChange={handleFileChange}/>
+                {/* image upload box */}
+                <div className="flex flex-col items-center">
+                    <div className="flex items-center justify-center h-72 w-full rounded-lg ring-2 ring-red-500 relative">
+                        <input
+                        className="absolute opacity-0 w-full h-full cursor-pointer"
+                        type="file"
+                        multiple
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        />
+                        <div className="flex flex-col items-center justify-center">
+                            <img src={upload.src} alt='upload' className='h-24 w-24'/>
+                            <p className="mt-2 text-gray-500"> Drag & Drop your images here, or </p>
+                            <button className="mt-2 text-blue-500 underline"> Choose File </button>
+                        </div>
+                    </div>
+
+                    {/* each image uploaded */}
+                    <div className="mt-4 w-full">
+                        {fileNames.map((name, index) => (
+                            <div className="w-full h-8 flex items-center justify-between rounded-lg bg-gray-200 p-2 mb-2">
+                                <p key={index} className="text-blue-500">{name}</p>
+                                <button onClick={() => handleFileDelete(index)} className="text-red-500 text-sm hover:text-gray-400 transition ease-in-out duration-300" title='Remove Image'> 
+                                    x 
+                                </button>
+                            </div>
+                        ))}
+                    </div>
                 </div>
+
 
                 <div className='flex justify-center py-6'>
                     <button 
