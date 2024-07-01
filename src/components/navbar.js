@@ -86,9 +86,9 @@ export default function Navbar() {
             >
               {/* Website Section Links */}
               <div className='flex flex-col space-y-6 items-center justify-center '>
-                {navLinks.map((link) => (
-                  <a href={link.path}>
-                    <button key={link.title} className="font-bold">
+                {navLinks.map((link, index) => (
+                  <a key ={index} href={link.path}>
+                    <button className="font-bold">
                       {link.title}
                     </button>
                   </a>
