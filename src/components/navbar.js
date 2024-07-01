@@ -41,7 +41,7 @@ export default function Navbar() {
             </Link>
           
             {navLinks.map((link, index) => (
-              <Link key={link} href={link.path} className={`font-bold transition duration-300 ease-in-out hover:text-gray-400 animate-fade animate-duration-1200 animate-delay-${link.delay}`}> 
+              <Link key={index} href={link.path} className={`font-bold transition duration-300 ease-in-out hover:text-gray-400 animate-fade animate-duration-1200 animate-delay-${link.delay}`}> 
                 {link.title}
               </Link>
             ))}
