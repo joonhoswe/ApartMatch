@@ -40,8 +40,8 @@ export default function Navbar() {
                 <Image src={Logo} alt="ApartMatch Logo" width={128} height={32} className='animate-fade animate-duration-1000' />
             </Link>
           
-            {navLinks.map((link) => (
-              <Link key={link.title} href={link.path} className={`font-bold transition duration-300 ease-in-out hover:text-gray-400 animate-fade animate-duration-1200 animate-delay-${link.delay}`}> 
+            {navLinks.map((link, index) => (
+              <Link key={index} href={link.path} className={`font-bold transition duration-300 ease-in-out hover:text-gray-400 animate-fade animate-duration-1200 animate-delay-${link.delay}`}> 
                 {link.title}
               </Link>
             ))}
@@ -86,9 +86,9 @@ export default function Navbar() {
             >
               {/* Website Section Links */}
               <div className='flex flex-col space-y-6 items-center justify-center '>
-                {navLinks.map((link) => (
-                  <a href={link.path}>
-                    <button key={link.title} className="font-bold">
+                {navLinks.map((link, index) => (
+                  <a key ={index} href={link.path}>
+                    <button className="font-bold">
                       {link.title}
                     </button>
                   </a>
