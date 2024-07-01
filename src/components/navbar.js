@@ -40,7 +40,7 @@ export default function Navbar() {
                 <Image src={Logo} alt="ApartMatch Logo" width={128} height={32} className='animate-fade animate-duration-1000' />
             </Link>
           
-            {navLinks.map((link) => (
+            {navLinks.map((link, index) => (
               <Link key={link.title} href={link.path} className={`font-bold transition duration-300 ease-in-out hover:text-gray-400 animate-fade animate-duration-1200 animate-delay-${link.delay}`}> 
                 {link.title}
               </Link>
