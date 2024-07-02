@@ -49,8 +49,11 @@ INSTALLED_APPS = [
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
-    # add deployed backend url here
+
 ]
+deployed_backend_url = os.environ.get('NEXT_PUBLIC_BACKEND_URL')
+if deployed_backend_url:
+    CORS_ALLOWED_ORIGINS.append(deployed_backend_url)
 
 CORS_ORIGIN_ALLOW_ALL = True
 
