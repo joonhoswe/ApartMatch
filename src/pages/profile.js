@@ -67,7 +67,7 @@ export default function Profile() {
       </div>);
     } else {
       return isAuthenticated ? (
-        <div className='min-h-[calc(100vh-54px)] h-auto w-full bg-gray-200 flex items-center justify-center text-black p-4 sm:p-8'>
+        <div className='min-h-[calc(100vh-56px)] h-auto w-full bg-gray-200 flex items-center justify-center text-black p-4 sm:p-8'>
   
           <div className='h-auto min-h-[calc(70vh)] w-[95vw] bg-white rounded-lg p-3 sm:p-6 flex flex-col space-y-8 relative'>
   

@@ -46,7 +46,7 @@ export default function ViewListings({ loading, listings, onListingClick, school
     }, [school]);
 
     return (
-        <div className='min-h-[calc(100vh-54px)] w-full sm:w-2/5 flex flex-col items-center space-y-6 text-black border-2 border-gray-300'>
+        <div className='min-h-[calc(100vh-56px)] w-full sm:w-2/5 flex flex-col items-center space-y-6 text-black border-2 border-gray-300'>
             {!isAuthenticated ? (
                 <div className='w-full h-10 bg-white flex items-center justify-center'>
                     <p className='font-bold text-red-500'> Please <span onClick={loginWithRedirect} className='underline hover:cursor-pointer hover:text-red-400 transition ease-in-out duration-300'> sign in </span> to join listings. </p>
@@ -57,7 +57,7 @@ export default function ViewListings({ loading, listings, onListingClick, school
                 </div>
             ) : null }
             
-            <div className='bg-gray-200 min-h-full w-full flex flex-col space-y-2 items-center justify-start overflow-auto'>
+            <div className='bg-gray-200 h-full w-full flex flex-col space-y-2 items-center justify-start overflow-auto'>
                 {loading ? (
                     <div className='h-full w-full flex items-center justify-center bg-white'>
                         <PulseLoader color="#ef4444" />
