@@ -271,7 +271,7 @@ export default function SchoolMap() {
 
     return (
         <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
-            <div className='flex flex-row h-[calc(100vh-54px)] w-full bg-white'>
+            <div className='flex flex-row h-[calc(100vh-56px)] w-full bg-white'>
                 <div className='h-full w-1/3 hidden sm:flex flex-col space-y-6 text-black p-4 border-2 border-gray-300'>
                     <div className='flex flex-col space-y-1'>
                         <p className='text-sm font-bold'> University </p>
