@@ -22,7 +22,7 @@ export default function ListingPopup({ allListings, listing, refreshListing, cha
     const handleJoin = async (id, user, email) => {
         setLoading(true);
         try {
-            await axios.patch('http://localhost:8000/api/join/', { id, user, email });
+            await axios.patch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/join/`, { id, user, email });
             await refreshListing(); // Re-fetch listings after join
             await changePopupActive(false);
         } catch (error) {
@@ -35,7 +35,7 @@ export default function ListingPopup({ allListings, listing, refreshListing, cha
     const handleLeave = async (id, user, email) => {
         setLoading(true);
         try {
-            await axios.patch('http://localhost:8000/api/leave/', { id, user, email });
+            await axios.patch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/leave/`, { id, user, email });
             await refreshListing(); // Re-fetch listings after leave
             await changePopupActive(false);
         } catch (error) {
@@ -55,7 +55,7 @@ export default function ListingPopup({ allListings, listing, refreshListing, cha
             }
     
             // Delete the listing from the database
-            await axios.delete(`http://localhost:8000/api/delete/${id}`);
+            await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/delete/${id}`);
     
             // Delete images from AWS S3
             for (const imageUrl of listing.images) {

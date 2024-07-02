@@ -120,7 +120,7 @@ export default function PostListing() {
     // fetch listings from the database to check for duplicates
     const fetchListings = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/api/get');
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/get/`);
             setListings(response.data);
         }
         catch {
@@ -159,7 +159,7 @@ export default function PostListing() {
         console.log("Submitting form: ", dataForSql);
 
         try {
-            const response = await axios.post('http://localhost:8000/api/post/', dataForSql);
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/post/`, dataForSql);
             setPosted(true);
             clearForm();
             console.log('Response:', response.data);
@@ -250,7 +250,7 @@ export default function PostListing() {
                 </p>
 
                 <p className='text-xs sm:text-sm md:text-base text-black italic text-center'> 
-                    NOTE: If you&pos;ve already verified your email and are still seeing this message, please log out and log back in.
+                    NOTE: If you&apos;ve already verified your email and are still seeing this message, please log out and log back in.
                 </p>
 
                 <Link href='/home' className="bg-red-500 text-xs md:text-base w-24 sm:w-32 h-10 rounded-md text-white px-2 py-1 flex items-center justify-center transition duration-500 hover:bg-white hover:text-red-500 hover:outline hover:outline-2 hover:red-500">

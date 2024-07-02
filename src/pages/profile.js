@@ -31,7 +31,7 @@ export default function Profile() {
 
     const fetchData = async () => {
       try{
-        const response = await axios.get('http://localhost:8000/api/get');
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/get/`);
         const database = response.data;
         if (user) {
           setAllListings(response.data);
@@ -124,7 +124,7 @@ export default function Profile() {
             </div>
 
             <div className='w-full h-12 absolute bottom-0 left-0 right-0 flex items-center justify-center px-2'>
-              <p className='text-xs md:text-base font-bold text-red-500 '> * Once joined in a listing, find your future roommates&pos; emails and connect with them! * </p>
+              <p className='text-xs md:text-base font-bold text-red-500 '> * Once joined in a listing, find your future roommates&apos; emails and connect with them! * </p>
             </div>
 
             {popupActive && selectedMarker && (

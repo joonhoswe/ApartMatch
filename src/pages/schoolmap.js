@@ -126,7 +126,7 @@ export default function SchoolMap() {
         try {
             setMapSet(false);
 
-            const response = await axios.get('http://localhost:8000/api/get');
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/get/`);
             // Filter listings by city   
             const listings = response.data.filter(listing => listing.city === schoolCity && listing.state == schoolState);
             // store same city listings in allListings to keep track of all listings to filter from
@@ -171,7 +171,7 @@ export default function SchoolMap() {
 
     const fetchListings = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/api/get');
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/get/`);
             // Filter listings by city   
             const listings = response.data.filter(listing => listing.city === schoolCity);
             // store same city listings in allListings to keep track of all listings to filter from
