@@ -124,7 +124,7 @@ export default function Profile() {
             </div>
 
             <div className='w-full h-12 absolute bottom-0 left-0 right-0 flex items-center justify-center px-2'>
-              <p className='text-xs md:text-base font-bold text-red-500 '> * Once joined in a listing, find your future roommates' emails and connect with them! * </p>
+              <p className='text-xs md:text-base font-bold text-red-500 '> * Once joined in a listing, find your future roommates&pos; emails and connect with them! * </p>
             </div>
 
             {popupActive && selectedMarker && (

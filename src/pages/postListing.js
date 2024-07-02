@@ -8,7 +8,7 @@ import axios from 'axios';
 import Link from 'next/link';
 import AWS from 'aws-sdk';
 
-export default function postListing() {
+export default function PostListing() {
 
     const { user, isAuthenticated, loginWithRedirect } = useAuth0();
 
@@ -250,7 +250,7 @@ export default function postListing() {
                 </p>
 
                 <p className='text-xs sm:text-sm md:text-base text-black italic text-center'> 
-                    NOTE: If you've already verified your email and are still seeing this message, please log out and log back in.
+                    NOTE: If you&pos;ve already verified your email and are still seeing this message, please log out and log back in.
                 </p>
 
                 <Link href='/home' className="bg-red-500 text-xs md:text-base w-24 sm:w-32 h-10 rounded-md text-white px-2 py-1 flex items-center justify-center transition duration-500 hover:bg-white hover:text-red-500 hover:outline hover:outline-2 hover:red-500">
@@ -493,8 +493,8 @@ export default function postListing() {
                     {/* each image uploaded */}
                     <div className="mt-4 w-full">
                         {fileNames.map((name, index) => (
-                            <div className="w-full h-8 flex items-center justify-between rounded-lg bg-gray-200 p-2 mb-2">
-                                <p key={index} className="text-blue-500">{name}</p>
+                            <div key={index} className="w-full h-8 flex items-center justify-between rounded-lg bg-gray-200 p-2 mb-2">
+                                <p className="text-blue-500">{name}</p>
                                 <button onClick={() => handleFileDelete(index)} className="text-red-500 text-sm hover:text-gray-400 transition ease-in-out duration-300" title='Remove Image'> 
                                     x 
                                 </button>
