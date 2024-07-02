@@ -250,7 +250,7 @@ export default function PostListing() {
                 </p>
 
                 <p className='text-xs sm:text-sm md:text-base text-black italic text-center'> 
-                    NOTE: If you&pos;ve already verified your email and are still seeing this message, please log out and log back in.
+                    NOTE: If you&apos;ve already verified your email and are still seeing this message, please log out and log back in.
                 </p>
 
                 <Link href='/home' className="bg-red-500 text-xs md:text-base w-24 sm:w-32 h-10 rounded-md text-white px-2 py-1 flex items-center justify-center transition duration-500 hover:bg-white hover:text-red-500 hover:outline hover:outline-2 hover:red-500">
