@@ -171,8 +171,8 @@ export default function SchoolMap() {
 
     const fetchListings = async () => {
         try {
-            console.log(`${process.env.NEXT_PUBLIC_BACKEND_URL}`)
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/get`);
+            // const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/get`);
+            const response = await axios.get('https://backend2-red-bird-8027.fly.dev/api/get');
             // Filter listings by city   
             const listings = response.data.filter(listing => listing.city === schoolCity);
             // store same city listings in allListings to keep track of all listings to filter from
