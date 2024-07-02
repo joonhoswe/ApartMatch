@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
+import dj_database_url
 from pathlib import Path
 from dotenv import load_dotenv
 load_dotenv()
@@ -49,7 +50,7 @@ INSTALLED_APPS = [
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
-
+    'https://www.apartmatchco.com'
 ]
 deployed_backend_url = os.environ.get('NEXT_PUBLIC_BACKEND_URL')
 if deployed_backend_url:
@@ -94,21 +95,7 @@ WSGI_APPLICATION = 'backend2.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-
-        'NAME': os.environ.get('DB_NAME'),
-
-        'USER': os.environ.get('DB_USER'),
-
-        'PASSWORD': os.environ.get('DB_DEV_PASSWORD'),
-
-        'HOST': os.environ.get('DB_DEV_HOST'),
-
-        'PORT': os.environ.get('DB_DEV_PORT'),
-
-    }
+    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
 }
 
 
