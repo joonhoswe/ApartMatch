@@ -120,7 +120,7 @@ export default function PostListing() {
     // fetch listings from the database to check for duplicates
     const fetchListings = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/api/get');
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/get/`);
             setListings(response.data);
         }
         catch {
@@ -159,7 +159,7 @@ export default function PostListing() {
         console.log("Submitting form: ", dataForSql);
 
         try {
-            const response = await axios.post('http://localhost:8000/api/post/', dataForSql);
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/post/`, dataForSql);
             setPosted(true);
             clearForm();
             console.log('Response:', response.data);

@@ -31,7 +31,7 @@ export default function Profile() {
 
     const fetchData = async () => {
       try{
-        const response = await axios.get('http://localhost:8000/api/get');
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/get/`);
         const database = response.data;
         if (user) {
           setAllListings(response.data);
