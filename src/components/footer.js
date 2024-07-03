@@ -38,8 +38,8 @@ export default function Footer() {
             <div className="w-full flex md:hidden flex-col justify-end px-2">
 
                 <div className="flex flex-col justify-center items-center space-y-1">
-                    <p className="text-xs md:text-sm"> apartmatchco@gmail.com </p>
                     <p className="text-xs md:text-sm"> Terms of Service </p>
+                    <p className="text-xs md:text-sm"> apartmatchco@gmail.com </p>
                     <p className="text-xs md:text-sm"> Privacy Policy </p>
                 </div>
 
