@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import Logo from '@assets/logo.png';
 import LinkedIn from '@assets/linkedin.webp';
 import GitHub from '@assets/github.png';
@@ -18,9 +19,9 @@ export default function Footer() {
                     <p className="text-xs md:text-sm"> © 2024 ApartMatch </p>
 
                     <div className="flex flex-col md:flex-row md:space-x-4 justify-center items-center space-y-2 md:space-y-0">
-                        <p className="text-xs md:text-sm"> Terms of Service </p>
+                        <Link href="/terms" className="text-xs md:text-sm hover:underline"> Terms of Service </Link>
                         <p className="text-xs md:text-sm"> apartmatchco@gmail.com </p>
-                        <p className="text-xs md:text-sm"> Privacy Policy </p>
+                        <Link href="/privacy" className="text-xs md:text-sm hover:underline"> Privacy Policy </Link>  
                     </div>
 
                     <div className="flex flex-row space-x-2">
@@ -38,9 +39,9 @@ export default function Footer() {
             <div className="w-full flex md:hidden flex-col justify-end px-2">
 
                 <div className="flex flex-col justify-center items-center space-y-1">
-                    <p className="text-xs md:text-sm"> Terms of Service </p>
+                    <Link href="/terms" className="text-xs md:text-sm hover:underline"> Terms of Service </Link>
                     <p className="text-xs md:text-sm"> apartmatchco@gmail.com </p>
-                    <p className="text-xs md:text-sm"> Privacy Policy </p>
+                    <Link href="/privacy" className="text-xs md:text-sm hover:underline"> Privacy Policy </Link>  
                 </div>
 
                 <div className="flex flex-row justify-between items-center mt-2">
