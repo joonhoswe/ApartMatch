@@ -7,7 +7,7 @@ export default function Terms() {
 
             <h1 className="text-2xl md:text-3xl font-bold text-black mb-2"> Terms of Service </h1>
             <p className='text-sm md:text-base'> 
-            Welcome to ApartMatch! By accessing or using our website, apartmatchco.com, you agree to comply with and be bound by the following terms and conditions ("Terms"). Please read these Terms carefully before using our services. If you do not agree with any part of these Terms, you are prohibited from using or accessing this site.
+            Welcome to ApartMatch! By accessing or using our website, apartmatchco.com, you agree to comply with and be bound by the following terms and conditions (&quot;Terms&quot;). Please read these Terms carefully before using our services. If you do not agree with any part of these Terms, you are prohibited from using or accessing this site.
             </p>
 
             <h2 className="text-xl md:text-2xl font-bold text-black mb-2 mt-4"> Acceptance of Terms </h2>
@@ -39,7 +39,7 @@ export default function Terms() {
             <span className='font-bold text-sm md:text-base'> Listing Requirements: </span>When posting a home listing, you must provide accurate and complete information about the property, including but not limited to the address, number of rooms, and rental price. If any of the listing details change, it is your responsibility to inform currently joined members(if applicable), delete the current listing, and post the updated listing. <br/>
             <span className='font-bold text-sm md:text-base'> Communication: </span>By joining a listing, you agree to share your email address with other users in the same listing for the purpose of communication and coordination. <br/>
             <span className='font-bold text-sm md:text-base'> Matching Process: </span>ApartMatch facilitates the matching process but does not guarantee that you will find a suitable match. Users are responsible for conducting their own due diligence before entering into any rental agreements. <br/>
-            <span className='font-bold text-sm md:text-base'> Post-Matching Process: </span>After matching into a listing, it is completely the user's responsibility to coordinate with the listing owner and other members to finalize the rental agreement. ApartMatch is not responsible for any disputes or issues that arise during this process.
+            <span className='font-bold text-sm md:text-base'> Post-Matching Process: </span>After matching into a listing, it is completely the user&apos;s responsibility to coordinate with the listing owner and other members to finalize the rental agreement. ApartMatch is not responsible for any disputes or issues that arise during this process.
             </p>
 
             <h2 className="text-xl md:text-2xl font-bold text-black mb-2 mt-4"> User Conduct </h2>

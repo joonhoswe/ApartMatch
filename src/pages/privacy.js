@@ -24,7 +24,7 @@ export default function Privacy() {
             <p className='text-sm md:text-base'> 
             When you post a home listing on ApartMatch, we collect the following information: <br/>
             <span className='font-bold text-sm md:text-base'> Address: </span>The street address of the property. <br/>
-            <span className='font-bold text-sm md:text-base'> Listing Details: </span>Information about the property, such as the number of rooms, rental price, owner's gender preferences, and other relevant details.  <br/>
+            <span className='font-bold text-sm md:text-base'> Listing Details: </span>Information about the property, such as the number of rooms, rental price, owner&apos;s gender preferences, and other relevant details.  <br/>
             <span className='font-bold text-sm md:text-base'> Images: </span>Photos of the property.
             </p>
 
