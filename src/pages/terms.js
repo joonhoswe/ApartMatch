@@ -50,13 +50,13 @@ export default function Terms() {
 
             <h2 className="text-xl md:text-2xl font-bold text-black mb-2 mt-4"> Disclaimers </h2>
             <p className='text-sm md:text-base'> 
-            <span className='font-bold text-sm md:text-base'> No Warranty: </span>ApartMatch is provided on an "as is" and "as available" basis. We make no warranties, express or implied, regarding the availability, accuracy, or reliability of the site or its content. <br/>
+            <span className='font-bold text-sm md:text-base'> No Warranty: </span>ApartMatch is provided on an &quot;as is&quot; and &quot;as available&quot; basis. We make no warranties, express or implied, regarding the availability, accuracy, or reliability of the site or its content. <br/>
             <span className='font-bold text-sm md:text-base'> Limitation of Liability: </span>To the fullest extent permitted by law, ApartMatch shall not be liable for any direct, indirect, incidental, consequential, or punitive damages arising out of or related to your use of the site.
             </p>
 
             <h2 className="text-xl md:text-2xl font-bold text-black mb-2 mt-4"> Indemnification </h2>
             <p className='text-sm md:text-base'> 
-            You agree to indemnify, defend, and hold harmless ApartMatch and its affiliates, officers, directors, employees, and agents from and against any claims, liabilities, damages, losses, and expenses, including reasonable attorneys' fees, arising out of or in any way connected with your use of the site, your violation of these Terms, or your violation of any rights of another.
+            You agree to indemnify, defend, and hold harmless ApartMatch and its affiliates, officers, directors, employees, and agents from and against any claims, liabilities, damages, losses, and expenses, including reasonable attorneys&apos; fees, arising out of or in any way connected with your use of the site, your violation of these Terms, or your violation of any rights of another.
             </p>
 
             <h2 className="text-xl md:text-2xl font-bold text-black mb-2 mt-4"> Changes to Terms </h2>
