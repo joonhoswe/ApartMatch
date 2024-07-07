@@ -3,6 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import placeholder from '@assets/placeholder.jpeg';
 import PulseLoader from 'react-spinners/PulseLoader';
 import { setDefaults, fromAddress } from "react-geocode";
+import Link from 'next/link';
 
 export default function ViewListings({ loading, listings, onListingClick, school }) {
     const { user, isAuthenticated, loginWithRedirect } = useAuth0();
@@ -64,9 +65,15 @@ export default function ViewListings({ loading, listings, onListingClick, school
                     </div>
                 ) : (
                     <>
-                        <div className='w-full h-10 bg-white flex items-center justify-start px-2 border-b-2 border-gray-300'>
+                        <div className='w-full h-10 bg-white flex flex-row items-center justify-between px-2 border-b-2 border-gray-300'>
                             <p className='text-sm'> {listings.length} listings in {city}, {state} </p>
+                            <button onClick='' className='visible sm:hidden text-sm text-blue-400 font-bold'> Map </button>
                         </div>
+
+                        {listings.length === 0  && (
+                            <Link href='/postListing' className='h-10 w-32 bg-red-500 text-white rounded-lg text-sm font-bold flex items-center justify-center'> Post a Listing </Link>
+                        )}
+
                         {listings.map((listing, index) => (
                             <div key={index} onClick={() => onListingClick(listing)} className={`${listing.rooms - listing.joinedListing.length === 0 ? 'hidden' : 'flex'} bg-white relative flex-col h-auto w-full hover:cursor-pointer border-y-2 border-gray-300`}>
                                 {/* badge for gender preference */}
