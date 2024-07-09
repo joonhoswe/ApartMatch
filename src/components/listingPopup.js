@@ -161,11 +161,6 @@ export default function ListingPopup({ allListings, listing, refreshListing, cha
                     </div>
                 </div>
 
-                {/* if the home is an apartment, show the unit # */}
-                <div className='flex items-center justify-between'>
-                    
-                </div>
-
                 {/* emails of joined users */}
                 {isAuthenticated && listing.joinedListing.includes(user.nickname) && (
                 <div className='flex flex-col'>
@@ -181,7 +176,7 @@ export default function ListingPopup({ allListings, listing, refreshListing, cha
             {   
             // ** possible to combine all 3 and use conditional rendering **
                 isAuthenticated && user.email_verified && listing.owner === user.nickname ? 
-                <div className=' h-12 flex flex-col space-y-2 items-center justify-center'>
+                <div className='mb-4 h-12 flex flex-col space-y-2 items-center justify-center'>
                     {/* confirmation text if the user pressed an action button */}
                     {confirm && <p className= 'text-sm font-bold text-red-500'> Delete this listing? </p> }
 
@@ -204,7 +199,7 @@ export default function ListingPopup({ allListings, listing, refreshListing, cha
                 </div> :
 
                 isAuthenticated && user.email_verified && listing.joinedListing.includes(user.nickname) ? 
-                <div className=' h-12 flex flex-col space-y-2 items-center justify-center'>
+                <div className='mb-4 h-12 flex flex-col space-y-2 items-center justify-center'>
                     {/* confirmation text if the user pressed an action button */}
                     {confirm && <p className= 'text-sm font-bold text-orange-500'> Leave this listing? </p> }
 
@@ -227,7 +222,7 @@ export default function ListingPopup({ allListings, listing, refreshListing, cha
                 </div>: 
 
                 isAuthenticated && user.email_verified && !listing.joinedListing.includes(user.nickname) ? 
-                <div className=' h-12 flex flex-col space-y-2 items-center justify-center'>
+                <div className='mb-4 h-12 flex flex-col space-y-2 items-center justify-center'>
                     {/* confirmation text if the user pressed an action button */}
                     {confirm && <p className= 'text-sm font-bold text-green-500'> Join this listing? </p> }
 
