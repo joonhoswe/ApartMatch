@@ -1,7 +1,8 @@
 import { React, useEffect, useState } from 'react';
 import Layout from '@components/layout';
 import { Auth0Provider } from '@auth0/auth0-react';
-import '../globals.css';  
+import '../globals.css'; 
+import { Analytics } from "@vercel/analytics/react" 
 
 export default function MyApp({ Component, pageProps }) {
     const [redirectUri, setRedirectUri] = useState('');
@@ -27,6 +28,7 @@ export default function MyApp({ Component, pageProps }) {
         >
             <Layout>
                 <Component {...pageProps} />
+                <Analytics/>
             </Layout>
         </Auth0Provider>
     );
