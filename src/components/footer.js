@@ -20,17 +20,18 @@ export default function Footer() {
 
                     <div className="flex flex-col md:flex-row md:space-x-4 justify-center items-center space-y-2 md:space-y-0">
                         <Link href="/terms" className="text-xs md:text-sm hover:underline"> Terms of Service </Link>
-                        <p className="text-xs md:text-sm"> apartmatchco@gmail.com </p>
+                        {/* <p className="text-xs md:text-sm"> apartmatchco@gmail.com </p> */}
                         <Link href="/privacy" className="text-xs md:text-sm hover:underline"> Privacy Policy </Link>  
                     </div>
 
                     <div className="flex flex-row space-x-2">
-                        <a className="h-8 w-8 rounded-full bg-white p-1.5 hover:cursor-pointer" href="https://www.linkedin.com/company/apartmatch-co/" target="_blank" rel="noopener noreferrer">
+                        {/* <a className="h-8 w-8 rounded-full bg-white p-1.5 hover:cursor-pointer" href="https://www.linkedin.com/company/apartmatch-co/" target="_blank" rel="noopener noreferrer">
                             <Image src={LinkedIn} alt="LinkedIn" className="w-full h-full" />
-                        </a>
-                        <a className="h-8 w-8 rounded-full bg-white p-1.5 hover:cursor-pointer" href="https://github.com/joonhoswe/ApartMatch" target="_blank" rel="noopener noreferrer">
+                        </a> */}
+                        {/* <a className="h-8 w-8 rounded-full bg-white p-1.5 hover:cursor-pointer" href="https://github.com/joonhoswe/ApartMatch" target="_blank" rel="noopener noreferrer">
                             <Image src={GitHub} alt="GitHub" className="w-full h-full" />
-                        </a>
+                        </a> */}
+                        <p className="text-xs md:text-sm"> contact: apartmatchco@gmail.com </p>
                     </div>
                 </div>
             </div>
@@ -40,7 +41,7 @@ export default function Footer() {
 
                 <div className="flex flex-col justify-center items-center space-y-1">
                     <Link href="/terms" className="text-xs md:text-sm hover:underline"> Terms of Service </Link>
-                    <p className="text-xs md:text-sm"> apartmatchco@gmail.com </p>
+                    {/* <p className="text-xs md:text-sm"> apartmatchco@gmail.com </p> */}
                     <Link href="/privacy" className="text-xs md:text-sm hover:underline"> Privacy Policy </Link>  
                 </div>
 
@@ -48,12 +49,13 @@ export default function Footer() {
                     <p className="text-xs md:text-sm"> © 2024 ApartMatch </p>
 
                     <div className="flex flex-row space-x-2">
-                        <a className="h-6 w-6 rounded-full bg-white p-1 hover:cursor-pointer" href="" target="_blank" rel="noopener noreferrer">
+                        {/* <a className="h-6 w-6 rounded-full bg-white p-1 hover:cursor-pointer" href="" target="_blank" rel="noopener noreferrer">
                             <Image src={LinkedIn} alt="LinkedIn" className="w-full h-full" />
-                        </a>
-                        <a className="h-6 w-6 rounded-full bg-white p-1 hover:cursor-pointer" href="https://github.com/joonhoswe/ApartMatch" target="_blank" rel="noopener noreferrer">
+                        </a> */}
+                        {/* <a className="h-6 w-6 rounded-full bg-white p-1 hover:cursor-pointer" href="https://github.com/joonhoswe/ApartMatch" target="_blank" rel="noopener noreferrer">
                             <Image src={GitHub} alt="GitHub" className="w-full h-full" />
-                        </a>
+                        </a> */}
+                        <p className="text-xs md:text-sm"> contact: apartmatchco@gmail.com </p>
                     </div>
                 </div>
             </div>
