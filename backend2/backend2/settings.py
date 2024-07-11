@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [os.environ.get('DJANGO_ALLOWED_HOST')]
 
@@ -49,7 +49,7 @@ INSTALLED_APPS = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
+    # 'http://localhost:3000',
     'https://www.apartmatchco.com'
 ]
 deployed_backend_url = os.environ.get('NEXT_PUBLIC_BACKEND_URL')
